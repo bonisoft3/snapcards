@@ -1,0 +1,65 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-check-commerce:
+    build:
+      additional_contexts:
+        snapcards-setup: service:snapcards-setup
+        snapcards-launch: service:snapcards-launch
+        plugins_omnishell-runtime-image: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/omnishell:0.34.0@sha256:cd4cd6fc4b2b8eec05a1f3628c00d9c06eb943b0e6abb1b9bc900250680e5c01}${MONOREPO_COMPOSE_MODE:+:plugins_omnishell-runtime-image}
+      context: ..
+      dockerfile: .bayt/Dockerfile.check-commerce
+      target: check-commerce
+      tags:
+      - bayt-snapcards-check-commerce:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-check-commerce:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    command:
+    - mise
+    - x
+    - --
+    - nu
+    - -c
+    - >-
+      deno check --config commerce/deno.json commerce/*.ts; deno lint --config
+      commerce/deno.json commerce/*.ts; deno task --config commerce/deno.json test
+    depends_on:
+      snapcards-launch:
+        condition: service_healthy
+        restart: true
+    environment:
+      APP_URL: https://caddy:8443
+      DOOR: http://caddy:8080
+      ORIGIN: ${ORIGIN:-https://localhost:${CADDY_TLS_HOST_PORT:-24469}}
+    image: bayt-snapcards-check-commerce:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    scale: 0
+  snapcards-check-commerce_bayt:
+    build:
+      additional_contexts:
+        snapcards-setup_bayt: service:snapcards-setup_bayt
+        snapcards-launch_bayt: service:snapcards-launch_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.check-commerce
+      target: check-commerce_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-check-commerce_bayt:latest
+    scale: 0
+  snapcards-check-commerce_srcs:
+    build:
+      additional_contexts:
+        snapcards-setup_srcs: service:snapcards-setup_srcs
+      context: ..
+      dockerfile: .bayt/Dockerfile.check-commerce
+      target: check-commerce_srcs
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-check-commerce_srcs:latest
+    scale: 0

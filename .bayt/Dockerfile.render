@@ -1,0 +1,41 @@
+# generated from bayt.cue — do not edit
+FROM denoland/deno:debian-2.9.7@sha256:fa335acdf6b72106eda2cb6a8cb5f4187e7630e357467489db4b2e7352d5e432 AS render
+ARG BAYT_DIR
+WORKDIR /render
+COPY --from=bonitao/lazybox:0.8.6@sha256:0f30c48513fac757f844f02c864802991dec045f9c4189e3db2ae4ac297544df /lazybox/share/ca-certificates/ca-certificates.crt /usr/local/lib/bayt/http200/ca.pem
+COPY --chmod=755 --from=bonitao/lazybox:0.8.6@sha256:0f30c48513fac757f844f02c864802991dec045f9c4189e3db2ae4ac297544df /lazybox/libexec/static-curl /usr/local/lib/bayt/http200/curl
+COPY --chmod=755 --from=busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223 /bin/busybox /usr/local/lib/bayt/http200/busybox
+COPY --from=plugins_omnishell-runtime-image /interpreter /render/plugins/omnishell/interpreter
+COPY --from=plugins_omnishell-runtime-image /server /render/plugins/omnishell/server
+COPY --from=snapcards-served /served/shell/index.html /render/entry.html
+COPY --parents shell/index.html shell/shell.css shell/boot.js shell/shell.yaml shell/shell.json shell/design.css shell/screens/cards.css shell/screens/generate.css shell/screens/explore.css shell/screens/deck.html shell/screens/deck.css shell/screens/card.css shell/screens/print.css shell/screens/about.html shell/screens/about.css shell/handlers/count-step.js shell/handlers/create_set.js shell/handlers/delivery_accept.js shell/handlers/delivery_address_q.js shell/handlers/delivery_found.js shell/handlers/delivery_offers.js shell/handlers/delivery_pin.js shell/handlers/delivery_submitted.js shell/handlers/generation-input.js shell/handlers/is_key.js shell/handlers/legacy-generation-run.js shell/handlers/localize_content.js shell/handlers/play_master.js shell/handlers/play_next.js shell/handlers/play_prev.js shell/handlers/play_restart.js shell/handlers/play_select.js shell/handlers/print_select.js shell/handlers/row-is.js shell/handlers/tab-fill.js shell/handlers/value-is.js shell/shared/address-formats.css shell/shared/card-art.css shell/shared/chrome-ready.css shell/shared/chrome.css shell/shared/nav.css shell/shared/translation-feedback.css shell/hatches/print-checkout.js shell/hatches/window-print.js shell/units/ai-browser/unit.js shell/units/delivery-map/index.html shell/units/delivery-map/vendor/maplibre-gl.css shell/units/delivery-map/vendor/maplibre-gl.js shell/units/geocoder/unit.js shell/units/print-payment/index.html messages/pt.json messages/es.json messages/en.json messages/he.json messages/zh.json shell/shared/fonts/nunito-latin-wght-normal.woff2 shell/shared/fonts/nunito-latin-wght-italic.woff2 shell/shared/fonts/nunito-latin-ext-wght-normal.woff2 shell/shared/fonts/nunito-latin-ext-wght-italic.woff2 shell/shared/fonts/dm-sans-latin-wght-normal.woff2 shell/shared/fonts/dm-sans-latin-wght-italic.woff2 shell/shared/fonts/dm-sans-latin-ext-wght-normal.woff2 shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2 shell/favicon.svg shell/tag.html ./
+COPY .bayt/Taskfile.yml .bayt/Taskfile.bayt.yml .bayt/bayt.render.json ./.bayt/
+EXPOSE 8090
+CMD ["deno", "run", "--frozen", "--cached-only", "--config", "plugins/omnishell/server/deno.json", "--allow-net", "--allow-env", "--allow-read=/render", "plugins/omnishell/server/render.ts"]
+RUN deno cache --frozen --config plugins/omnishell/server/deno.json plugins/omnishell/server/render.ts
+HEALTHCHECK --interval=1s --timeout=5s --retries=30 --start-period=120s CMD ["/usr/local/lib/bayt/http200/busybox","sh","-ec","export CURL_CA_BUNDLE=\"${SSL_CERT_FILE:-/usr/local/lib/bayt/http200/ca.pem}\"; status=$(\"$@\"); [ \"$status\" = 200 ] || { printf 'HTTP status %s, expected 200\\n' \"$status\" >&2; exit 1; }","http200","/usr/local/lib/bayt/http200/curl","--disable","--silent","--show-error","--head","--request","GET","--location","--max-redirs","9","--max-time","5","--proto","=http,https","--proto-redir","=http,https","--output","/dev/null","--write-out","%{http_code}","http://127.0.0.1:8090/health"]
+
+FROM busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223 AS render_ctxs
+ARG BAYT_DIR
+WORKDIR /monorepo/${BAYT_DIR}
+COPY --parents shell/index.html shell/shell.css shell/boot.js shell/shell.yaml shell/shell.json shell/design.css shell/screens/cards.css shell/screens/generate.css shell/screens/explore.css shell/screens/deck.html shell/screens/deck.css shell/screens/card.css shell/screens/print.css shell/screens/about.html shell/screens/about.css shell/handlers/count-step.js shell/handlers/create_set.js shell/handlers/delivery_accept.js shell/handlers/delivery_address_q.js shell/handlers/delivery_found.js shell/handlers/delivery_offers.js shell/handlers/delivery_pin.js shell/handlers/delivery_submitted.js shell/handlers/generation-input.js shell/handlers/is_key.js shell/handlers/legacy-generation-run.js shell/handlers/localize_content.js shell/handlers/play_master.js shell/handlers/play_next.js shell/handlers/play_prev.js shell/handlers/play_restart.js shell/handlers/play_select.js shell/handlers/print_select.js shell/handlers/row-is.js shell/handlers/tab-fill.js shell/handlers/value-is.js shell/shared/address-formats.css shell/shared/card-art.css shell/shared/chrome-ready.css shell/shared/chrome.css shell/shared/nav.css shell/shared/translation-feedback.css shell/hatches/print-checkout.js shell/hatches/window-print.js shell/units/ai-browser/unit.js shell/units/delivery-map/index.html shell/units/delivery-map/vendor/maplibre-gl.css shell/units/delivery-map/vendor/maplibre-gl.js shell/units/geocoder/unit.js shell/units/print-payment/index.html messages/pt.json messages/es.json messages/en.json messages/he.json messages/zh.json shell/shared/fonts/nunito-latin-wght-normal.woff2 shell/shared/fonts/nunito-latin-wght-italic.woff2 shell/shared/fonts/nunito-latin-ext-wght-normal.woff2 shell/shared/fonts/nunito-latin-ext-wght-italic.woff2 shell/shared/fonts/dm-sans-latin-wght-normal.woff2 shell/shared/fonts/dm-sans-latin-wght-italic.woff2 shell/shared/fonts/dm-sans-latin-ext-wght-normal.woff2 shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2 shell/favicon.svg shell/tag.html ./
+ARG SOURCE_DATE_EPOCH
+ARG BAYT_CLAMP=1
+RUN if [ "${BAYT_CLAMP:-1}" != 0 ]; then { w=$(pwd); mkdir -p /.bayt-clamp && find "$w" -exec getfattr -dh {} + > /.bayt-clamp/x && if [ ! -s /.bayt-clamp/x ]; then cd / && cp -a "$w" /.bayt-clamp/w && rm -rf "$w" && mv /.bayt-clamp/w "$w"; fi && rm -rf /.bayt-clamp; } && find /monorepo/${BAYT_DIR} -exec touch -hd @${SOURCE_DATE_EPOCH:-0} {} + && { d=$(dirname /monorepo/${BAYT_DIR}); while [ "$d" != / ]; do touch -hd @${SOURCE_DATE_EPOCH:-0} "$d" || exit; d=$(dirname "$d"); done; }; fi
+FROM scratch AS render_srcs
+COPY --from=render_ctxs /monorepo /monorepo
+
+FROM busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223 AS render_bayt_ctxs
+ARG BAYT_DIR
+WORKDIR /monorepo/${BAYT_DIR}
+COPY --parents .bayt/compose.render.yaml .bayt/Dockerfile.render .bayt/bayt.render.json .bayt/Taskfile.yml .bayt/Taskfile.bayt.yml .bayt/process-compose.yaml ./
+COPY --from=snapcards-caddy_bayt /monorepo /monorepo
+COPY --from=snapcards-crud_bayt /monorepo /monorepo
+COPY --from=snapcards-electric_bayt /monorepo /monorepo
+COPY --from=snapcards-auth_bayt /monorepo /monorepo
+COPY --from=snapcards-served_bayt /monorepo /monorepo
+ARG SOURCE_DATE_EPOCH
+ARG BAYT_CLAMP=1
+RUN if [ "${BAYT_CLAMP:-1}" != 0 ]; then { w=$(pwd); mkdir -p /.bayt-clamp && find "$w" -exec getfattr -dh {} + > /.bayt-clamp/x && if [ ! -s /.bayt-clamp/x ]; then cd / && cp -a "$w" /.bayt-clamp/w && rm -rf "$w" && mv /.bayt-clamp/w "$w"; fi && rm -rf /.bayt-clamp; } && find /monorepo/${BAYT_DIR} -exec touch -hd @${SOURCE_DATE_EPOCH:-0} {} + && { d=$(dirname /monorepo/${BAYT_DIR}); while [ "$d" != / ]; do touch -hd @${SOURCE_DATE_EPOCH:-0} "$d" || exit; d=$(dirname "$d"); done; }; fi
+FROM scratch AS render_bayt
+COPY --from=render_bayt_ctxs /monorepo /monorepo

@@ -1,0 +1,126 @@
+# generated from bayt.cue — do not edit
+FROM libraries_mecha-mesh-image AS airlock-mesh
+ARG BAYT_DIR
+WORKDIR /monorepo/${BAYT_DIR}
+COPY <<'WALL' /dapr/airlock/wall.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: wall
+spec:
+  type: middleware.http.routerchecker
+  version: v1
+  metadata:
+    - {name: rule, value: "^/v1[.]0/(bindings/blobs|healthz(/outbound)?|invoke/(illustrate-card|smollm3-draft|heavy-draft|print-quote|print-quote-br|print-fx|print-session|print-check|print-place|print-place-br|print-status|print-status-br|print-confirm|print-record|print-shipped|print-alert)/method/.*)$"}
+WALL
+COPY <<'RESILIENCY' /dapr/airlock/resiliency.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Resiliency
+metadata:
+  name: airlock
+spec:
+  policies:
+    circuitBreakers:
+      sink:
+        maxRequests: 1
+        interval: 60s
+        timeout: 30s
+        trip: consecutiveFailures >= 10
+  targets:
+    apps:
+      illustrate-card: {circuitBreaker: sink}
+      smollm3-draft: {circuitBreaker: sink}
+      heavy-draft: {circuitBreaker: sink}
+      print-quote: {circuitBreaker: sink}
+      print-quote-br: {circuitBreaker: sink}
+      print-fx: {circuitBreaker: sink}
+      print-session: {circuitBreaker: sink}
+      print-check: {circuitBreaker: sink}
+      print-place: {circuitBreaker: sink}
+      print-place-br: {circuitBreaker: sink}
+      print-status: {circuitBreaker: sink}
+      print-status-br: {circuitBreaker: sink}
+      print-confirm: {circuitBreaker: sink}
+      print-record: {circuitBreaker: sink}
+      print-shipped: {circuitBreaker: sink}
+      print-alert: {circuitBreaker: sink}
+RESILIENCY
+COPY <<'BLOBS' /dapr/airlock/blobs.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: env
+spec:
+  type: secretstores.local.env
+  version: v1
+  metadata: []
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: blobs
+spec:
+  type: bindings.aws.s3
+  version: v1
+  metadata:
+    - {name: bucket, value: mecha-objects}
+    - {name: region, value: rclone}
+    - {name: endpoint, secretKeyRef: {name: BLOBS_S3_URL, key: BLOBS_S3_URL}}
+    - {name: accessKey, value: GK000000000000000000000000}
+    - {name: secretKey, value: "0000000000000000000000000000000000000000000000000000000000000000"}
+    - {name: forcePathStyle, value: "true"}
+    - {name: disableSSL, value: "true"}
+    - {name: decodeBase64, value: "true"}
+auth:
+  secretStore: env
+BLOBS
+COPY --chmod=755 --from=tarampampam/microcheck:1@sha256:79c187c05bfa67518078bf4db117771942fa8fe107dc79a905861c75ddf28dfa /bin/portcheck /usr/local/bin/portcheck
+COPY --from=libraries_mecha-airlock-image /app/airlock/dapr.yaml /dapr/config.yaml
+COPY services/airlock/dapr/illustrate-card.yaml /dapr/airlock/illustrate-card.yaml
+COPY services/airlock/dapr/smollm3-draft.yaml /dapr/airlock/smollm3-draft.yaml
+COPY services/airlock/dapr/heavy-draft.yaml /dapr/airlock/heavy-draft.yaml
+COPY services/airlock/dapr/print-quote.yaml /dapr/airlock/print-quote.yaml
+COPY services/airlock/dapr/print-quote-br.yaml /dapr/airlock/print-quote-br.yaml
+COPY services/airlock/dapr/print-fx.yaml /dapr/airlock/print-fx.yaml
+COPY services/airlock/dapr/print-session.yaml /dapr/airlock/print-session.yaml
+COPY services/airlock/dapr/print-check.yaml /dapr/airlock/print-check.yaml
+COPY services/airlock/dapr/print-place.yaml /dapr/airlock/print-place.yaml
+COPY services/airlock/dapr/print-place-br.yaml /dapr/airlock/print-place-br.yaml
+COPY services/airlock/dapr/print-status.yaml /dapr/airlock/print-status.yaml
+COPY services/airlock/dapr/print-status-br.yaml /dapr/airlock/print-status-br.yaml
+COPY services/airlock/dapr/print-confirm.yaml /dapr/airlock/print-confirm.yaml
+COPY services/airlock/dapr/print-record.yaml /dapr/airlock/print-record.yaml
+COPY services/airlock/dapr/print-shipped.yaml /dapr/airlock/print-shipped.yaml
+COPY services/airlock/dapr/print-alert.yaml /dapr/airlock/print-alert.yaml
+COPY --parents services/airlock/dapr/illustrate-card.yaml services/airlock/dapr/smollm3-draft.yaml services/airlock/dapr/heavy-draft.yaml services/airlock/dapr/print-quote.yaml services/airlock/dapr/print-quote-br.yaml services/airlock/dapr/print-fx.yaml services/airlock/dapr/print-session.yaml services/airlock/dapr/print-check.yaml services/airlock/dapr/print-place.yaml services/airlock/dapr/print-place-br.yaml services/airlock/dapr/print-status.yaml services/airlock/dapr/print-status-br.yaml services/airlock/dapr/print-confirm.yaml services/airlock/dapr/print-record.yaml services/airlock/dapr/print-shipped.yaml services/airlock/dapr/print-alert.yaml ./
+COPY .bayt/Taskfile.yml .bayt/Taskfile.bayt.yml .bayt/bayt.airlock-mesh.json ./.bayt/
+EXPOSE 3500
+EXPOSE 50001
+EXPOSE 50002
+ENTRYPOINT ["/daprd", "--app-id", "airlock", "--dapr-listen-addresses", "0.0.0.0", "--resources-path", "/dapr/airlock", "--config", "/dapr/config.yaml", "--dapr-http-port", "3500", "--max-body-size", "64Mi", "--log-level", "info"]
+HEALTHCHECK --interval=5s --timeout=5s --retries=30 --start-period=30s CMD ["portcheck","--port","3500"]
+
+FROM busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223 AS airlock-mesh_ctxs
+ARG BAYT_DIR
+WORKDIR /monorepo/${BAYT_DIR}
+COPY --parents services/airlock/dapr/illustrate-card.yaml services/airlock/dapr/smollm3-draft.yaml services/airlock/dapr/heavy-draft.yaml services/airlock/dapr/print-quote.yaml services/airlock/dapr/print-quote-br.yaml services/airlock/dapr/print-fx.yaml services/airlock/dapr/print-session.yaml services/airlock/dapr/print-check.yaml services/airlock/dapr/print-place.yaml services/airlock/dapr/print-place-br.yaml services/airlock/dapr/print-status.yaml services/airlock/dapr/print-status-br.yaml services/airlock/dapr/print-confirm.yaml services/airlock/dapr/print-record.yaml services/airlock/dapr/print-shipped.yaml services/airlock/dapr/print-alert.yaml ./
+ARG SOURCE_DATE_EPOCH
+ARG BAYT_CLAMP=1
+RUN if [ "${BAYT_CLAMP:-1}" != 0 ]; then { w=$(pwd); mkdir -p /.bayt-clamp && find "$w" -exec getfattr -dh {} + > /.bayt-clamp/x && if [ ! -s /.bayt-clamp/x ]; then cd / && cp -a "$w" /.bayt-clamp/w && rm -rf "$w" && mv /.bayt-clamp/w "$w"; fi && rm -rf /.bayt-clamp; } && find /monorepo/${BAYT_DIR} -exec touch -hd @${SOURCE_DATE_EPOCH:-0} {} + && { d=$(dirname /monorepo/${BAYT_DIR}); while [ "$d" != / ]; do touch -hd @${SOURCE_DATE_EPOCH:-0} "$d" || exit; d=$(dirname "$d"); done; }; fi
+FROM scratch AS airlock-mesh_srcs
+COPY --from=airlock-mesh_ctxs /monorepo /monorepo
+
+FROM busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223 AS airlock-mesh_bayt_ctxs
+ARG BAYT_DIR
+WORKDIR /monorepo/${BAYT_DIR}
+COPY --parents .bayt/compose.airlock-mesh.yaml .bayt/Dockerfile.airlock-mesh .bayt/bayt.airlock-mesh.json .bayt/Taskfile.yml .bayt/Taskfile.bayt.yml .bayt/process-compose.yaml ./
+COPY --from=snapcards-tsbifrost_bayt /monorepo /monorepo
+COPY --from=snapcards-checkout-simulator_bayt /monorepo /monorepo
+COPY --from=snapcards-prodigi-simulator_bayt /monorepo /monorepo
+COPY --from=snapcards-cloudprinter-simulator_bayt /monorepo /monorepo
+COPY --from=snapcards-mail-simulator_bayt /monorepo /monorepo
+ARG SOURCE_DATE_EPOCH
+ARG BAYT_CLAMP=1
+RUN if [ "${BAYT_CLAMP:-1}" != 0 ]; then { w=$(pwd); mkdir -p /.bayt-clamp && find "$w" -exec getfattr -dh {} + > /.bayt-clamp/x && if [ ! -s /.bayt-clamp/x ]; then cd / && cp -a "$w" /.bayt-clamp/w && rm -rf "$w" && mv /.bayt-clamp/w "$w"; fi && rm -rf /.bayt-clamp; } && find /monorepo/${BAYT_DIR} -exec touch -hd @${SOURCE_DATE_EPOCH:-0} {} + && { d=$(dirname /monorepo/${BAYT_DIR}); while [ "$d" != / ]; do touch -hd @${SOURCE_DATE_EPOCH:-0} "$d" || exit; d=$(dirname "$d"); done; }; fi
+FROM scratch AS airlock-mesh_bayt
+COPY --from=airlock-mesh_bayt_ctxs /monorepo /monorepo

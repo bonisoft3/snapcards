@@ -1,0 +1,71 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-crud:
+    build:
+      additional_contexts:
+        snapcards-database: service:snapcards-database
+        snapcards-migrate: service:snapcards-migrate
+        snapcards-airlock-upgrade: service:snapcards-airlock-upgrade
+        snapcards-timer-check: service:snapcards-timer-check
+      context: ..
+      dockerfile: .bayt/Dockerfile.crud
+      target: crud
+      tags:
+      - bayt-snapcards-crud:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-crud:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    depends_on:
+      snapcards-database:
+        condition: service_healthy
+        restart: true
+      snapcards-migrate:
+        condition: service_completed_successfully
+      snapcards-airlock-upgrade:
+        condition: service_completed_successfully
+      snapcards-timer-check:
+        condition: service_completed_successfully
+    environment:
+      PGRST_DB_URI: >-
+        postgres://authenticator:${AUTHENTICATOR_PASSWORD:-dev-authenticator-password}@database:5432/${POSTGRES_DB:-snapcards}
+      PGRST_DB_SCHEMA: public
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_DB_PRE_REQUEST: public.app_pre_request
+      PGRST_APP_SETTINGS_TOKEN_ROLES: ""
+      PGRST_SERVER_HOST: "*"
+      PGRST_SERVER_PORT: "3000"
+      PGRST_ADMIN_SERVER_PORT: "3001"
+      PGRST_JWT_SECRET: ${PGRST_JWT_SECRET:-mecha-dev-secret-please-override-32ch}
+    healthcheck:
+      test:
+      - CMD
+      - httpcheck
+      - http://127.0.0.1:3001/ready
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+      start_interval: 500ms
+    image: bayt-snapcards-crud:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    networks:
+      default:
+        aliases:
+        - crud
+  snapcards-crud_bayt:
+    build:
+      additional_contexts:
+        snapcards-database_bayt: service:snapcards-database_bayt
+        snapcards-migrate_bayt: service:snapcards-migrate_bayt
+        snapcards-airlock-upgrade_bayt: service:snapcards-airlock-upgrade_bayt
+        snapcards-timer-check_bayt: service:snapcards-timer-check_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.crud
+      target: crud_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-crud_bayt:latest
+    scale: 0

@@ -1,0 +1,44 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-generate:
+    build:
+      additional_contexts:
+        snapcards-setup: service:snapcards-setup
+      context: ..
+      dockerfile: .bayt/Dockerfile.generate
+      target: generate
+      tags:
+      - bayt-snapcards-generate:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-generate:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-generate:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    scale: 0
+  snapcards-generate_bayt:
+    build:
+      additional_contexts:
+        snapcards-setup_bayt: service:snapcards-setup_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.generate
+      target: generate_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-generate_bayt:latest
+    scale: 0
+  snapcards-generate_srcs:
+    build:
+      additional_contexts:
+        snapcards-setup_srcs: service:snapcards-setup_srcs
+      context: ..
+      dockerfile: .bayt/Dockerfile.generate
+      target: generate_srcs
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-generate_srcs:latest
+    scale: 0

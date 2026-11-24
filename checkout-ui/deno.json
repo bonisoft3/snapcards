@@ -1,0 +1,20 @@
+{
+	"imports": {
+		"@pdfme/pdf-lib": "npm:@pdfme/pdf-lib@6.2.8",
+		"esbuild": "npm:esbuild@0.25.12",
+		"libphonenumber-js": "npm:libphonenumber-js@1.11.18",
+		"playwright": "npm:playwright@1.61.1"
+	},
+	"compilerOptions": {
+		"lib": [
+			"deno.window",
+			"dom",
+			"dom.iterable"
+		]
+	},
+	"tasks": {
+		"build": "deno run --frozen --allow-read --allow-write --allow-env --allow-run build.ts",
+		"test": "deno test --frozen --allow-read --allow-write --allow-env --allow-run --allow-net --allow-sys test.ts"
+	},
+	"nodeModulesDir": "auto"
+}

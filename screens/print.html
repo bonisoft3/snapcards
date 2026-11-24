@@ -1,0 +1,582 @@
+<section class="screen" data-screen="print" data-commerce-mode="mock" data-retarget-params="order checkout">
+  <button type="button" class="btn-more" popovertarget="more-sheet-print" aria-label="{msg.nav_more}"><span aria-hidden="true">⋯</span></button>
+  <nav id="more-sheet-print" class="more-sheet" popover aria-label="{msg.nav_more}">
+    <a data-route="cards" data-param-shelf="mine" class="more-link"><span class="more-icon" aria-hidden="true">🗂️</span><span data-text="{msg.nav_my_cards}"></span></a>
+    <a data-route="cards" data-param-shelf="gallery" class="more-link"><span class="more-icon" aria-hidden="true">🌐</span><span data-text="{msg.nav_gallery}"></span></a>
+    <a data-route="about" class="more-link"><span class="more-icon" aria-hidden="true">📖</span><span data-text="{msg.nav_about}"></span></a>
+  </nav>
+  <!-- The device's key scopes every read of its draft slots: a server render has no device, so it reads none. -->
+  <div class="device-scope" data-live="device" data-filter="id=eq.device" data-empty-row='{"id":"device","key":"","theme":"auto"}' data-theme="{theme}" data-cortex="printRows" data-machine-ref="theme">
+  <!-- A finished translation names its deck in details, and only then are that deck's cards read. -->
+  <div hidden data-live="generation_draft" data-filter="id=eq.{device.key}:draft-cheap&amp;status=eq.done" data-empty=""><template data-item><div>
+    <div id="translation-settles" data-empty="" data-live="flashcard" data-filter="set_id=eq.{details}" data-reads="play_session,card_set,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{details}" data-read-card_translation="card_translation?set_id=eq.{details}" data-on-mutation="create_set"><template data-item><span></span></template></div>
+  </div></template></div>
+  <!-- Labels for the cards this screen can show. -->
+  <div hidden data-live="print_config" data-filter="id=eq.config" data-empty-row='{"id":"config","set_id":""}'><template data-item><div>
+    <div data-empty="" data-live="card_set" data-reads="card_set,deck_translation,localized_card,localized_deck" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="localize_content"><template data-item><span></span></template></div>
+    <div data-empty="" data-live="flashcard" data-filter="set_id=eq.{set_id}" data-reads="card_set,deck_translation,localized_card,localized_deck" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="localize_content"><template data-item><span></span></template></div>
+  </div></template></div>
+  <!-- What creating a deck reads is that deck, so a seat follows the form to it. -->
+  <div hidden data-live="generation_form" data-filter="id=eq.draft" data-empty-row='{"id":"draft","set_id":""}'><template data-item><div>
+    <div id="generated-drafts-sync" class="generated-drafts-sync" data-empty="" data-live="generation_draft" data-filter="set_id=eq.{set_id}" data-order="id.asc" data-reads="play_session,card_set,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="create_set">
+    <template data-item><span></span></template>
+  </div>
+    <div id="generated-flashcards-sync" class="generated-drafts-sync" data-empty="" data-live="flashcard" data-filter="set_id=eq.{set_id}" data-reads="play_session,card_set,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="create_set">
+    <template data-item><span></span></template>
+  </div>
+  </div></template></div>
+
+  <div class="print-shell">
+    <!-- Top Studio Header & Deck Selection Shelf (Level 1 data-live="play_session") -->
+    <section class="deck-selector-section" data-live="play_session" data-filter="id=eq.session" data-empty-row='{"id":"session","set_id":"69618be6-9206-f9c7-59eb-b5e4b072cf3d","card_index":0,"flipped":"no","mastered":0,"total":20,"status":"playing","finished":"","front":"capybara","back":"","hint":"","emoji":"🦫"}' data-reads="play_session,card_set,localized_card" data-cortex="printRows" data-machine-ref="selection" data-status="{status}">
+      <header class="print-header">
+        <div class="print-header-top">
+          <div class="header-breadcrumb">
+            <span class="crumb-brand" data-text="{msg.app_title}"></span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-section" data-text="{msg.top_breadcrumb}"></span>
+          </div>
+          <div class="header-utility-actions">
+            <div class="lang-switch">
+              <a data-route="print" data-locale="pt" data-locale-current="page" class="lang-link" data-text="{msg.lang_pt}"></a>
+              <a data-route="print" data-locale="es" data-locale-current="page" class="lang-link" data-text="{msg.lang_es}"></a>
+              <a data-route="print" data-locale="en" data-locale-current="page" class="lang-link" data-text="{msg.lang_en}"></a>
+              <a data-route="print" data-locale="he" data-locale-current="page" class="lang-link" data-text="{msg.lang_he}"></a>
+              <a data-route="print" data-locale="zh" data-locale-current="page" class="lang-link" data-text="{msg.lang_zh}"></a>
+            </div>
+            <div class="theme-switch" role="group">
+              <button type="button" id="theme-auto" class="theme-btn" data-theme-val="auto" data-text="{msg.theme_auto}">Auto</button>
+              <button type="button" id="theme-light" class="theme-btn" data-theme-val="light" >☀️</button>
+              <button type="button" id="theme-dark" class="theme-btn" data-theme-val="dark" >🌙</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-header-main">
+          <div class="title-area">
+            <h1 class="print-main-title" data-text="{msg.print_title}"></h1>
+            <p class="subtitle vendor-home" data-text="{msg.print_subtitle}"></p>
+            <p class="subtitle vendor-prodigi" data-text="{msg.print_subtitle_prodigi}"></p>
+            <p class="subtitle vendor-shop" data-text="{msg.print_subtitle_shop}"></p>
+          </div>
+
+          <div class="print-actions">
+            <div class="price-line vendor-prodigi"><strong data-text="{msg.price_at_checkout}"></strong><span data-text="{msg.price_depends}"></span></div>
+            <button type="button" id="btn-order-print" data-host-dom="print-checkout" class="btn btn-primary btn-print btn-order-print vendor-prodigi" data-text="{msg.checkout_order}"></button>
+            <button type="button" id="btn-shop-download" data-host-dom="print-checkout" class="btn btn-primary btn-print vendor-shop" data-text="{msg.shop_download}"></button>
+            <button type="button" id="btn-window-print" class="btn btn-outline btn-window-print vendor-home" data-text="{msg.window_print_button}"></button>
+            <button type="button" id="btn-print-trigger" class="btn btn-primary btn-print vendor-home" data-text="{msg.print_button}"></button>
+          </div>
+        </div>
+      </header>
+
+      <div class="deck-selector-card">
+        <div class="selector-header">
+          <div class="selector-title-box">
+            <span class="section-micro-label" data-text="{msg.deck_picker_title}"></span>
+            <span class="selector-subtitle" data-text="{msg.deck_picker_sub}"></span>
+            <span class="active-press-pill">
+                <!-- The deck this screen prints is print_config's, not the session's. -->
+                <span data-live="print_config" data-filter="id=eq.config" data-reads="print_config">
+                  <span data-live="localized_deck" data-filter="id=eq.{set_id}" data-reads="card_set">
+                    <template data-item>
+                      <strong class="active-deck-name" data-text="{name}"></strong>
+                    </template>
+                  </span>
+                </span>
+            </span>
+          </div>
+          <div class="deck-search-box">
+            <span class="search-glyph" aria-hidden="true">🔍</span>
+            <input type="search" id="deck-search-input" class="deck-search-input" value="{back}" data-value="{back}" placeholder="{msg.deck_search_placeholder}" autocomplete="off" />
+            <span class="deck-picker-count" data-text="{msg.popular_pill}"></span>
+          </div>
+        </div>
+
+        <div class="deck-picker-stage">
+          <div class="deck-picker-carousel" data-live="localized_deck" data-filter="name=ilike.*{back}*" data-reads="card_set" data-order="id.asc">
+            <template data-item>
+              <button type="button" class="deck-picker-card" data-on-click="print_select" data-id="{id}">
+                <span class="picker-card-thumb">
+                  <span class="picker-card-icon" data-text="{cover_emoji}"></span>
+                </span>
+                <span class="picker-card-info">
+                  <span class="picker-card-name" data-text="{name}"></span>
+                  <span class="picker-card-meta">
+                    <span class="meta-tag"><b data-text="{count}"></b> <span data-text="{msg.cards_count}"></span></span>
+                    <span class="meta-dot" aria-hidden="true">·</span>
+                    <span class="meta-locale" data-text="{locale}" data-text-format="language"></span>
+                  </span>
+                </span>
+              </button>
+            </template>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <dialog id="print-checkout-panel" class="print-checkout-panel" hidden aria-labelledby="print-checkout-title">
+      <button type="button" id="btn-checkout-close" data-host-dom="print-checkout" class="checkout-close" aria-label="{msg.checkout_close}">&times;</button>
+      <div class="checkout-art" aria-hidden="true">
+        <span class="checkout-art-label" data-text="{msg.checkout_edition}"></span>
+        <div class="checkout-fan"></div>
+        <span class="checkout-art-footer"><span data-text="{msg.app_title}"></span> &nbsp; / &nbsp; <span data-text="{msg.nav_print}"></span></span>
+      </div>
+      <div class="checkout-content">
+        <div class="checkout-eyebrow"><span data-text="{msg.checkout_review}"></span><span id="print-checkout-mode" hidden data-text="{msg.checkout_demo_badge}"></span></div>
+        <h2 id="print-checkout-title" data-text="{msg.checkout_title}"></h2>
+        <div class="checkout-collection">
+          <span class="checkout-label" data-text="{msg.checkout_collection}"></span>
+          <strong id="print-checkout-collection"></strong>
+          <span id="print-checkout-layout"></span>
+        </div>
+        <datalist id="delivery-states-BR"><option value="AC" label="Acre"></option><option value="AL" label="Alagoas"></option><option value="AP" label="Amapá"></option><option value="AM" label="Amazonas"></option><option value="BA" label="Bahia"></option><option value="CE" label="Ceará"></option><option value="DF" label="Distrito Federal"></option><option value="ES" label="Espírito Santo"></option><option value="GO" label="Goiás"></option><option value="MA" label="Maranhão"></option><option value="MT" label="Mato Grosso"></option><option value="MS" label="Mato Grosso do Sul"></option><option value="MG" label="Minas Gerais"></option><option value="PA" label="Pará"></option><option value="PB" label="Paraíba"></option><option value="PR" label="Paraná"></option><option value="PE" label="Pernambuco"></option><option value="PI" label="Piauí"></option><option value="RJ" label="Rio de Janeiro"></option><option value="RN" label="Rio Grande do Norte"></option><option value="RS" label="Rio Grande do Sul"></option><option value="RO" label="Rondônia"></option><option value="RR" label="Roraima"></option><option value="SC" label="Santa Catarina"></option><option value="SP" label="São Paulo"></option><option value="SE" label="Sergipe"></option><option value="TO" label="Tocantins"></option></datalist>
+        <datalist id="delivery-states-AR"><option value="Buenos Aires" label="Buenos Aires"></option><option value="Catamarca" label="Catamarca"></option><option value="Chaco" label="Chaco"></option><option value="Chubut" label="Chubut"></option><option value="Ciudad Autónoma de Buenos Aires" label="Ciudad Autónoma de Buenos Aires"></option><option value="Córdoba" label="Córdoba"></option><option value="Corrientes" label="Corrientes"></option><option value="Entre Ríos" label="Entre Ríos"></option><option value="Formosa" label="Formosa"></option><option value="Jujuy" label="Jujuy"></option><option value="La Pampa" label="La Pampa"></option><option value="La Rioja" label="La Rioja"></option><option value="Mendoza" label="Mendoza"></option><option value="Misiones" label="Misiones"></option><option value="Neuquén" label="Neuquén"></option><option value="Río Negro" label="Río Negro"></option><option value="Salta" label="Salta"></option><option value="San Juan" label="San Juan"></option><option value="San Luis" label="San Luis"></option><option value="Santa Cruz" label="Santa Cruz"></option><option value="Santa Fe" label="Santa Fe"></option><option value="Santiago del Estero" label="Santiago del Estero"></option><option value="Tierra del Fuego" label="Tierra del Fuego"></option><option value="Tucumán" label="Tucumán"></option></datalist>
+        <datalist id="delivery-states-US"><option value="AL" label="Alabama"></option><option value="AK" label="Alaska"></option><option value="AS" label="American Samoa"></option><option value="AZ" label="Arizona"></option><option value="AR" label="Arkansas"></option><option value="AA" label="Armed Forces (AA)"></option><option value="AE" label="Armed Forces (AE)"></option><option value="AP" label="Armed Forces (AP)"></option><option value="CA" label="California"></option><option value="CO" label="Colorado"></option><option value="CT" label="Connecticut"></option><option value="DE" label="Delaware"></option><option value="DC" label="District of Columbia"></option><option value="FL" label="Florida"></option><option value="GA" label="Georgia"></option><option value="GU" label="Guam"></option><option value="HI" label="Hawaii"></option><option value="ID" label="Idaho"></option><option value="IL" label="Illinois"></option><option value="IN" label="Indiana"></option><option value="IA" label="Iowa"></option><option value="KS" label="Kansas"></option><option value="KY" label="Kentucky"></option><option value="LA" label="Louisiana"></option><option value="ME" label="Maine"></option><option value="MH" label="Marshall Islands"></option><option value="MD" label="Maryland"></option><option value="MA" label="Massachusetts"></option><option value="MI" label="Michigan"></option><option value="FM" label="Micronesia"></option><option value="MN" label="Minnesota"></option><option value="MS" label="Mississippi"></option><option value="MO" label="Missouri"></option><option value="MT" label="Montana"></option><option value="NE" label="Nebraska"></option><option value="NV" label="Nevada"></option><option value="NH" label="New Hampshire"></option><option value="NJ" label="New Jersey"></option><option value="NM" label="New Mexico"></option><option value="NY" label="New York"></option><option value="NC" label="North Carolina"></option><option value="ND" label="North Dakota"></option><option value="MP" label="Northern Mariana Islands"></option><option value="OH" label="Ohio"></option><option value="OK" label="Oklahoma"></option><option value="OR" label="Oregon"></option><option value="PW" label="Palau"></option><option value="PA" label="Pennsylvania"></option><option value="PR" label="Puerto Rico"></option><option value="RI" label="Rhode Island"></option><option value="SC" label="South Carolina"></option><option value="SD" label="South Dakota"></option><option value="TN" label="Tennessee"></option><option value="TX" label="Texas"></option><option value="UT" label="Utah"></option><option value="VT" label="Vermont"></option><option value="VI" label="Virgin Islands"></option><option value="VA" label="Virginia"></option><option value="WA" label="Washington"></option><option value="WV" label="West Virginia"></option><option value="WI" label="Wisconsin"></option><option value="WY" label="Wyoming"></option></datalist>
+        <datalist id="delivery-states-CN"><option value="安徽省" label="安徽省"></option><option value="澳门" label="澳门"></option><option value="北京市" label="北京市"></option><option value="重庆市" label="重庆市"></option><option value="福建省" label="福建省"></option><option value="甘肃省" label="甘肃省"></option><option value="广东省" label="广东省"></option><option value="广西壮族自治区" label="广西"></option><option value="贵州省" label="贵州省"></option><option value="海南省" label="海南省"></option><option value="河北省" label="河北省"></option><option value="河南省" label="河南省"></option><option value="黑龙江省" label="黑龙江省"></option><option value="湖北省" label="湖北省"></option><option value="湖南省" label="湖南省"></option><option value="吉林省" label="吉林省"></option><option value="江苏省" label="江苏省"></option><option value="江西省" label="江西省"></option><option value="辽宁省" label="辽宁省"></option><option value="内蒙古自治区" label="内蒙古"></option><option value="宁夏回族自治区" label="宁夏"></option><option value="青海省" label="青海省"></option><option value="山东省" label="山东省"></option><option value="山西省" label="山西省"></option><option value="陕西省" label="陕西省"></option><option value="上海市" label="上海市"></option><option value="四川省" label="四川省"></option><option value="台湾" label="台湾"></option><option value="天津市" label="天津市"></option><option value="西藏自治区" label="西藏"></option><option value="香港" label="香港"></option><option value="新疆维吾尔自治区" label="新疆"></option><option value="云南省" label="云南省"></option><option value="浙江省" label="浙江省"></option></datalist>
+        <section class="checkout-delivery" data-live="delivery_draft" data-filter="id=eq.draft" data-empty-row='{"id":"draft","step":"search","text":"","pin_latitude":"","pin_longitude":"","pin_source":"","pin_q":"","near":"","search_q":"","address_q":"","recipient":"","tax_id":"","district":"","phone":"","phone_country":"","email":"","line1":"","line2":"","city":"","region":"","postal_code":"","country":"","instructions":"","pin_stale":"true","line2_stale":"","line2_ghost":"","search_stale":"","order_id":""}' data-reads="delivery_draft,delivery_choice,place_answer,place_suggestion" data-machine='{"field":"step","initial":"search","on":{"focus@delivery-text":{"target":"search","assign":{"search_stale":""}},"click@delivery-text":{"target":"search","assign":{"search_stale":""}},"input@delivery-text":{"target":"search","assign":{"text":{"type":"event","params":{"field":"value"}},"search_stale":"","pin_stale":"true"}},"input@delivery-recipient":{"target":"details","assign":{"recipient":{"type":"event","params":{"field":"value"}}}},"input@delivery-cpf":{"target":"details","assign":{"tax_id":{"type":"event","params":{"field":"value"}}}},"input@delivery-phone":{"target":"details","assign":{"phone":{"type":"event","params":{"field":"value"}}}},"change@delivery-phone-country":{"target":"details","assign":{"phone_country":{"type":"event","params":{"field":"value"}}}},"input@delivery-email":{"target":"details","assign":{"email":{"type":"event","params":{"field":"value"}}}},"input@delivery-line1":{"target":"details","assign":{"line1":{"type":"event","params":{"field":"value"}},"line2":{"type":"delivery_address_q","params":{"what":"line2"}},"line2_stale":{"type":"delivery_address_q","params":{"what":"line2_stale"}},"line2_ghost":{"type":"delivery_address_q","params":{"what":"line2_ghost"}},"pin_stale":"true","search_stale":"true"}},"input@delivery-line2":{"target":"details","assign":{"line2":{"type":"event","params":{"field":"value"}},"line2_stale":"","line2_ghost":{"type":"delivery_address_q","params":{"what":"line2_ghost_from_line2"}},"pin_stale":"true"}},"input@delivery-district":{"target":"details","assign":{"district":{"type":"event","params":{"field":"value"}},"pin_stale":"true","search_stale":"true"}},"input@delivery-city":{"target":"details","assign":{"city":{"type":"event","params":{"field":"value"}},"pin_stale":"true","search_stale":"true"}},"input@delivery-region":{"target":"details","assign":{"region":{"type":"event","params":{"field":"value"}},"pin_stale":"true","search_stale":"true"}},"input@delivery-postal":{"target":"details","assign":{"postal_code":{"type":"event","params":{"field":"value"}},"pin_stale":"true","search_stale":"true"}},"input@delivery-instructions":{"target":"details","assign":{"instructions":{"type":"event","params":{"field":"value"}}}},"change@delivery-country":{"target":"details","assign":{"country":{"type":"event","params":{"field":"value"}},"pin_stale":"true","search_stale":"true"}},"keydown@delivery-text":{"target":"search","guard":{"type":"is_key","params":{"key":"Enter"}},"assign":{"search_q":{"type":"delivery_submitted"},"search_stale":""}},"click@btn-delivery-search":{"target":"search","assign":{"search_q":{"type":"delivery_submitted"},"search_stale":""}},"click@delivery-suggestions-close":{"target":"details"},"click@btn-delivery-map-reload":{"target":"details","assign":{"address_q":{"type":"delivery_address_q"},"pin_stale":"false"}},"focus@delivery-line1":{"target":"details"},"confirm":{"target":"confirming"},"details":{"target":"details"},"confirmed":{"target":"details","assign":{"line2_stale":""}},"search":{"target":"search","assign":{"search_stale":""}},"order":{"assign":{"order_id":{"type":"delivery_address_q","params":{"what":"order_id"}}}}},"states":{"search":{},"details":{},"confirming":{}}}' data-step="{step}" data-order-id="{order_id}" data-search-text="{text}" data-search-q="{search_q}" data-address-q="{address_q}" data-near="{near}" data-pin-latitude="{pin_latitude}" data-pin-longitude="{pin_longitude}" data-pin-source="{pin_source}" data-pin-stale="{pin_stale}" data-line2-stale="{line2_stale}" data-line2-ghost="{line2_ghost}" data-search-stale="{search_stale}" data-country="{country}" data-recipient="{recipient}" data-tax-id="{tax_id}" data-phone="{phone}" data-phone-country="{phone_country}" data-line1="{line1}" data-line2="{line2}" data-district="{district}" data-city="{city}" data-region="{region}" data-postal="{postal_code}" aria-labelledby="delivery-question">
+          <span class="checkout-label" data-text="{msg.delivery_label}"></span>
+          <div class="delivery-who">
+            <h4 class="delivery-question" data-text="{msg.delivery_who}"></h4>
+            <div class="delivery-field"><label for="delivery-recipient" data-text="{msg.delivery_recipient}"></label><input id="delivery-recipient" maxlength="100" required pattern=".*\S.*" placeholder=" " autocomplete="shipping name" data-value="{recipient}"><span class="delivery-need" data-text="{msg.delivery_needed}"></span></div>
+            <div class="delivery-field f-cpf"><label for="delivery-cpf" data-text="{msg.delivery_cpf}"></label><input id="delivery-cpf" inputmode="numeric" maxlength="14" placeholder=" " autocomplete="off" data-value="{tax_id}"><span class="delivery-need" data-text="{msg.delivery_needed}"></span></div>
+            <div class="delivery-field f-phone"><label for="delivery-phone"><span id="delivery-phone-label" data-text="{msg.delivery_phone}"></span> <span class="delivery-optional" data-text="{msg.delivery_optional}"></span></label><input id="delivery-phone" type="tel" inputmode="tel" maxlength="40" placeholder=" " autocomplete="shipping tel" data-value="{phone}"><select id="delivery-phone-country" class="delivery-phone-country-select" aria-labelledby="delivery-phone-label" data-value="{phone_country}"></select></div>
+            <div class="delivery-field"><label for="delivery-email"><span data-text="{msg.delivery_email}"></span> <span class="delivery-optional" data-text="{msg.delivery_optional}"></span></label><input id="delivery-email" type="email" maxlength="254" placeholder=" " autocomplete="email" data-value="{email}"></div>
+          </div>
+          <label id="delivery-question" for="delivery-text" class="delivery-question" data-text="{msg.delivery_question}"></label>
+          <div class="delivery-search">
+            <div class="delivery-search-row">
+              <div class="delivery-locate" data-hatch="delivery-map" data-on-pin="delivery_pin" data-prop-mode="locate" data-prop-lang="{msg.delivery_lang}" data-prop-dir="{msg.delivery_dir}" data-prop-zoomin="{msg.delivery_zoom_in}" data-prop-zoomout="{msg.delivery_zoom_out}" data-prop-latitude="{pin_latitude}" data-prop-longitude="{pin_longitude}" data-prop-locate="{msg.delivery_locate}" data-prop-locating="{msg.delivery_locating}" data-prop-denied="{msg.delivery_denied}" data-prop-unavailable="{msg.delivery_unavailable}" data-prop-near="{near}" data-prop-hint="{text}" aria-label="{msg.delivery_locate}"></div>
+              <input id="delivery-text" type="search" maxlength="2000" autocomplete="off" spellcheck="false" data-value="{text}" placeholder="{msg.delivery_placeholder}" aria-describedby="delivery-search-note" aria-controls="delivery-suggestions">
+              <button type="button" id="btn-delivery-search" class="delivery-search-button" data-text="{msg.delivery_search}"></button>
+            </div>
+            <div id="delivery-suggestions" class="delivery-suggestions" role="group" aria-label="{msg.delivery_suggestions_label}" data-live="place_suggestion" data-filter="id=like.s*" data-order="id.asc" data-reads="place_suggestion,delivery_draft,delivery_choice">
+              <template data-item>
+                <button type="button" class="delivery-suggestion" data-on-click="delivery_accept" data-id="{id}" data-line1="{line1}" data-district="{district}" data-city="{city}" data-region="{region}" data-postal="{postal_code}" data-country="{country}" data-latitude="{latitude}" data-longitude="{longitude}" data-label="{label}" data-q="{q}">
+                  <span class="delivery-suggestion-line" data-text="{line1}"></span>
+                  <span class="delivery-suggestion-place" data-text="{label}"></span>
+                  <span class="delivery-suggestion-use" data-text="{msg.delivery_use}"></span>
+                </button>
+              </template>
+            </div>
+            <!-- Moving to the street field puts the list away: it shows only while the search has focus. -->
+            <label id="delivery-suggestions-close" for="delivery-line1" class="delivery-suggestions-close" data-text="{msg.delivery_suggestions_close}"></label>
+            <p id="delivery-search-note" class="delivery-credit" data-text="{msg.delivery_credit}"></p>
+          </div>
+          <div hidden data-live="delivery_draft" data-filter="id=eq.draft" data-empty data-reads="delivery_draft,place_answer,place_suggestion" data-on-mutation="delivery_offers"></div>
+          <div hidden data-live="place_answer" data-order="id.asc" data-empty data-reads="place_answer,delivery_draft,place_suggestion" data-on-mutation="delivery_offers"><template data-item><span data-kind="{kind}" data-q="{q}" data-p0="{p0}"></span></template></div>
+          <div class="delivery-geocoder" hidden>
+            <div data-hatch="geocoder" data-on-found="delivery_found" data-prop-kind="search" data-prop-q="{search_q}" data-prop-lang="{msg.delivery_lang}"></div>
+            <div data-hatch="geocoder" data-on-found="delivery_found" data-prop-kind="reverse" data-prop-q="{pin_q}" data-prop-lang="{msg.delivery_lang}"></div>
+            <div data-hatch="geocoder" data-on-found="delivery_found" data-prop-kind="address" data-prop-q="{address_q}" data-prop-lang="{msg.delivery_lang}"></div>
+          </div>
+          <div class="delivery-choices" hidden data-live="delivery_choice" data-order="id.asc" data-reads="delivery_choice">
+            <template data-item><span data-source="{source}" data-label="{label}"></span></template>
+          </div>
+          <!-- Every country's fields, one element each: shell/shared/address-formats.css,
+               built from Google's address data, orders, pairs, names and marks them by
+               the draft's country. The country comes first, since it decides the rest. -->
+          <div class="delivery-fields">
+            <div class="delivery-field f-country"><label for="delivery-country" data-text="{msg.delivery_country}"></label><select id="delivery-country" required autocomplete="shipping country" data-value="{country}">
+                <option value="" data-text="{msg.delivery_country_unset}"></option>
+                <option value="BR" data-text="{msg.country_BR}"></option>
+                <option value="AR" data-text="{msg.country_AR}"></option>
+                <option value="IL" data-text="{msg.country_IL}"></option>
+                <option value="US" data-text="{msg.country_US}"></option>
+                <option value="GB" data-text="{msg.country_GB}"></option>
+                <option value="CN" data-text="{msg.country_CN}"></option>
+              </select><span class="delivery-need" data-text="{msg.delivery_needed}"></span></div>
+            <div class="delivery-field f-A"><label for="delivery-line1"><span class="k k-street" data-text="{msg.delivery_line1}"></span></label><input id="delivery-line1" maxlength="100" required pattern=".*\S.*" placeholder=" " autocomplete="shipping address-line1" data-value="{line1}"><span class="delivery-need" data-text="{msg.delivery_needed}"></span></div>
+            <div class="delivery-field f-line2"><label for="delivery-line2"><span data-text="{msg.delivery_line2}"></span> <span class="delivery-optional" data-text="{msg.delivery_optional}"></span></label><input id="delivery-line2" maxlength="60" placeholder=" " autocomplete="shipping address-line2" data-value="{line2}"></div>
+            <div class="delivery-field f-D"><label for="delivery-district"><span class="k k-neighborhood" data-text="{msg.delivery_label_neighborhood}"></span><span class="k k-district" data-text="{msg.delivery_label_district}"></span><span class="k k-suburb" data-text="{msg.delivery_label_suburb}"></span> <span class="delivery-optional" data-text="{msg.delivery_optional}"></span></label><input id="delivery-district" maxlength="38" placeholder=" " autocomplete="shipping address-level3" data-value="{district}"><span class="delivery-need" data-text="{msg.delivery_needed}"></span></div>
+            <div class="delivery-field f-C"><label for="delivery-city"><span class="k k-city" data-text="{msg.delivery_label_city}"></span><span class="k k-post_town" data-text="{msg.delivery_label_post_town}"></span> <span class="delivery-optional" data-text="{msg.delivery_optional}"></span></label><input id="delivery-city" maxlength="50" required pattern=".*\S.*" placeholder=" " autocomplete="shipping address-level2" data-value="{city}"><span class="delivery-need" data-text="{msg.delivery_needed}"></span></div>
+            <div class="delivery-field f-S"><label for="delivery-region"><span class="k k-state" data-text="{msg.delivery_label_state}"></span><span class="k k-province" data-text="{msg.delivery_label_province}"></span> <span class="delivery-optional" data-text="{msg.delivery_optional}"></span></label><input id="delivery-region" maxlength="50" placeholder=" " list="delivery-states-{country}" autocomplete="shipping address-level1" data-value="{region}"><span class="delivery-need" data-text="{msg.delivery_needed}"></span></div>
+            <div class="delivery-field f-Z"><label for="delivery-postal"><span class="k k-postal" data-text="{msg.delivery_label_postal}"></span><span class="k k-zip" data-text="{msg.delivery_label_zip}"></span> <span class="delivery-optional" data-text="{msg.delivery_optional}"></span></label><input id="delivery-postal" maxlength="20" required pattern=".*\S.*" placeholder=" " autocomplete="shipping postal-code" data-value="{postal_code}"><span class="delivery-need" data-text="{msg.delivery_needed}"></span></div>
+          </div>
+          <div class="delivery-confirm">
+            <div class="delivery-map-stage" data-stale="true">
+              <div class="delivery-map" data-hatch="delivery-map" data-on-pin="delivery_pin" data-prop-mode="map" data-prop-adjust="{msg.delivery_adjust_pin}" data-prop-done="{msg.delivery_pin_done}" data-prop-lang="{msg.delivery_lang}" data-prop-dir="{msg.delivery_dir}" data-prop-zoomin="{msg.delivery_zoom_in}" data-prop-zoomout="{msg.delivery_zoom_out}" data-prop-latitude="{pin_latitude}" data-prop-longitude="{pin_longitude}" data-prop-locate="{msg.delivery_locate}" data-prop-locating="{msg.delivery_locating}" data-prop-denied="{msg.delivery_denied}" data-prop-unavailable="{msg.delivery_unavailable}" data-prop-hint="{msg.delivery_map_hint}" aria-label="{msg.delivery_map_label}"></div>
+              <div class="delivery-map-overlay">
+                <button type="button" id="btn-delivery-map-reload" data-host-dom="print-checkout" class="delivery-map-reload" data-text="{msg.delivery_reload_map}"></button>
+              </div>
+            </div>
+            <div class="delivery-offer-slot" data-live="place_suggestion" data-filter="id=eq.pin" data-reads="place_suggestion,delivery_draft,delivery_choice">
+              <template data-item>
+                <div class="delivery-offer" data-offer="pin">
+                  <span class="checkout-label" data-text="{msg.delivery_offer_pin}"></span>
+                  <strong data-text="{line1}"></strong>
+                  <span data-text="{label}"></span>
+                  <button type="button" class="checkout-secondary" data-on-click="delivery_accept" data-id="{id}" data-text="{msg.delivery_apply_pin}"></button>
+                </div>
+              </template>
+            </div>
+            <div class="delivery-offer-slot" data-live="place_suggestion" data-filter="id=eq.address" data-reads="place_suggestion,delivery_draft,delivery_choice">
+              <template data-item>
+                <div class="delivery-offer" data-offer="address">
+                  <span class="checkout-label" data-text="{msg.delivery_offer_address}"></span>
+                  <strong data-text="{line1}"></strong>
+                  <span data-text="{label}"></span>
+                  <button type="button" class="checkout-secondary" data-on-click="delivery_accept" data-id="{id}" data-text="{msg.delivery_apply_address}"></button>
+                </div>
+              </template>
+            </div>
+          </div>
+          <div class="delivery-instructions">
+            <label for="delivery-instructions"><span data-text="{msg.delivery_instructions}"></span> <span class="delivery-optional" data-text="{msg.delivery_optional}"></span></label>
+            <textarea id="delivery-instructions" rows="2" maxlength="255" data-value="{instructions}"></textarea>
+          </div>
+          <div id="print-checkout-payment" class="checkout-payment" data-hatch="print-payment" data-on-checkout="delivery_pin" data-prop-url="" data-prop-order="" aria-label="{msg.checkout_pay}" hidden></div>
+        </section>
+        <div class="checkout-details">
+          <span class="checkout-label" data-text="{msg.checkout_details}"></span>
+          <dl id="print-checkout-quote" class="quote empty">
+            <div><dt><span data-quote="item-label"></span><small data-quote="item-note"></small></dt><dd data-quote="item">—</dd></div>
+            <div><dt><span data-quote="shipping-label"></span><small data-quote="shipping-note"></small></dt><dd data-quote="shipping">—</dd></div>
+            <div class="total"><dt data-text="{msg.quote_total}"></dt><dd data-quote="total">—</dd></div>
+          </dl>
+          <p id="print-checkout-summary"></p>
+          <p id="print-checkout-delivery-summary" hidden></p>
+        </div>
+        <p id="print-checkout-status" role="status" aria-live="polite"></p>
+        <div class="print-checkout-actions">
+          <button type="button" id="btn-checkout-pay" data-host-dom="print-checkout" class="btn btn-primary" data-text="{msg.checkout_pay}"></button>
+          <button type="button" id="btn-checkout-refresh" data-host-dom="print-checkout" class="checkout-secondary" hidden data-text="{msg.checkout_refresh}"></button>
+          <button type="button" id="btn-checkout-new" data-host-dom="print-checkout" class="checkout-secondary" hidden data-text="{msg.checkout_new_order}"></button>
+        </div>
+        <div id="print-checkout-demo" class="print-checkout-actions checkout-demo-actions" hidden>
+          <button type="button" class="btn btn-primary" data-host-dom="print-checkout" data-demo-result="paid" data-text="{msg.checkout_demo_approve}"></button>
+          <button type="button" class="checkout-secondary" data-host-dom="print-checkout" data-demo-result="failed" data-text="{msg.checkout_demo_decline}"></button>
+        </div>
+      </div>
+      <div hidden>
+        <span data-checkout-message="cards" data-text="{msg.checkout_cards}"></span>
+        <span data-checkout-message="resume" data-text="{msg.checkout_resume}"></span>
+        <span data-checkout-message="new_order" data-text="{msg.checkout_new_order}"></span>
+        <span data-checkout-message="ready" data-text="{msg.checkout_ready}"></span>
+        <span data-checkout-message="preparing" data-text="{msg.checkout_preparing}"></span>
+        <span data-checkout-message="redirecting" data-text="{msg.checkout_redirecting}"></span>
+        <span data-checkout-message="pending" data-text="{msg.checkout_pending}"></span>
+        <span data-checkout-message="processing" data-text="{msg.checkout_processing}"></span>
+        <span data-checkout-message="paid" data-text="{msg.checkout_paid}"></span>
+        <span data-checkout-message="paid_sent" data-text="{msg.checkout_paid_sent}"></span>
+        <span data-checkout-message="paid_attention" data-text="{msg.checkout_paid_attention}"></span>
+        <span data-checkout-message="failed" data-text="{msg.checkout_failed}"></span>
+        <span data-checkout-message="expired" data-text="{msg.checkout_expired}"></span>
+        <span data-checkout-message="refunded" data-text="{msg.checkout_refunded}"></span>
+        <span data-checkout-message="error" data-text="{msg.checkout_error}"></span>
+        <span data-checkout-message="too_large" data-text="{msg.checkout_too_large}"></span>
+        <span data-checkout-message="missing_receipt" data-text="{msg.checkout_missing_receipt}"></span>
+        <span data-checkout-message="unavailable" data-text="{msg.checkout_unavailable}"></span>
+        <span data-checkout-message="demo_notice" data-text="{msg.checkout_demo_notice}"></span>
+        <span data-checkout-message="demo_checkout" data-text="{msg.checkout_demo_checkout}"></span>
+        <span data-checkout-message="demo_paid" data-text="{msg.checkout_demo_paid}"></span>
+        <span data-checkout-message="demo_failed" data-text="{msg.checkout_demo_failed}"></span>
+        <span data-checkout-message="pinned" data-text="{msg.checkout_pinned}"></span>
+        <span data-checkout-message="address_needed" data-text="{msg.checkout_address_needed}"></span>
+        <span data-checkout-message="address_needed_br" data-text="{msg.checkout_address_needed_br}"></span>
+        <span data-checkout-message="quoting" data-text="{msg.checkout_quoting}"></span>
+        <span data-checkout-message="quoted" data-text="{msg.checkout_quoted}"></span>
+        <span data-checkout-message="quote_failed" data-text="{msg.checkout_quote_failed}"></span>
+        <span data-checkout-message="quote_country" data-text="{msg.checkout_quote_country}"></span>
+        <span data-checkout-message="paid_shipped" data-text="{msg.checkout_paid_shipped}"></span>
+        <span data-checkout-message="shipping" data-text="{msg.quote_shipping}"></span>
+        <span data-checkout-message="shipping_to" data-text="{msg.quote_shipping_to}"></span>
+        <span data-checkout-message="posted_gloss" data-text="{msg.quote_posted_from_gloss}"></span>
+        <span data-checkout-message="posted_mohawk" data-text="{msg.quote_posted_from_mohawk}"></span>
+        <span data-checkout-message="shop_preparing" data-text="{msg.shop_preparing}"></span>
+        <span data-checkout-message="shop_ready" data-text="{msg.shop_ready}"></span>
+        <span data-checkout-message="shop_error" data-text="{msg.shop_error}"></span>
+        <span data-checkout-message="shop_copied" data-text="{msg.shop_copied}"></span>
+        <span data-checkout-message="size" data-text="{msg.postcard_size}"></span>
+        <span data-checkout-message="sides" data-text="{msg.postcard_sides}"></span>
+        <span data-checkout-message="stock_gloss" data-text="{msg.stock_gloss_spec}"></span>
+        <span data-checkout-message="stock_mohawk" data-text="{msg.stock_mohawk_spec}"></span>
+        <span data-checkout-message="printed_by" data-text="{msg.printed_by_prodigi}"></span>
+        <span data-checkout-message="reload_map" data-text="{msg.delivery_reload_map}"></span>
+        <span data-checkout-message="add_number" data-text="{msg.delivery_add_number}"></span>
+        <span data-checkout-message="number_placeholder" data-text="{msg.delivery_number_placeholder}"></span>
+        <span data-checkout-message="confirm_address" data-text="{msg.checkout_confirm_address}"></span>
+        <span data-checkout-message="confirm_pay" data-text="{msg.checkout_confirm_pay}"></span>
+        <span data-checkout-message="cards_br" data-text="{msg.checkout_cards_br}"></span>
+        <span data-checkout-message="size_br" data-text="{msg.flip_deck_size}"></span>
+        <span data-checkout-message="sides_br" data-text="{msg.flip_deck_sides}"></span>
+        <span data-checkout-message="stock_gloss_br" data-text="{msg.stock_gloss_br_spec}"></span>
+        <span data-checkout-message="stock_mohawk_br" data-text="{msg.stock_mohawk_br_spec}"></span>
+        <span data-checkout-message="printed_by_br" data-text="{msg.printed_by_cloudprinter}"></span>
+        <span data-checkout-message="posted_br" data-text="{msg.quote_posted_br}"></span>
+        <span data-checkout-message="quoting_br" data-text="{msg.checkout_quoting_br}"></span>
+        <span data-checkout-message="quote_failed_br" data-text="{msg.checkout_quote_failed_br}"></span>
+        <span data-checkout-message="paid_br" data-text="{msg.checkout_paid_br}"></span>
+        <span data-checkout-message="paid_sent_br" data-text="{msg.checkout_paid_sent_br}"></span>
+        <span data-checkout-message="paid_shipped_br" data-text="{msg.checkout_paid_shipped_br}"></span>
+        <span data-checkout-message="paid_attention_br" data-text="{msg.checkout_paid_attention_br}"></span>
+        <span data-checkout-message="tracking_title" data-text="{msg.tracking_title}"></span>
+        <span data-checkout-message="tracking_label" data-text="{msg.tracking_label}"></span>
+        <span data-checkout-message="tracking_order_id" data-text="{msg.tracking_order_id}"></span>
+        <span data-checkout-message="tracking_printer_ref" data-text="{msg.tracking_printer_ref}"></span>
+        <span data-checkout-message="tracking_step_paid" data-text="{msg.tracking_step_paid}"></span>
+        <span data-checkout-message="tracking_step_production" data-text="{msg.tracking_step_production}"></span>
+        <span data-checkout-message="tracking_step_shipped" data-text="{msg.tracking_step_shipped}"></span>
+        <span data-checkout-message="tracking_step_delivered" data-text="{msg.tracking_step_delivered}"></span>
+        <span data-checkout-message="tracking_carrier" data-text="{msg.tracking_carrier}"></span>
+        <span data-checkout-message="tracking_code" data-text="{msg.tracking_code}"></span>
+        <span data-checkout-message="tracking_open" data-text="{msg.tracking_open}"></span>
+      </div>
+    </dialog>
+
+    <!-- Level 1 data-live="print_config" -->
+    <div class="print-container" data-live="print_config" data-filter="id=eq.config" data-reads="print_config,card_set" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-cortex="printRows" data-machine-ref="settings" data-set-id="{set_id}" data-vendor="{vendor}" data-stock="{stock}" data-orientation="{orientation}">
+      <!-- Vendor first: it decides which of the rest are the reader's to choose. -->
+      <section class="print-controls-section">
+      <div class="controls-header">
+        <span class="section-micro-label vendor-home" data-text="{msg.print_options_title}"></span>
+        <span class="section-micro-label vendor-cards" data-text="{msg.print_options_title_prodigi}"></span>
+        <span class="controls-hint vendor-home" data-text="{msg.guides_tip}"></span>
+        <span class="controls-hint vendor-prodigi" data-text="{msg.locked_hint}"></span>
+        <span class="controls-hint vendor-shop" data-text="{msg.locked_hint_shop}"></span>
+      </div>
+
+      <div class="print-controls-grid">
+        <div class="control-box ctl-vendor">
+          <span class="control-label" data-text="{msg.vendor_label}"></span>
+          <button type="button" id="btn-print-vendor" class="btn btn-outline control-btn">
+            <span class="btn-val" data-text="{msg[vendor]}"></span>
+            <span class="btn-spec" data-vendor-spec="{vendor}" data-label-home="{msg.spec_print_at_home}" data-label-shop="{msg.spec_print_shop}" data-label-prodigi="{msg.spec_prodigi}"></span>
+          </button>
+        </div>
+
+        <!-- 1. Paper Size: a print shop imposes on its own sheet. -->
+        <div class="control-box not-shop">
+          <span class="control-label" data-text="{msg.paper_size}"></span>
+          <div class="btn btn-outline control-btn vendor-prodigi" role="group" aria-disabled="true">
+            <span class="btn-val" data-text="{msg.locked_paper}"></span>
+            <span class="btn-spec" data-text="{msg.locked_set_by_prodigi}"></span>
+          </div>
+          <button type="button" id="btn-print-paper" class="btn btn-outline control-btn vendor-home">
+            <span class="btn-val" data-text="{msg[paper]}"></span>
+            <span class="btn-spec" data-paper-spec="{paper}"></span>
+          </button>
+        </div>
+
+        <!-- 2. Page Orientation (Portrait / Landscape) -->
+        <div class="control-box">
+          <span class="control-label" data-text="{msg.page_orientation}"></span>
+          <div class="btn btn-outline control-btn vendor-prodigi" role="group" aria-disabled="true">
+            <span class="btn-val" data-text="{msg.locked_orientation}"></span>
+            <span class="btn-spec" data-text="{msg.locked_fits_card}"></span>
+          </div>
+          <!-- A print shop takes an A6 standing or lying, so the reader's orientation stays. -->
+          <button type="button" id="btn-print-orientation" class="btn btn-outline control-btn not-prodigi">
+            <span class="btn-val" data-text="{msg[orientation]}"></span>
+            <span class="btn-spec" data-orientation-spec="{orientation}" data-label-portrait="{msg.spec_portrait}" data-label-landscape="{msg.spec_landscape}"></span>
+          </button>
+        </div>
+
+        <!-- 3. Card Size -->
+        <div class="control-box">
+          <span class="control-label" data-text="{msg.card_size}"></span>
+          <div class="btn btn-outline control-btn vendor-prodigi" role="group" aria-disabled="true">
+            <span class="btn-val" data-text="{msg.postcard_size}"></span>
+            <span class="btn-spec" data-text="{msg.postcard_size_metric}"></span>
+          </div>
+          <div class="btn btn-outline control-btn vendor-shop" role="group" aria-disabled="true">
+            <span class="btn-val" data-text="{msg.shop_size}"></span>
+            <span class="btn-spec" data-text="{msg.postcard_size_a6}"></span>
+          </div>
+          <button type="button" id="btn-print-size" class="btn btn-outline control-btn vendor-home">
+            <span class="btn-val" data-text="{msg[card_size]}"></span>
+            <span class="btn-spec" data-card-spec="{card_size}" data-label-standard="{msg.spec_standard}" data-label-mini="{msg.spec_mini}" data-label-jumbo="{msg.spec_jumbo}" data-label-poster="{msg.spec_poster}"></span>
+          </button>
+        </div>
+
+        <!-- 4. Print Mode (Fold / Two-Sided Horizontal Flip / Two-Sided Vertical Flip) -->
+        <div class="control-box ctl-mode">
+          <span class="control-label" data-text="{msg.print_mode_label}"></span>
+          <div class="btn btn-outline control-btn vendor-prodigi" role="group" aria-disabled="true">
+            <span class="btn-val" data-text="{msg.postcard_sides}"></span>
+            <span class="btn-spec" data-text="{msg.locked_set_by_prodigi}"></span>
+          </div>
+          <div class="btn btn-outline control-btn vendor-shop" role="group" aria-disabled="true">
+            <span class="btn-val" data-text="{msg.shop_mode}"></span>
+            <span class="btn-spec" data-text="{msg.shop_mode_reason}"></span>
+          </div>
+          <button type="button" id="btn-print-grid" class="btn btn-outline control-btn vendor-home">
+            <span class="btn-val" data-text="{msg[layout]}"></span>
+            <span class="btn-spec" data-grid-spec="{layout}" data-label-fold="{msg.spec_fold}" data-label-duplex-h="{msg.spec_duplex_h}" data-label-duplex-v="{msg.spec_duplex_v}" data-label-2x2="{msg.spec_2x2}" data-label-3x3="{msg.spec_3x3}"></span>
+          </button>
+        </div>
+
+        <!-- 5. Cut Lines & Crop Marks -->
+        <div class="control-box ctl-lines">
+          <span class="control-label" data-text="{msg.cut_lines}"></span>
+          <div class="btn btn-outline control-btn vendor-prodigi" role="group" aria-disabled="true">
+            <span class="btn-val" data-text="{msg.no}"></span>
+            <span class="btn-spec" data-text="{msg.locked_trimmed_by_prodigi}"></span>
+          </div>
+          <div class="btn btn-outline control-btn vendor-shop" role="group" aria-disabled="true">
+            <span class="btn-val" data-text="{msg.no}"></span>
+            <span class="btn-spec" data-text="{msg.shop_lines_reason}"></span>
+          </div>
+          <button type="button" id="btn-print-lines" class="btn btn-outline control-btn vendor-home">
+            <span class="btn-val" data-text="{msg[cut_lines]}"></span>
+            <span class="btn-spec" data-lines-spec="{cut_lines}" data-label-yes="{msg.spec_lines_yes}" data-label-no="{msg.spec_lines_no}"></span>
+          </button>
+        </div>
+
+        <div class="control-box ctl-stock vendor-prodigi">
+          <span class="control-label" data-text="{msg.stock_label}"></span>
+          <button type="button" id="btn-print-stock" class="btn btn-outline control-btn">
+            <span class="btn-val" data-text="{msg[stock]}"></span>
+            <span class="btn-spec" data-stock-spec="{stock}" data-label-gloss="{msg.spec_gloss}" data-label-mohawk="{msg.spec_mohawk}"></span>
+          </button>
+        </div>
+        <div class="shop-order vendor-shop">
+          <span class="control-label" data-text="{msg.shop_order_label}"></span>
+          <p id="shop-order-text" class="shop-order-text" data-text="{msg.shop_order_text}"></p>
+          <p class="shop-order-hint" data-text="{msg.shop_order_hint}"></p>
+          <div class="shop-order-actions">
+            <button type="button" id="btn-shop-copy" data-host-dom="print-checkout" class="btn btn-outline" data-text="{msg.shop_copy}"></button>
+            <span id="print-shop-status" class="shop-order-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+        <p class="product-note vendor-prodigi"><span><strong data-text="{msg.product_note_title}"></strong> <span data-text="{msg.product_note}"></span></span></p>
+      </div>
+    </section>
+
+    <!-- Realistic Paper Sheet Preview (Fold Mode Pairs OR Two-Sided Front + Mirrored Back Sheets) -->
+    <div class="print-preview-wrapper">
+      <div class="preview-title-bar">
+        <div class="preview-title-left">
+          <span class="section-micro-label vendor-home" data-text="{msg.print_preview_title}"></span>
+          <span class="preview-meta-pill sheet-geometry-summary vendor-home" data-text="{msg.print_preview_sub}"></span>
+          <span class="section-micro-label vendor-cards" data-text="{msg.postcard_preview_title}"></span>
+          <span class="preview-meta-pill vendor-prodigi" data-text="{msg.postcard_preview_sub}"></span>
+          <span class="preview-meta-pill vendor-shop" data-text="{msg.shop_preview_sub}"></span>
+        </div>
+        <div class="preview-badge-group vendor-home">
+          <span class="sheet-spec-badge" data-text="{msg[paper]}"></span>
+          <span class="sheet-spec-badge" data-text="{msg[orientation]}"></span>
+          <span class="sheet-spec-badge" data-text="{msg[card_size]}"></span>
+          <span class="sheet-spec-badge" data-text="{msg[layout]}"></span>
+        </div>
+        <div class="preview-badge-group vendor-shop">
+          <span class="sheet-spec-badge" data-text="{msg.shop_size}"></span>
+          <span class="sheet-spec-badge" data-text="{msg[orientation]}"></span>
+          <span class="sheet-spec-badge" data-text="{msg.shop_mode}"></span>
+          <span class="sheet-spec-badge" data-text="{msg.shop_bleed}"></span>
+        </div>
+        <div class="preview-badge-group vendor-prodigi">
+          <span class="sheet-spec-badge" data-text="{msg.postcard_size}"></span>
+          <span class="sheet-spec-badge" data-text="{msg.locked_orientation}"></span>
+          <span class="sheet-spec-badge" data-text="{msg.postcard_sides}"></span>
+          <span class="sheet-spec-badge" data-stock-badge="{stock}" data-label-gloss="{msg.stock_gloss_spec}" data-label-mohawk="{msg.stock_mohawk_spec}"></span>
+        </div>
+      </div>
+
+      <div class="postcard-preview vendor-cards">
+        <div class="postcards" data-live="localized_card" data-filter="set_id=eq.{set_id}" data-order="id.asc">
+          <template data-item>
+            <div class="postcard-pair">
+              <figure class="postcard-side">
+                <div class="postcard-bleed"><div class="postcard-trim"><div class="postcard-art print-card-illustration" data-live="flashcard" data-filter="id=eq.{id}">
+                  <template data-item><img class="card-illustration-img" src="{back}" alt="" /></template>
+                </div></div></div>
+                <figcaption data-side="{msg.postcard_front}"></figcaption>
+              </figure>
+              <figure class="postcard-side">
+                <div class="postcard-bleed"><div class="postcard-trim"><div class="postcard-word" data-text="{front}"></div></div></div>
+                <figcaption data-side="{msg.postcard_back}"></figcaption>
+              </figure>
+            </div>
+          </template>
+        </div>
+        <div class="postcard-legend">
+          <span>
+            <span class="postcard-key"><i class="postcard-swatch trim"></i><span data-text="{msg.postcard_legend_trim}"></span></span>
+            <span class="postcard-key"><i class="postcard-swatch bleed"></i><span data-text="{msg.postcard_legend_bleed}"></span></span>
+          </span>
+          <span class="postcard-shown" data-live="localized_deck" data-filter="id=eq.{set_id}" data-reads="card_set">
+            <template data-item><span><span class="postcard-count"></span> <span data-text="{msg.postcard_shown_of}"></span> <b data-text="{count}"></b> <span data-text="{msg.postcard_shown_cards}"></span></span></template>
+          </span>
+        </div>
+      </div>
+
+      <div class="print-sheet-preview vendor-home" data-paper="{paper}" data-orientation="{orientation}" data-card-size="{card_size}" data-layout="{layout}" data-is-fold="{layout}" data-lines="{cut_lines}">
+        <!-- Sheet 1: Fold Mode Sheet OR Two-Sided Front Sheet (Illustrations Only) -->
+        <div class="sheet-paper sheet-paper-primary">
+          <div class="sheet-masthead">
+            <span class="sheet-archival-seal" data-text="{msg.print_sheet_header}"></span>
+            <span class="sheet-archival-serial" data-text="{msg.sheet_serial_label}"></span>
+          </div>
+
+          <div class="sheet-grid" data-live="localized_card" data-filter="set_id=eq.{set_id}" data-order="id.asc">
+            <template data-item>
+              <div class="print-card-cell" data-cut-sheet="{msg.cut_sheet}" data-cut-page="{msg.cut_page}" data-cut-next="{msg.cut_next}">
+                <div class="print-card" data-id="{id}" data-set-id="{set_id}" data-front="{front}" data-emoji="{emoji}">
+                  <div class="cell-crop-tl" aria-hidden="true"></div>
+                  <div class="cell-crop-tr" aria-hidden="true"></div>
+                  <div class="cell-crop-bl" aria-hidden="true"></div>
+                  <div class="cell-crop-br" aria-hidden="true"></div>
+
+                  <!-- Front Half: Illustration Image Only -->
+                  <div class="print-card-front-half">
+                    <div class="print-card-illustration" data-live="flashcard" data-filter="id=eq.{id}">
+                      <template data-item><img class="card-illustration-img" src="{back}" alt="" /></template>
+                    </div>
+                  </div>
+
+                  <!-- Center Fold Spine (Visible in Fold Mode) -->
+                  <div class="print-card-fold-line" aria-hidden="true">
+                    <span class="fold-pill" data-text="{msg.fold_label}"></span>
+                  </div>
+
+                  <!-- Back Half: Target Word Only, Centered in Bold Typography (Visible in Fold Mode) -->
+                  <div class="print-card-back-half">
+                    <div class="print-card-word" data-text="{front}"></div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <div class="sheet-foot">
+            <span class="sheet-trim-guide" data-text="{msg.print_sheet_footer}"></span>
+            <span class="sheet-page-num" data-text="{msg.sheet_page_label}"></span>
+          </div>
+        </div>
+
+        <!-- Sheet 2: Two-Sided Mirrored Back Sheet (Declaratively rendered in duplex_h / duplex_v modes) -->
+        <div class="sheet-paper sheet-paper-duplex-back">
+          <div class="sheet-masthead duplex-masthead">
+            <span class="sheet-archival-seal" data-text="{msg.duplex_back_sheet_title}"></span>
+            <span class="sheet-archival-serial" data-text="{msg.duplex_back_sheet_sub}"></span>
+          </div>
+
+          <div class="sheet-grid duplex-back-grid" data-live="localized_card" data-filter="set_id=eq.{set_id}" data-order="id.asc">
+            <template data-item>
+              <div class="print-card-cell duplex-back-cell">
+                <div class="print-card duplex-back-card" data-id="{id}" data-front="{front}">
+                  <div class="cell-crop-tl" aria-hidden="true"></div>
+                  <div class="cell-crop-tr" aria-hidden="true"></div>
+                  <div class="cell-crop-bl" aria-hidden="true"></div>
+                  <div class="cell-crop-br" aria-hidden="true"></div>
+                  <div class="print-card-back-half">
+                    <div class="print-card-word" data-text="{front}"></div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <div class="sheet-foot">
+            <span class="sheet-trim-guide" data-text="{msg.print_sheet_footer}"></span>
+            <span class="sheet-page-num" data-text="{msg.sheet_page_label}"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</section>

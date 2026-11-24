@@ -1,0 +1,432 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": true,
+    "manual": true,
+    "build": {
+      "additional_contexts": {
+        "plugins_omnishell-runtime-image": "${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/omnishell:0.34.0@sha256:cd4cd6fc4b2b8eec05a1f3628c00d9c06eb943b0e6abb1b9bc900250680e5c01}${MONOREPO_COMPOSE_MODE:+:plugins_omnishell-runtime-image}"
+      },
+      "secrets": [],
+      "args": {}
+    },
+    "command": [
+      "mise",
+      "x",
+      "--",
+      "nu",
+      "-c",
+      "deno check --config commerce/deno.json commerce/*.ts; deno lint --config commerce/deno.json commerce/*.ts; deno task --config commerce/deno.json test"
+    ],
+    "environment": {
+      "APP_URL": "https://caddy:8443",
+      "DOOR": "http://caddy:8080",
+      "ORIGIN": "${ORIGIN:-https://localhost:${CADDY_TLS_HOST_PORT}}"
+    },
+    "ports": [],
+    "volumes": [],
+    "depends_on": {
+      "snapcards-launch": {
+        "condition": "service_healthy"
+      }
+    }
+  },
+  "dockerfile": {
+    "preamble": [],
+    "preambleCopyContexts": [],
+    "from": {
+      "ref": ":setup",
+      "name": "snapcards-setup"
+    },
+    "add": [],
+    "mounts": [],
+    "secrets": {},
+    "extra_hosts": [],
+    "epilogue": [],
+    "copy": [
+      {
+        "from": {
+          "name": "plugins_omnishell-runtime-image"
+        },
+        "srcs": [
+          "/"
+        ],
+        "dst": "/omnishell",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      }
+    ],
+    "healthcheck": null,
+    "expose": [],
+    "entrypoint": null,
+    "incremental": false,
+    "cmd": null
+  },
+  "entrypoint": {
+    "do": "deno check --config commerce/deno.json commerce/*.ts; deno lint --config commerce/deno.json commerce/*.ts; deno task --config commerce/deno.json test",
+    "shell": "nu",
+    "env": {
+      "APP_URL": {
+        "peer": "caddy",
+        "port": "door",
+        "part": "addr",
+        "host": "localhost",
+        "prefix": "https://",
+        "suffix": ""
+      },
+      "DOOR": {
+        "peer": "caddy",
+        "port": "http",
+        "part": "addr",
+        "prefix": "http://",
+        "suffix": ""
+      },
+      "ORIGIN": [
+        "${ORIGIN:-https://",
+        {
+          "peer": "caddy",
+          "port": "door",
+          "part": "addr",
+          "host": "localhost",
+          "prefix": "",
+          "suffix": ""
+        },
+        "}"
+      ]
+    },
+    "after": {
+      "launch": "healthy"
+    },
+    "host": true
+  },
+  "name": "check-commerce",
+  "process-compose": {
+    "activate": "mise x --"
+  },
+  "project": "snapcards",
+  "dir": ".",
+  "activate": "mise x --",
+  "srcs": {
+    "globs": [
+      "tests/**",
+      "commerce/*.ts",
+      "commerce/deno.json",
+      "commerce/deno.lock",
+      "effects/print-*.js"
+    ],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {},
+  "synthetics": {
+    "bayt": {
+      "name": "check-commerce_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.check-commerce.yaml",
+          ".bayt/Dockerfile.check-commerce",
+          ".bayt/bayt.check-commerce.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/compose.check-commerce.closure.yaml",
+          ".bayt/process-compose.yaml",
+          ".bayt/compose.*.yaml",
+          ".bayt/Dockerfile.*",
+          ".bayt/bayt.*.json",
+          ".bayt/Taskfile.*.yaml",
+          "monorepo/${MONOREPO_COMPOSE_MODE:-docker-image}.yaml",
+          "compose.networks.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.check-commerce.yaml",
+        "./.bayt/compose.setup.yaml",
+        "./.bayt/compose.launch.yaml",
+        "./.bayt/compose.airlock.yaml",
+        "./.bayt/compose.airlock-mesh.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.auth.yaml",
+        "./.bayt/compose.build.yaml",
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.checkout-simulator.yaml",
+        "./.bayt/compose.clock.yaml",
+        "./.bayt/compose.cloudprinter-simulator.yaml",
+        "./.bayt/compose.conduit.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.diffusion.yaml",
+        "./.bayt/compose.electric.yaml",
+        "./.bayt/compose.generate.yaml",
+        "./.bayt/compose.imgproxy.yaml",
+        "./.bayt/compose.mail-simulator.yaml",
+        "./.bayt/compose.mailpit.yaml",
+        "./.bayt/compose.mesh-events.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.prodigi-simulator.yaml",
+        "./.bayt/compose.rclone-s3.yaml",
+        "./.bayt/compose.redis.yaml",
+        "./.bayt/compose.render.yaml",
+        "./.bayt/compose.seed-blobs.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.smollm3.yaml",
+        "./.bayt/compose.ticker.yaml",
+        "./.bayt/compose.timer-check.yaml",
+        "./.bayt/compose.transform.yaml",
+        "./.bayt/compose.tsbifrost.yaml"
+      ]
+    },
+    "outs": {
+      "name": "check-commerce_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.check-commerce.yaml",
+        "./.bayt/compose.setup.yaml",
+        "./.bayt/compose.launch.yaml",
+        "./.bayt/compose.airlock.yaml",
+        "./.bayt/compose.airlock-mesh.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.auth.yaml",
+        "./.bayt/compose.build.yaml",
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.checkout-simulator.yaml",
+        "./.bayt/compose.clock.yaml",
+        "./.bayt/compose.cloudprinter-simulator.yaml",
+        "./.bayt/compose.conduit.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.diffusion.yaml",
+        "./.bayt/compose.electric.yaml",
+        "./.bayt/compose.generate.yaml",
+        "./.bayt/compose.imgproxy.yaml",
+        "./.bayt/compose.mail-simulator.yaml",
+        "./.bayt/compose.mailpit.yaml",
+        "./.bayt/compose.mesh-events.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.prodigi-simulator.yaml",
+        "./.bayt/compose.rclone-s3.yaml",
+        "./.bayt/compose.redis.yaml",
+        "./.bayt/compose.render.yaml",
+        "./.bayt/compose.seed-blobs.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.smollm3.yaml",
+        "./.bayt/compose.ticker.yaml",
+        "./.bayt/compose.timer-check.yaml",
+        "./.bayt/compose.transform.yaml",
+        "./.bayt/compose.tsbifrost.yaml"
+      ]
+    },
+    "srcs": {
+      "name": "check-commerce_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          "tests/**",
+          "commerce/*.ts",
+          "commerce/deno.json",
+          "commerce/deno.lock",
+          "effects/print-*.js",
+          "[m]ise.toml",
+          "[.]mise.toml",
+          "[m]ise.lock",
+          "[.]tool-versions",
+          "[m]ise.local.toml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [
+        "setup_srcs"
+      ],
+      "transitiveCrossDeps": [
+        {
+          "project": "snapcards",
+          "name": "setup_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "[m]ise.toml",
+              "[.]mise.toml",
+              "[m]ise.lock",
+              "[.]tool-versions",
+              "[m]ise.local.toml"
+            ],
+            "exclude": []
+          }
+        }
+      ],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.check-commerce.yaml",
+        "./.bayt/compose.setup.yaml",
+        "./.bayt/compose.launch.yaml",
+        "./.bayt/compose.airlock.yaml",
+        "./.bayt/compose.airlock-mesh.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.auth.yaml",
+        "./.bayt/compose.build.yaml",
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.checkout-simulator.yaml",
+        "./.bayt/compose.clock.yaml",
+        "./.bayt/compose.cloudprinter-simulator.yaml",
+        "./.bayt/compose.conduit.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.diffusion.yaml",
+        "./.bayt/compose.electric.yaml",
+        "./.bayt/compose.generate.yaml",
+        "./.bayt/compose.imgproxy.yaml",
+        "./.bayt/compose.mail-simulator.yaml",
+        "./.bayt/compose.mailpit.yaml",
+        "./.bayt/compose.mesh-events.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.prodigi-simulator.yaml",
+        "./.bayt/compose.rclone-s3.yaml",
+        "./.bayt/compose.redis.yaml",
+        "./.bayt/compose.render.yaml",
+        "./.bayt/compose.seed-blobs.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.smollm3.yaml",
+        "./.bayt/compose.ticker.yaml",
+        "./.bayt/compose.timer-check.yaml",
+        "./.bayt/compose.transform.yaml",
+        "./.bayt/compose.tsbifrost.yaml"
+      ]
+    }
+  },
+  "visibility": "internal",
+  "emitsSrcs": true,
+  "deps": [
+    "setup",
+    "launch_outs"
+  ],
+  "sameProjectDeps": [
+    "setup",
+    "launch_outs"
+  ],
+  "transitiveDeps": [
+    "setup",
+    "launch_outs"
+  ],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "./.bayt/compose.check-commerce.yaml",
+    "./.bayt/compose.setup.yaml",
+    "./.bayt/compose.launch.yaml",
+    "./.bayt/compose.airlock.yaml",
+    "./.bayt/compose.airlock-mesh.yaml",
+    "./.bayt/compose.airlock-upgrade.yaml",
+    "./.bayt/compose.auth.yaml",
+    "./.bayt/compose.build.yaml",
+    "./.bayt/compose.caddy.yaml",
+    "./.bayt/compose.checkout-simulator.yaml",
+    "./.bayt/compose.clock.yaml",
+    "./.bayt/compose.cloudprinter-simulator.yaml",
+    "./.bayt/compose.conduit.yaml",
+    "./.bayt/compose.crud.yaml",
+    "./.bayt/compose.database.yaml",
+    "./.bayt/compose.diffusion.yaml",
+    "./.bayt/compose.electric.yaml",
+    "./.bayt/compose.generate.yaml",
+    "./.bayt/compose.imgproxy.yaml",
+    "./.bayt/compose.mail-simulator.yaml",
+    "./.bayt/compose.mailpit.yaml",
+    "./.bayt/compose.mesh-events.yaml",
+    "./.bayt/compose.migrate.yaml",
+    "./.bayt/compose.prodigi-simulator.yaml",
+    "./.bayt/compose.rclone-s3.yaml",
+    "./.bayt/compose.redis.yaml",
+    "./.bayt/compose.render.yaml",
+    "./.bayt/compose.seed-blobs.yaml",
+    "./.bayt/compose.served.yaml",
+    "./.bayt/compose.smollm3.yaml",
+    "./.bayt/compose.ticker.yaml",
+    "./.bayt/compose.timer-check.yaml",
+    "./.bayt/compose.transform.yaml",
+    "./.bayt/compose.tsbifrost.yaml"
+  ],
+  "chainedDeps": [
+    {
+      "name": "setup",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "launch_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    }
+  ],
+  "cmds": [],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

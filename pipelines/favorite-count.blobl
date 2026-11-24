@@ -1,0 +1,25 @@
+# favorite-count: the acting reader's private answer to "did the total include
+# me", from the same read that produced the total; only that reader's pair is
+# written.
+let rows = if this.type() == "array" { throw("favorite-count: harness discarded the CDC event (result_map: root = this); #rpkPipeline must preserve it as root.rows") } else { this.rows }
+let event_row = if this.exists("data") && this.data.type() == "string" && this.data.length() > 0 { this.data.parse_json() } else { null }
+
+let from_favorite = $event_row.type() == "object" && $event_row.__table == "favorite" && $event_row.exists("deck_id")
+
+let id = $event_row.deck_id
+let uid = $event_row.user_id
+let live = $rows.filter(r -> r.deck_id == $id && r.deleted_at == null)
+
+# as_of_txid names the version of the reader's row this pair speaks for.
+root = if $from_favorite {
+  [{
+    "id":            $uid + ":" + $id,
+    "user_id":       $uid,
+    "deck_id":       $id,
+    "mine_counted":  if $live.filter(r -> r.user_id == $uid).length() > 0 { 1 } else { 0 },
+    "total_at_read": $live.length(),
+    "as_of_txid":    $event_row.txid.or(0).int64().string(),
+  }]
+} else {
+  deleted()
+}

@@ -1,0 +1,52 @@
+# generated from bayt.cue — do not edit
+FROM libraries_mecha-airlock-image AS airlock
+ARG BAYT_DIR
+WORKDIR /app/airlock
+COPY --chmod=755 --from=tarampampam/microcheck:1@sha256:79c187c05bfa67518078bf4db117771942fa8fe107dc79a905861c75ddf28dfa /bin/portcheck /usr/local/bin/portcheck
+COPY services/airlock/effects.json /airlock/effects.json
+COPY effects/illustrate-card.js /airlock/effects/illustrate-card.js
+COPY effects/smollm3-draft.js /airlock/effects/smollm3-draft.js
+COPY effects/heavy-draft.js /airlock/effects/heavy-draft.js
+COPY effects/print-quote.js /airlock/effects/print-quote.js
+COPY effects/print-quote-br.js /airlock/effects/print-quote-br.js
+COPY effects/print-fx.js /airlock/effects/print-fx.js
+COPY effects/print-session.js /airlock/effects/print-session.js
+COPY effects/print-check.js /airlock/effects/print-check.js
+COPY effects/print-place.js /airlock/effects/print-place.js
+COPY effects/print-place-br.js /airlock/effects/print-place-br.js
+COPY effects/print-status.js /airlock/effects/print-status.js
+COPY effects/print-status-br.js /airlock/effects/print-status-br.js
+COPY effects/print-confirm.js /airlock/effects/print-confirm.js
+COPY effects/print-record.js /airlock/effects/print-record.js
+COPY effects/print-shipped.js /airlock/effects/print-shipped.js
+COPY effects/print-alert.js /airlock/effects/print-alert.js
+COPY --parents services/airlock/effects.json effects/illustrate-card.js effects/smollm3-draft.js effects/heavy-draft.js effects/print-quote.js effects/print-quote-br.js effects/print-fx.js effects/print-session.js effects/print-check.js effects/print-place.js effects/print-place-br.js effects/print-status.js effects/print-status-br.js effects/print-confirm.js effects/print-record.js effects/print-shipped.js effects/print-alert.js ./
+COPY .bayt/Taskfile.yml .bayt/Taskfile.bayt.yml .bayt/bayt.airlock.json ./.bayt/
+EXPOSE 9997
+CMD ["run", "--frozen", "--unstable-worker-options", "--allow-net=database:5432,airlock-mesh:3500,0.0.0.0:9997", "--allow-read", "--allow-env", "--allow-sys", "main.ts"]
+HEALTHCHECK --interval=5s --timeout=5s --retries=30 --start-period=30s CMD ["portcheck","--port","9997"]
+
+FROM busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223 AS airlock_ctxs
+ARG BAYT_DIR
+WORKDIR /monorepo/${BAYT_DIR}
+COPY --parents services/airlock/effects.json effects/illustrate-card.js effects/smollm3-draft.js effects/heavy-draft.js effects/print-quote.js effects/print-quote-br.js effects/print-fx.js effects/print-session.js effects/print-check.js effects/print-place.js effects/print-place-br.js effects/print-status.js effects/print-status-br.js effects/print-confirm.js effects/print-record.js effects/print-shipped.js effects/print-alert.js ./
+ARG SOURCE_DATE_EPOCH
+ARG BAYT_CLAMP=1
+RUN if [ "${BAYT_CLAMP:-1}" != 0 ]; then { w=$(pwd); mkdir -p /.bayt-clamp && find "$w" -exec getfattr -dh {} + > /.bayt-clamp/x && if [ ! -s /.bayt-clamp/x ]; then cd / && cp -a "$w" /.bayt-clamp/w && rm -rf "$w" && mv /.bayt-clamp/w "$w"; fi && rm -rf /.bayt-clamp; } && find /monorepo/${BAYT_DIR} -exec touch -hd @${SOURCE_DATE_EPOCH:-0} {} + && { d=$(dirname /monorepo/${BAYT_DIR}); while [ "$d" != / ]; do touch -hd @${SOURCE_DATE_EPOCH:-0} "$d" || exit; d=$(dirname "$d"); done; }; fi
+FROM scratch AS airlock_srcs
+COPY --from=airlock_ctxs /monorepo /monorepo
+
+FROM busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223 AS airlock_bayt_ctxs
+ARG BAYT_DIR
+WORKDIR /monorepo/${BAYT_DIR}
+COPY --parents .bayt/compose.airlock.yaml .bayt/Dockerfile.airlock .bayt/bayt.airlock.json .bayt/Taskfile.yml .bayt/Taskfile.bayt.yml .bayt/process-compose.yaml ./
+COPY --from=snapcards-airlock-mesh_bayt /monorepo /monorepo
+COPY --from=snapcards-database_bayt /monorepo /monorepo
+COPY --from=snapcards-migrate_bayt /monorepo /monorepo
+COPY --from=snapcards-airlock-upgrade_bayt /monorepo /monorepo
+COPY --from=snapcards-timer-check_bayt /monorepo /monorepo
+ARG SOURCE_DATE_EPOCH
+ARG BAYT_CLAMP=1
+RUN if [ "${BAYT_CLAMP:-1}" != 0 ]; then { w=$(pwd); mkdir -p /.bayt-clamp && find "$w" -exec getfattr -dh {} + > /.bayt-clamp/x && if [ ! -s /.bayt-clamp/x ]; then cd / && cp -a "$w" /.bayt-clamp/w && rm -rf "$w" && mv /.bayt-clamp/w "$w"; fi && rm -rf /.bayt-clamp; } && find /monorepo/${BAYT_DIR} -exec touch -hd @${SOURCE_DATE_EPOCH:-0} {} + && { d=$(dirname /monorepo/${BAYT_DIR}); while [ "$d" != / ]; do touch -hd @${SOURCE_DATE_EPOCH:-0} "$d" || exit; d=$(dirname "$d"); done; }; fi
+FROM scratch AS airlock_bayt
+COPY --from=airlock_bayt_ctxs /monorepo /monorepo

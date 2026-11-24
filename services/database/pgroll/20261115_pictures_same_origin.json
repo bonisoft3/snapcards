@@ -1,0 +1,10 @@
+{
+  "operations": [
+    {
+      "sql": {
+        "up": "SET LOCAL lock_timeout = '5s';\nSET LOCAL statement_timeout = '60s';\n\n-- Cards imported from the app snapcards.fun served before this one may name\n-- their pictures by that address. Its path is this origin's /img route, which\n-- serves the imported bucket's objects under the plane's logical name\n-- (20261102_pictures_are_objects), so a picture is a path on every deployment\n-- and a staging copy of the data reaches nothing of production's.\nUPDATE flashcard\n  SET back = replace(regexp_replace(back, '^https?://(www\\.)?snapcards\\.fun/', '/'), 's3://trash-362115-snapcards-bytes/', 's3://mecha-objects/')\n  WHERE back ~ '^https?://(www\\.)?snapcards\\.fun/';\n-- A cover is its deck's first card's picture (20261108_deck_cover).\nUPDATE deck_stats\n  SET cover = replace(regexp_replace(cover, '^https?://(www\\.)?snapcards\\.fun/', '/'), 's3://trash-362115-snapcards-bytes/', 's3://mecha-objects/')\n  WHERE cover ~ '^https?://(www\\.)?snapcards\\.fun/';\n",
+        "onComplete": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": false,
+    "manual": false,
+    "environment": {},
+    "ports": [],
+    "volumes": [],
+    "depends_on": {},
+    "networks": {
+      "default": {
+        "aliases": [
+          "smollm3"
+        ]
+      },
+      "airlock-egress": {
+        "aliases": [
+          "smollm3"
+        ]
+      }
+    },
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "httpcheck",
+        "http://127.0.0.1:11434/api/tags"
+      ],
+      "interval": "1s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "30s",
+      "start_interval": "200ms"
+    }
+  },
+  "dockerfile": {
+    "preamble": [
+      "COPY <<'EOF' /srv/ollama.ts\ntype CardSpec = { word: string; emoji: string; subject_en: string; svg?: string };\nconst CATALOG_CHEAP: Record<string, CardSpec[]> = {\n  danca: [\n    { word: \"Balé\", emoji: \"🩰\", subject_en: \"A single pink satin ballet pointe shoe with ribbons on a plain white background\" },\n    { word: \"Forró\", emoji: \"🪗\", subject_en: \"A single traditional Brazilian accordion sanfona on a plain white background\" },\n    { word: \"Salsa\", emoji: \"💃\", subject_en: \"A single red ruffled salsa dance dress on a plain white background\" },\n    { word: \"Sapateado\", emoji: \"👞\", subject_en: \"A single glossy tap dance shoe with metal plates on a plain white background\" },\n    { word: \"Hip-Hop\", emoji: \"👟\", subject_en: \"A single colorful street dance high-top sneaker on a plain white background\" },\n  ],\n  fazenda: [\n    { word: \"Vaca\", emoji: \"🐄\", subject_en: \"A single friendly dairy cow on a plain white background\" },\n    { word: \"Cavalo\", emoji: \"🐎\", subject_en: \"A single brown farm horse on a plain white background\" },\n    { word: \"Porco\", emoji: \"🐖\", subject_en: \"A single pink farm pig on a plain white background\" },\n    { word: \"Galinha\", emoji: \"🐓\", subject_en: \"A single farm hen with red comb on a plain white background\" },\n    { word: \"Ovelha\", emoji: \"🐑\", subject_en: \"A single fluffy white farm sheep on a plain white background\" },\n  ],\n  quadrinho: [\n    { word: \"Gibi\", emoji: \"📕\", subject_en: \"A single colorful comic book on a plain white background\" },\n    { word: \"Tirinha\", emoji: \"📰\", subject_en: \"A single three-panel comic strip on a plain white background\" },\n    { word: \"Balão\", emoji: \"💬\", subject_en: \"A single comic speech bubble on a plain white background\" },\n    { word: \"Quadrinho\", emoji: \"🖼️\", subject_en: \"A single framed comic panel illustration on a plain white background\" },\n    { word: \"Herói\", emoji: \"🦸\", subject_en: \"A single friendly caped superhero character on a plain white background\" },\n  ],\n  animais: [\n    { word: \"Leão\", emoji: \"🦁\", subject_en: \"A single golden lion with mane on a plain white background\" },\n    { word: \"Elefante\", emoji: \"🐘\", subject_en: \"A single gray elephant with trunk on a plain white background\" },\n    { word: \"Girafa\", emoji: \"🦒\", subject_en: \"A single spotted giraffe with long neck on a plain white background\" },\n    { word: \"Zebra\", emoji: \"🦓\", subject_en: \"A single black and white striped zebra on a plain white background\" },\n    { word: \"Tigre\", emoji: \"🐅\", subject_en: \"A single orange striped tiger on a plain white background\" },\n  ],\n  frutas: [\n    { word: \"Manga\", emoji: \"🥭\", subject_en: \"A single ripe yellow and orange mango fruit on a plain white background\" },\n    { word: \"Abacaxi\", emoji: \"🍍\", subject_en: \"A single golden pineapple with green crown on a plain white background\" },\n    { word: \"Melancia\", emoji: \"🍉\", subject_en: \"A single red watermelon slice with green rind on a plain white background\" },\n    { word: \"Morango\", emoji: \"🍓\", subject_en: \"A single bright red strawberry with green leaves on a plain white background\" },\n    { word: \"Banana\", emoji: \"🍌\", subject_en: \"A single yellow banana fruit on a plain white background\" },\n  ],\n  planeta: [\n    { word: \"Sol\", emoji: \"☀️\", subject_en: \"A single glowing yellow sun sphere on a plain white background\" },\n    { word: \"Lua\", emoji: \"🌙\", subject_en: \"A single cratered silver moon sphere on a plain white background\" },\n    { word: \"Terra\", emoji: \"🌍\", subject_en: \"A single blue and green planet Earth globe on a plain white background\" },\n    { word: \"Marte\", emoji: \"🪐\", subject_en: \"A single rusty red planet Mars sphere on a plain white background\" },\n    { word: \"Estrela\", emoji: \"⭐\", subject_en: \"A single bright golden five-pointed star on a plain white background\" },\n  ],\n  espacia: [\n    { word: \"Foguete\", emoji: \"🚀\", subject_en: \"A single red and white space rocket ship on a plain white background\" },\n    { word: \"Satélite\", emoji: \"🛰️\", subject_en: \"A single orbital satellite with solar panels on a plain white background\" },\n    { word: \"Sonda\", emoji: \"🛸\", subject_en: \"A single robotic space probe with antenna dish on a plain white background\" },\n    { word: \"Módulo\", emoji: \"🌕\", subject_en: \"A single golden lunar lander module on a plain white background\" },\n    { word: \"Telescópio\", emoji: \"🔭\", subject_en: \"A single brass astronomical telescope on a tripod on a plain white background\" },\n  ],\n  instrument: [\n    { word: \"Violão\", emoji: \"🎸\", subject_en: \"A single wooden acoustic guitar on a plain white background\" },\n    { word: \"Piano\", emoji: \"🎹\", subject_en: \"A single black grand piano on a plain white background\" },\n    { word: \"Tambor\", emoji: \"🥁\", subject_en: \"A single wooden snare drum with drumsticks on a plain white background\" },\n    { word: \"Trompete\", emoji: \"🎺\", subject_en: \"A single shiny brass trumpet on a plain white background\" },\n    { word: \"Violino\", emoji: \"🎻\", subject_en: \"A single classic wooden violin with bow on a plain white background\" },\n  ],\n  carro: [\n    { word: \"Conversível\", emoji: \"🏎️\", subject_en: \"A single red convertible sports car on a plain white background\" },\n    { word: \"Cupê\", emoji: \"🚗\", subject_en: \"A single sleek silver coupe sports car on a plain white background\" },\n    { word: \"Limusine\", emoji: \"🚘\", subject_en: \"A single black luxury limousine car on a plain white background\" },\n    { word: \"Bólido\", emoji: \"🏁\", subject_en: \"A single aerodynamic formula racing car on a plain white background\" },\n    { word: \"Roadster\", emoji: \"🛞\", subject_en: \"A single vintage yellow roadster car on a plain white background\" },\n  ],\n};\nconst CATALOG_HEAVY: Record<string, CardSpec[]> = {\n  danca: [\n    { word: \"Samba\", emoji: \"🥁\", subject_en: \"A single ornate Brazilian carnival samba tambourine pandeiro with colorful ribbons on a plain white background\" },\n    { word: \"Tango\", emoji: \"🌹\", subject_en: \"A single classic black felt tango fedora hat with a red rose on a plain white background\" },\n    { word: \"Flamenco\", emoji: \"🪭\", subject_en: \"A single red Spanish flamenco hand fan and wooden castanets on a plain white background\" },\n    { word: \"Frevo\", emoji: \"☂️\", subject_en: \"A single vibrant multicolored Brazilian frevo parasol umbrella on a plain white background\" },\n    { word: \"Capoeira\", emoji: \"🏹\", subject_en: \"A single traditional wooden berimbau musical bow with gourd resonator on a plain white background\" },\n  ],\n  fazenda: [\n    { word: \"Touro\", emoji: \"🐂\", subject_en: \"A single strong brown farm bull with horns on a plain white background\" },\n    { word: \"Égua\", emoji: \"🐴\", subject_en: \"A single chestnut mare horse on a plain white background\" },\n    { word: \"Cabra\", emoji: \"🐐\", subject_en: \"A single white mountain farm goat on a plain white background\" },\n    { word: \"Pato\", emoji: \"🦆\", subject_en: \"A single mallard farm duck with green head on a plain white background\" },\n    { word: \"Burro\", emoji: \"🫏\", subject_en: \"A single friendly gray farm donkey on a plain white background\" },\n  ],\n  quadrinho: [\n    { word: \"Mangá\", emoji: \"📖\", subject_en: \"A single illustrated Japanese manga book volume on a plain white background\" },\n    { word: \"Fanzine\", emoji: \"✂️\", subject_en: \"A single indie hand-stapled illustrated zine booklet on a plain white background\" },\n    { word: \"Onomatopeia\", emoji: \"💥\", subject_en: \"A single colorful comic burst star emblem on a plain white background\" },\n    { word: \"Nanquim\", emoji: \"🖋️\", subject_en: \"A single comic artist nib pen and black ink bottle on a plain white background\" },\n    { word: \"Almanaque\", emoji: \"📚\", subject_en: \"A single vintage illustrated comic almanac hardcover book on a plain white background\" },\n  ],\n  animais: [\n    { word: \"Onça-Pintada\", emoji: \"🐆\", subject_en: \"A single spotted jaguar big cat on a plain white background\" },\n    { word: \"Arara-Azul\", emoji: \"🦜\", subject_en: \"A single vibrant hyacinth macaw parrot on a plain white background\" },\n    { word: \"Tamanduá\", emoji: \"🐾\", subject_en: \"A single giant anteater mammal on a plain white background\" },\n    { word: \"Tucano\", emoji: \"🦤\", subject_en: \"A single colorful toucan bird with orange beak on a plain white background\" },\n    { word: \"Boto\", emoji: \"🐬\", subject_en: \"A single pink Amazon river dolphin on a plain white background\" },\n  ],\n  frutas: [\n    { word: \"Jabuticaba\", emoji: \"🍇\", subject_en: \"A single dark purple jabuticaba berry fruit on a plain white background\" },\n    { word: \"Caju\", emoji: \"🍎\", subject_en: \"A single yellow-orange tropical cashew fruit with nut on a plain white background\" },\n    { word: \"Pitanga\", emoji: \"🍒\", subject_en: \"A single ribbed red pitanga berry fruit on a plain white background\" },\n    { word: \"Açaí\", emoji: \"🫐\", subject_en: \"A single cluster of dark purple acai berries on a plain white background\" },\n    { word: \"Cupuaçu\", emoji: \"🥥\", subject_en: \"A single brown tropical cupuacu fruit pod on a plain white background\" },\n  ],\n  planeta: [\n    { word: \"Saturno\", emoji: \"🪐\", subject_en: \"A single golden ringed planet Saturn on a plain white background\" },\n    { word: \"Júpiter\", emoji: \"🟠\", subject_en: \"A single banded gas giant planet Jupiter on a plain white background\" },\n    { word: \"Netuno\", emoji: \"🔵\", subject_en: \"A single deep blue ice giant planet Neptune on a plain white background\" },\n    { word: \"Cometa\", emoji: \"☄️\", subject_en: \"A single glowing icy comet with tail on a plain white background\" },\n    { word: \"Galáxia\", emoji: \"🌌\", subject_en: \"A single spiral galaxy of stars on a plain white background\" },\n  ],\n  espacia: [\n    { word: \"Estação Espacial\", emoji: \"🛰️\", subject_en: \"A single modular orbital space station with solar wings on a plain white background\" },\n    { word: \"Rover\", emoji: \"🛞\", subject_en: \"A single six-wheeled Mars exploration rover vehicle on a plain white background\" },\n    { word: \"Cápsula\", emoji: \"🪂\", subject_en: \"A single conical crew reentry space capsule on a plain white background\" },\n    { word: \"Ônibus Espacial\", emoji: \"🚀\", subject_en: \"A single black and white winged space shuttle orbiter on a plain white background\" },\n    { word: \"Radiotelescópio\", emoji: \"📡\", subject_en: \"A single white parabolic radio telescope dish antenna on a plain white background\" },\n  ],\n  instrument: [\n    { word: \"Violoncelo\", emoji: \"🎻\", subject_en: \"A single carved wooden cello with bow on a plain white background\" },\n    { word: \"Harpa\", emoji: \"🎶\", subject_en: \"A single golden concert harp with strings on a plain white background\" },\n    { word: \"Saxofone\", emoji: \"🎷\", subject_en: \"A single curved brass saxophone on a plain white background\" },\n    { word: \"Pandeiro\", emoji: \"🥁\", subject_en: \"A single traditional Brazilian pandeiro tambourine on a plain white background\" },\n    { word: \"Sanfona\", emoji: \"🪗\", subject_en: \"A single red bellows accordion on a plain white background\" },\n  ],\n  carro: [\n    { word: \"Fórmula 1\", emoji: \"🏎️\", subject_en: \"A single open-wheel Formula 1 racing car on a plain white background\" },\n    { word: \"Off-Road\", emoji: \"🚙\", subject_en: \"A single rugged 4x4 off-road expedition vehicle on a plain white background\" },\n    { word: \"Calhambeque\", emoji: \"🚗\", subject_en: \"A single brass-era antique vintage automobile on a plain white background\" },\n    { word: \"Hipercarro\", emoji: \"🏁\", subject_en: \"A single futuristic carbon-fiber hypercar on a plain white background\" },\n    { word: \"Elétrico\", emoji: \"⚡\", subject_en: \"A single modern aerodynamic electric car on a plain white background\" },\n  ],\n};\nconst FACETS_CHEAP = [\"Raiz\", \"Rito\", \"Arte\", \"Símbolo\", \"Festa\"];\nconst FACETS_HEAVY = [\"Patrimônio\", \"Mestre\", \"Relíquia\", \"Emblema\", \"Obra-Prima\"];\nconst FACET_EMOJIS = [\"🎭\", \"🌟\", \"🎨\", \"🏛️\", \"🌿\"];\nfunction lookupCatalog(topic: string, count: number, isHeavy: boolean): CardSpec[] {\n  const t = topic.toLowerCase().normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\");\n  const cat = isHeavy ? CATALOG_HEAVY : CATALOG_CHEAP;\n  const facets = isHeavy ? FACETS_HEAVY : FACETS_CHEAP;\n  const base =\n    (t.includes(\"danca\") || t.includes(\"dance\") || t.includes(\"baile\") || t.includes(\"ritmo\") || t.includes(\"folclor\")) ? cat.danca :\n    (t.includes(\"fazenda\") || t.includes(\"farm\") || t.includes(\"granja\")) ? cat.fazenda :\n    (t.includes(\"quadrinho\") || t.includes(\"revista\")) ? cat.quadrinho :\n    t.includes(\"anima\") ? cat.animais :\n    t.includes(\"fruta\") ? cat.frutas :\n    t.includes(\"planeta\") ? cat.planeta :\n    t.includes(\"espacia\") ? cat.espacia :\n    (t.includes(\"instrument\") || t.includes(\"orquestra\") || t.includes(\"music\")) ? cat.instrument :\n    t.includes(\"carro\") ? cat.carro :\n    Array.from({ length: count }, (_, i) => ({\n      word: `${topic} · ${facets[i % facets.length]}`,\n      emoji: FACET_EMOJIS[i % FACET_EMOJIS.length],\n      subject_en: `A single ${topic} cultural emblem (${facets[i % facets.length]}) on a plain white background`,\n    }));\n  return Array.from({ length: count }, (_, i) => {\n    const item = base[i % base.length];\n    return { word: item.word.trim(), emoji: item.emoji, subject_en: item.subject_en, description: `Ilustração de ${item.word.trim()}.` };\n  });\n}\nDeno.serve({ hostname: Deno.env.get(\"HOST\") ?? \"0.0.0.0\", port: Number(Deno.env.get(\"PORT\") ?? \"11434\") }, async (req) => {\n  const url = new URL(req.url);\n  if (url.pathname === \"/api/tags\") {\n    return Response.json({ models: [{ name: \"smollm3:latest\" }] });\n  }\n  const raw = await req.text();\n  let text = raw;\n  let lastUserText = raw;\n  try {\n    const parsed = JSON.parse(raw);\n    if (Array.isArray(parsed?.messages)) {\n      const msgs = parsed.messages as { role?: string; content?: string }[];\n      text = msgs.map((m) => m?.content ?? \"\").join(\" \");\n      const userMsgs = msgs.filter((m) => m?.role === \"user\");\n      lastUserText = String((userMsgs.at(-1) ?? msgs.at(-1))?.content ?? text);\n    }\n  } catch (_err) {\n    text = raw;\n    lastUserText = raw;\n  }\n  const isHeavy = text.includes(\"[TIER:HEAVY]\");\n  // A deck titled \"... lentos\" keeps its text running for the acceptance driver's mid-generation cases.\n  if (/Topic: \"[^\"]*lentos\"/i.test(lastUserText)) await new Promise((r) => setTimeout(r, 8000));\n  // illustrate-card's translation: the reader's own words come back as they went.\n  if (text.includes(\"Translate each value of this JSON object into English\")) {\n    return Response.json({ message: { role: \"assistant\", content: lastUserText.trim() } });\n  }\n  await new Promise((r) => setTimeout(r, isHeavy ? 350 : 220));\n  const xlatPromptMatch = lastUserText.match(/Translate into\\s+[^(]*\\(([^)]+)\\):\\s*(.+)$/i);\n  if (xlatPromptMatch) {\n    const targetLoc = xlatPromptMatch[1].trim().toLowerCase();\n    const srcWords = xlatPromptMatch[2].split(\"|\").map((w) => w.trim()).filter(Boolean);\n    const suffixMap: Record<string, string> = { pt: \"PT\", es: \"ES\", en: \"EN\", he: \"HE\", zh: \"ZH\" };\n    const tag = suffixMap[targetLoc] ?? targetLoc.toUpperCase();\n    const translated = srcWords.map((w) => w.replace(/\\s*\\([A-Z]{2}\\)$/i, \"\") + \" (\" + tag + \")\");\n    return Response.json({ message: { role: \"assistant\", content: JSON.stringify({ cards: translated }) } });\n  }\n  const countMatch = lastUserText.match(/exactly\\s+(\\d+)\\s+/i) || text.match(/exactly\\s+(\\d+)\\s+/i);\n  const count = Math.max(1, Math.min(20, Number(countMatch?.[1] ?? 5)));\n  const topicMatch = lastUserText.match(/Topic:\\s*\"([^\"]+)\"/i) || lastUserText.match(/topic:\\s*\"?([^\"\\n.]+)\"?/i);\n  const topic = (topicMatch?.[1] ?? \"Estudo\").trim();\n  const cards = lookupCatalog(topic, count, isHeavy);\n  return Response.json({ message: { role: \"assistant\", content: JSON.stringify({ cards }) } });\n});\nEOF"
+    ],
+    "preambleCopyContexts": [],
+    "from": {
+      "name": "denoland/deno:debian-2.9.7@sha256:fa335acdf6b72106eda2cb6a8cb5f4187e7630e357467489db4b2e7352d5e432"
+    },
+    "add": [],
+    "mounts": [],
+    "secrets": {},
+    "extra_hosts": [],
+    "epilogue": [],
+    "copy": [
+      {
+        "from": {
+          "name": "tarampampam/microcheck:1@sha256:79c187c05bfa67518078bf4db117771942fa8fe107dc79a905861c75ddf28dfa"
+        },
+        "srcs": [
+          "/bin/httpcheck"
+        ],
+        "dst": "/usr/local/bin/httpcheck",
+        "chmod": "755",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      }
+    ],
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "httpcheck",
+        "http://127.0.0.1:11434/api/tags"
+      ],
+      "interval": "1s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "30s"
+    },
+    "expose": [],
+    "entrypoint": null,
+    "incremental": false,
+    "cmd": null
+  },
+  "entrypoint": {
+    "do": "if (($env.BAYT_LOCAL_MOCK_AI? | default '1') == '0') { if (which ollama | is-empty) { error make { msg: 'ollama not found on PATH' } }; with-env { OLLAMA_HOST: $'127.0.0.1:($env.PORT? | default \"11434\")' } { ^ollama serve } } else { let f = (($env.BAYT_LOCAL_WORK_DIR? | default $nu.temp-dir) | path join 'ollama-mock.ts'); open --raw .bayt/Dockerfile.smollm3 | lines | skip until {|l| $l =~ '^COPY <<.EOF. /srv/ollama.ts$' } | skip 1 | take until {|l| $l == 'EOF' } | str join (char nl) | save -f $f; with-env { HOST: '127.0.0.1' } { ^deno run --allow-net --allow-env $f } }",
+    "dockerfile": {
+      "do": "deno run --allow-net --allow-env /srv/ollama.ts",
+      "shell": "sh"
+    },
+    "shell": "nu",
+    "env": {},
+    "after": {},
+    "host": true
+  },
+  "expose": {
+    "api": {
+      "port": 11434,
+      "env": "PORT"
+    }
+  },
+  "healthcheck": {
+    "template": "http",
+    "scheme": "http",
+    "host": "127.0.0.1",
+    "port": 11434,
+    "path": "/api/tags",
+    "url": "http://127.0.0.1:11434/api/tags",
+    "authorization": null,
+    "headers": [],
+    "start_interval": "200ms",
+    "interval": "1s",
+    "timeout": "5s",
+    "retries": 30,
+    "start_period": "30s"
+  },
+  "name": "smollm3",
+  "process-compose": {
+    "activate": "mise x --"
+  },
+  "project": "snapcards",
+  "dir": ".",
+  "activate": "",
+  "srcs": {
+    "globs": [],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {},
+  "synthetics": {
+    "bayt": {
+      "name": "smollm3_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.smollm3.yaml",
+          ".bayt/Dockerfile.smollm3",
+          ".bayt/bayt.smollm3.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.smollm3.yaml"
+      ]
+    },
+    "outs": {
+      "name": "smollm3_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.smollm3.yaml"
+      ]
+    }
+  },
+  "visibility": "internal",
+  "emitsSrcs": false,
+  "deps": [],
+  "sameProjectDeps": [],
+  "transitiveDeps": [],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "./.bayt/compose.smollm3.yaml"
+  ],
+  "chainedDeps": [],
+  "cmds": [],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

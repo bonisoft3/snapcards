@@ -1,0 +1,2400 @@
+{
+  "actors": "016_mecha_actors.sql",
+  "bridges": [
+    {
+      "name": "stripe",
+      "container": "checkout-simulator",
+      "port": 8080,
+      "targets": [],
+      "build": "checkout-simulator-appliance"
+    },
+    {
+      "name": "prodigi",
+      "container": "prodigi-simulator",
+      "port": 8080,
+      "targets": [],
+      "build": "prodigi-simulator-appliance"
+    },
+    {
+      "name": "cloudprinter",
+      "container": "cloudprinter-simulator",
+      "port": 8080,
+      "targets": [],
+      "build": "cloudprinter-simulator-appliance"
+    },
+    {
+      "name": "mail",
+      "container": "mail-simulator",
+      "port": 8080,
+      "targets": [],
+      "build": "mail-simulator-appliance"
+    }
+  ],
+  "endpoints": {
+    "k8s": {
+      "illustrate-card": "http://tsbifrost:8090",
+      "smollm3-draft": "http://tsbifrost:8090",
+      "heavy-draft": "http://tsbifrost:8090",
+      "print-quote": null,
+      "print-quote-br": "https://api.cloudprinter.com",
+      "print-fx": "https://api.stripe.com",
+      "print-session": "https://api.stripe.com",
+      "print-check": "https://api.stripe.com",
+      "print-place": null,
+      "print-place-br": "https://api.cloudprinter.com",
+      "print-status": null,
+      "print-status-br": "https://api.cloudprinter.com",
+      "print-confirm": "https://api.cloudflare.com",
+      "print-record": "https://api.cloudflare.com",
+      "print-shipped": "https://api.cloudflare.com",
+      "print-alert": "https://api.cloudflare.com"
+    }
+  },
+  "prunesTokenRoles": true,
+  "replays": [
+    {
+      "name": "snapcards-favorite-recount",
+      "group": "snapcards-favorite-recount"
+    },
+    {
+      "name": "snapcards-deck-cover",
+      "group": "snapcards-deck-cover"
+    },
+    {
+      "name": "snapcards-favorite-count",
+      "group": "snapcards-favorite-count"
+    },
+    {
+      "name": "snapcards-deck-level",
+      "group": "snapcards-deck-level"
+    }
+  ],
+  "rowMachines": {
+    "DeckProgressMachine": {
+      "cortex": {
+        "id": "deck_progress",
+        "sourceEvents": [
+          "facts.progress"
+        ]
+      },
+      "name": "DeckProgressMachine",
+      "ir": "DeckProgressMachine",
+      "entity": "DeckProgress",
+      "field": "status",
+      "guards": {},
+      "hatches": [],
+      "initial": "drafting",
+      "level": "replicated",
+      "states": {
+        "drafting": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "drawing2",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'running' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawing23",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'running' AND cortex_payload->>'level3' IS NOT NULL)"
+              },
+              {
+                "target": "drawn2_complete",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawn2_partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'partial' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawn2_failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawing3_complete",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "drawing3_partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'partial' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "drawing3_failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "done",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete')"
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              },
+              {
+                "target": "failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed')"
+              }
+            ],
+            "drawing2": [
+              {
+                "target": "drawing2"
+              }
+            ],
+            "drawing23": [
+              {
+                "target": "drawing23"
+              }
+            ],
+            "drawn2_complete": [
+              {
+                "target": "drawn2_complete"
+              }
+            ],
+            "drawn2_partial": [
+              {
+                "target": "drawn2_partial"
+              }
+            ],
+            "drawn2_failed": [
+              {
+                "target": "drawn2_failed"
+              }
+            ],
+            "drawing3_complete": [
+              {
+                "target": "drawing3_complete"
+              }
+            ],
+            "drawing3_partial": [
+              {
+                "target": "drawing3_partial"
+              }
+            ],
+            "drawing3_failed": [
+              {
+                "target": "drawing3_failed"
+              }
+            ],
+            "done": [
+              {
+                "target": "done"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ],
+            "failed": [
+              {
+                "target": "failed"
+              }
+            ]
+          }
+        },
+        "drawing2": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "drawing23",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'running' AND cortex_payload->>'level3' IS NOT NULL)"
+              },
+              {
+                "target": "drawn2_complete",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawn2_partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'partial' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawn2_failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawing3_complete",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "drawing3_partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'partial' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "drawing3_failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "done",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete')"
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              },
+              {
+                "target": "failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed')"
+              }
+            ],
+            "drawing23": [
+              {
+                "target": "drawing23"
+              }
+            ],
+            "drawn2_complete": [
+              {
+                "target": "drawn2_complete"
+              }
+            ],
+            "drawn2_partial": [
+              {
+                "target": "drawn2_partial"
+              }
+            ],
+            "drawn2_failed": [
+              {
+                "target": "drawn2_failed"
+              }
+            ],
+            "drawing3_complete": [
+              {
+                "target": "drawing3_complete"
+              }
+            ],
+            "drawing3_partial": [
+              {
+                "target": "drawing3_partial"
+              }
+            ],
+            "drawing3_failed": [
+              {
+                "target": "drawing3_failed"
+              }
+            ],
+            "done": [
+              {
+                "target": "done"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ],
+            "failed": [
+              {
+                "target": "failed"
+              }
+            ]
+          }
+        },
+        "drawing23": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "drawing2",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'running' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawn2_complete",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawn2_partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'partial' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawn2_failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' IS NULL)"
+              },
+              {
+                "target": "drawing3_complete",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "drawing3_partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'partial' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "drawing3_failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "done",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete')"
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              },
+              {
+                "target": "failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed')"
+              }
+            ],
+            "drawing2": [
+              {
+                "target": "drawing2"
+              }
+            ],
+            "drawn2_complete": [
+              {
+                "target": "drawn2_complete"
+              }
+            ],
+            "drawn2_partial": [
+              {
+                "target": "drawn2_partial"
+              }
+            ],
+            "drawn2_failed": [
+              {
+                "target": "drawn2_failed"
+              }
+            ],
+            "drawing3_complete": [
+              {
+                "target": "drawing3_complete"
+              }
+            ],
+            "drawing3_partial": [
+              {
+                "target": "drawing3_partial"
+              }
+            ],
+            "drawing3_failed": [
+              {
+                "target": "drawing3_failed"
+              }
+            ],
+            "done": [
+              {
+                "target": "done"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ],
+            "failed": [
+              {
+                "target": "failed"
+              }
+            ]
+          }
+        },
+        "drawn2_complete": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "drawing3_complete",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "done",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete')"
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              }
+            ],
+            "drawing3_complete": [
+              {
+                "target": "drawing3_complete"
+              }
+            ],
+            "done": [
+              {
+                "target": "done"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ]
+          }
+        },
+        "drawn2_partial": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "drawing3_partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'partial' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              }
+            ],
+            "drawing3_partial": [
+              {
+                "target": "drawing3_partial"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ]
+          }
+        },
+        "drawn2_failed": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "drawing3_failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              },
+              {
+                "target": "failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed')"
+              }
+            ],
+            "drawing3_failed": [
+              {
+                "target": "drawing3_failed"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ],
+            "failed": [
+              {
+                "target": "failed"
+              }
+            ]
+          }
+        },
+        "drawing3_complete": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "done",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete')"
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              },
+              {
+                "target": "drawn2_complete",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' IS NULL)"
+              }
+            ],
+            "done": [
+              {
+                "target": "done"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ],
+            "drawn2_complete": [
+              {
+                "target": "drawn2_complete"
+              }
+            ]
+          }
+        },
+        "drawing3_partial": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              },
+              {
+                "target": "drawn2_partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'partial' AND cortex_payload->>'level3' IS NULL)"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ],
+            "drawn2_partial": [
+              {
+                "target": "drawn2_partial"
+              }
+            ]
+          }
+        },
+        "drawing3_failed": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              },
+              {
+                "target": "failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed')"
+              },
+              {
+                "target": "drawn2_failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' IS NULL)"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ],
+            "failed": [
+              {
+                "target": "failed"
+              }
+            ],
+            "drawn2_failed": [
+              {
+                "target": "drawn2_failed"
+              }
+            ]
+          }
+        },
+        "done": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "drawing3_complete",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              }
+            ],
+            "drawing3_complete": [
+              {
+                "target": "drawing3_complete"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ]
+          }
+        },
+        "partial": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "drawing3_complete",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "drawing3_partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'partial' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "drawing3_failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "done",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete')"
+              },
+              {
+                "target": "failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed')"
+              }
+            ],
+            "drawing3_complete": [
+              {
+                "target": "drawing3_complete"
+              }
+            ],
+            "drawing3_partial": [
+              {
+                "target": "drawing3_partial"
+              }
+            ],
+            "drawing3_failed": [
+              {
+                "target": "drawing3_failed"
+              }
+            ],
+            "done": [
+              {
+                "target": "done"
+              }
+            ],
+            "failed": [
+              {
+                "target": "failed"
+              }
+            ]
+          }
+        },
+        "failed": {
+          "on": {
+            "drafting": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "facts.progress": [
+              {
+                "target": "drafting",
+                "guard": "NEW.run IS DISTINCT FROM cortex_payload->>'run'",
+                "actions": [
+                  {
+                    "assign": {
+                      "run": {
+                        "raw": "cortex_payload->>'run'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "drawing3_failed",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'running')"
+              },
+              {
+                "target": "partial",
+                "guard": "NEW.run = cortex_payload->>'run' AND (cortex_payload->>'level2' IN ('complete', 'partial', 'failed') AND cortex_payload->>'level3' IN ('complete', 'partial', 'failed') AND NOT (cortex_payload->>'level2' = 'complete' AND cortex_payload->>'level3' = 'complete') AND NOT (cortex_payload->>'level2' = 'failed' AND cortex_payload->>'level3' = 'failed'))"
+              }
+            ],
+            "drawing3_failed": [
+              {
+                "target": "drawing3_failed"
+              }
+            ],
+            "partial": [
+              {
+                "target": "partial"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "GenerationMachine": {
+      "cortex": {
+        "id": "generation",
+        "sourceEvents": [
+          "facts.text"
+        ]
+      },
+      "name": "GenerationMachine",
+      "ir": "GenerationMachine",
+      "entity": "GenerationDraft",
+      "field": "status",
+      "guards": {},
+      "hatches": [
+        "card-art-fan-out",
+        "deck-advance"
+      ],
+      "initial": "idle",
+      "level": "external",
+      "states": {
+        "drafting": {
+          "invoke": {
+            "src": "smollm3-draft",
+            "onDone": {
+              "target": "done",
+              "actions": [
+                {
+                  "assign": {
+                    "category": {
+                      "raw": "COALESCE(outcome->'data'->>'cards_json', NEW.category)"
+                    }
+                  }
+                },
+                {
+                  "hatch": [
+                    {
+                      "name": "card-art-fan-out",
+                      "call": "snapcards_fan_out_art",
+                      "args": [
+                        {
+                          "raw": "NEW.set_id"
+                        },
+                        {
+                          "raw": "NEW.region"
+                        },
+                        2,
+                        {
+                          "raw": "outcome"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "deck-advance",
+                      "call": "snapcards_advance_decks"
+                    }
+                  ]
+                }
+              ]
+            },
+            "onError": {
+              "target": "failed",
+              "actions": [
+                {
+                  "assign": {
+                    "category": {
+                      "raw": "COALESCE(outcome->>'data', outcome->>'kind')"
+                    }
+                  }
+                },
+                {
+                  "hatch": [
+                    {
+                      "name": "card-art-fan-out",
+                      "call": "snapcards_fan_out_art",
+                      "args": [
+                        {
+                          "raw": "NEW.set_id"
+                        },
+                        {
+                          "raw": "NEW.region"
+                        },
+                        2,
+                        {
+                          "raw": "outcome"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "deck-advance",
+                      "call": "snapcards_advance_decks"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "illustrating": {
+          "invoke": {
+            "src": "heavy-draft",
+            "onDone": {
+              "target": "done",
+              "actions": [
+                {
+                  "assign": {
+                    "category": {
+                      "raw": "COALESCE(outcome->'data'->>'cards_json', NEW.category)"
+                    }
+                  }
+                },
+                {
+                  "hatch": [
+                    {
+                      "name": "card-art-fan-out",
+                      "call": "snapcards_fan_out_art",
+                      "args": [
+                        {
+                          "raw": "NEW.set_id"
+                        },
+                        {
+                          "raw": "NEW.region"
+                        },
+                        3,
+                        {
+                          "raw": "outcome"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "deck-advance",
+                      "call": "snapcards_advance_decks"
+                    }
+                  ]
+                }
+              ]
+            },
+            "onError": {
+              "target": "failed",
+              "actions": [
+                {
+                  "assign": {
+                    "category": {
+                      "raw": "COALESCE(outcome->>'data', outcome->>'kind')"
+                    }
+                  }
+                },
+                {
+                  "hatch": [
+                    {
+                      "name": "card-art-fan-out",
+                      "call": "snapcards_fan_out_art",
+                      "args": [
+                        {
+                          "raw": "NEW.set_id"
+                        },
+                        {
+                          "raw": "NEW.region"
+                        },
+                        3,
+                        {
+                          "raw": "outcome"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "deck-advance",
+                      "call": "snapcards_advance_decks"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "idle": {
+          "on": {
+            "facts.text": [
+              {
+                "target": "drafting",
+                "guard": "cortex_payload->>'tier' = 'cheap' AND (SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1) IS NOT NULL",
+                "actions": [
+                  {
+                    "assign": {
+                      "topic": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'name'"
+                      },
+                      "details": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'details'"
+                      },
+                      "locale": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'locale'"
+                      },
+                      "region": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'region'"
+                      },
+                      "card_count": {
+                        "raw": "(((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'cards')::integer"
+                      },
+                      "set_id": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'id'"
+                      },
+                      "category": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "illustrating",
+                "guard": "cortex_payload->>'tier' = 'heavy' AND (SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1) IS NOT NULL",
+                "actions": [
+                  {
+                    "assign": {
+                      "topic": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'name'"
+                      },
+                      "details": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'details'"
+                      },
+                      "locale": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'locale'"
+                      },
+                      "region": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'region'"
+                      },
+                      "card_count": {
+                        "raw": "(((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'cards')::integer"
+                      },
+                      "set_id": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'id'"
+                      },
+                      "category": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "start_draft": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "start_illustrate": [
+              {
+                "target": "illustrating"
+              }
+            ],
+            "finish_fast": [
+              {
+                "target": "done"
+              }
+            ],
+            "fail": [
+              {
+                "target": "failed"
+              }
+            ]
+          }
+        },
+        "done": {
+          "on": {
+            "facts.text": [
+              {
+                "target": "drafting",
+                "guard": "cortex_payload->>'tier' = 'cheap' AND (SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1) IS NOT NULL",
+                "actions": [
+                  {
+                    "assign": {
+                      "topic": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'name'"
+                      },
+                      "details": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'details'"
+                      },
+                      "locale": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'locale'"
+                      },
+                      "region": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'region'"
+                      },
+                      "card_count": {
+                        "raw": "(((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'cards')::integer"
+                      },
+                      "set_id": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'id'"
+                      },
+                      "category": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "illustrating",
+                "guard": "cortex_payload->>'tier' = 'heavy' AND (SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1) IS NOT NULL",
+                "actions": [
+                  {
+                    "assign": {
+                      "topic": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'name'"
+                      },
+                      "details": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'details'"
+                      },
+                      "locale": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'locale'"
+                      },
+                      "region": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'region'"
+                      },
+                      "card_count": {
+                        "raw": "(((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'cards')::integer"
+                      },
+                      "set_id": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'id'"
+                      },
+                      "category": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "start_draft": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "start_illustrate": [
+              {
+                "target": "illustrating"
+              }
+            ],
+            "fail": [
+              {
+                "target": "failed"
+              }
+            ],
+            "reset": [
+              {
+                "target": "idle"
+              }
+            ]
+          }
+        },
+        "failed": {
+          "on": {
+            "facts.text": [
+              {
+                "target": "drafting",
+                "guard": "cortex_payload->>'tier' = 'cheap' AND (SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1) IS NOT NULL",
+                "actions": [
+                  {
+                    "assign": {
+                      "topic": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'name'"
+                      },
+                      "details": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'details'"
+                      },
+                      "locale": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'locale'"
+                      },
+                      "region": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'region'"
+                      },
+                      "card_count": {
+                        "raw": "(((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'cards')::integer"
+                      },
+                      "set_id": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE (candidate->>'cover' = '🎨' AND (candidate->>'cards')::integer > 0 AND candidate->>'cards' = candidate->>'expected') AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'id'"
+                      },
+                      "category": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "illustrating",
+                "guard": "cortex_payload->>'tier' = 'heavy' AND (SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1) IS NOT NULL",
+                "actions": [
+                  {
+                    "assign": {
+                      "topic": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'name'"
+                      },
+                      "details": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'details'"
+                      },
+                      "locale": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'locale'"
+                      },
+                      "region": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'region'"
+                      },
+                      "card_count": {
+                        "raw": "(((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'cards')::integer"
+                      },
+                      "set_id": {
+                        "raw": "((SELECT candidate FROM jsonb_array_elements(cortex_payload->'candidates') WITH ORDINALITY AS c(candidate, ordinal)\n WHERE ((candidate->>'cards')::integer > 0) AND candidate->>'run' IS NOT NULL AND NOT (candidate->>'has_art')::boolean\n   AND (OLD.set_id, OLD.region) IS DISTINCT FROM (candidate->>'id', candidate->>'region')\n   AND NOT (OLD.status = 'done' AND OLD.topic LIKE '% :: [TRANSLATE:%')\n ORDER BY ordinal LIMIT 1))->>'id'"
+                      },
+                      "category": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "start_draft": [
+              {
+                "target": "drafting"
+              }
+            ],
+            "start_illustrate": [
+              {
+                "target": "illustrating"
+              }
+            ],
+            "reset": [
+              {
+                "target": "idle"
+              }
+            ],
+            "complete": [
+              {
+                "target": "done"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "CardArtMachine": {
+      "cortex": {
+        "id": "card_art",
+        "sourceEvents": [
+          "facts.art"
+        ]
+      },
+      "name": "CardArtMachine",
+      "ir": "CardArtMachine",
+      "entity": "CardArt",
+      "field": "status",
+      "guards": {},
+      "hatches": [],
+      "initial": "waiting",
+      "level": "external",
+      "states": {
+        "waiting": {
+          "on": {
+            "facts.art": [
+              {
+                "target": "failed",
+                "guard": "cortex_payload->>'detail' <> ''",
+                "actions": [
+                  {
+                    "effect": {
+                      "op": "update",
+                      "table": "flashcard",
+                      "values": {
+                        "back": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20256%22%20width%3D%22256%22%20height%3D%22256%22%20data-tier%3D%22tier-none%22%3E%3Crect%20width%3D%22256%22%20height%3D%22256%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Crect%20x%3D%2288%22%20y%3D%2280%22%20width%3D%2280%22%20height%3D%2264%22%20rx%3D%228%22%20fill%3D%22none%22%20stroke%3D%22%23A8A29E%22%20stroke-width%3D%223%22%2F%3E%3Ccircle%20cx%3D%22111%22%20cy%3D%22102%22%20r%3D%226%22%20fill%3D%22%23A8A29E%22%2F%3E%3Cpath%20d%3D%22M89%20135l24-22%2016%2014%2013-12%2025%2022%22%20fill%3D%22none%22%20stroke%3D%22%23A8A29E%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M80%20160L176%2064%22%20stroke%3D%22%23DC2626%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E"
+                      },
+                      "rawWhere": "id = NEW.card_id\n  AND NOT EXISTS (SELECT 1 FROM card_art s WHERE s.card_id = NEW.card_id AND s.id <> NEW.id AND s.status IN ('waiting', 'pending', 'drawn'))\n  AND (NEW.level = 3 OR EXISTS (SELECT 1 FROM card_art s WHERE s.card_id = NEW.card_id AND s.level = 3))"
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "pending",
+                "guard": "cortex_payload->>'detail' = '' AND NOT (cortex_payload->>'previous_pending')::boolean"
+              }
+            ],
+            "start": [
+              {
+                "target": "pending"
+              }
+            ],
+            "refuse": [
+              {
+                "target": "failed",
+                "actions": [
+                  {
+                    "effect": {
+                      "op": "update",
+                      "table": "flashcard",
+                      "values": {
+                        "back": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20256%22%20width%3D%22256%22%20height%3D%22256%22%20data-tier%3D%22tier-none%22%3E%3Crect%20width%3D%22256%22%20height%3D%22256%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Crect%20x%3D%2288%22%20y%3D%2280%22%20width%3D%2280%22%20height%3D%2264%22%20rx%3D%228%22%20fill%3D%22none%22%20stroke%3D%22%23A8A29E%22%20stroke-width%3D%223%22%2F%3E%3Ccircle%20cx%3D%22111%22%20cy%3D%22102%22%20r%3D%226%22%20fill%3D%22%23A8A29E%22%2F%3E%3Cpath%20d%3D%22M89%20135l24-22%2016%2014%2013-12%2025%2022%22%20fill%3D%22none%22%20stroke%3D%22%23A8A29E%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M80%20160L176%2064%22%20stroke%3D%22%23DC2626%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E"
+                      },
+                      "rawWhere": "id = NEW.card_id\n  AND NOT EXISTS (SELECT 1 FROM card_art s WHERE s.card_id = NEW.card_id AND s.id <> NEW.id AND s.status IN ('waiting', 'pending', 'drawn'))\n  AND (NEW.level = 3 OR EXISTS (SELECT 1 FROM card_art s WHERE s.card_id = NEW.card_id AND s.level = 3))"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "pending": {
+          "invoke": {
+            "src": "illustrate-card",
+            "onDone": {
+              "target": "drawn",
+              "actions": [
+                {
+                  "assign": {
+                    "detail": ""
+                  }
+                },
+                {
+                  "effect": [
+                    {
+                      "op": "update",
+                      "table": "flashcard",
+                      "values": {
+                        "back": {
+                          "raw": "outcome->'data'->>'image'"
+                        }
+                      },
+                      "rawWhere": "id = NEW.card_id"
+                    }
+                  ]
+                }
+              ]
+            },
+            "onError": [
+              {
+                "target": "unknown",
+                "guard": "outcome->>'kind' = 'unknown'",
+                "actions": [
+                  {
+                    "assign": {
+                      "detail": {
+                        "raw": "COALESCE(outcome->>'data', outcome->>'kind')"
+                      }
+                    }
+                  },
+                  {
+                    "effect": {
+                      "op": "update",
+                      "table": "flashcard",
+                      "values": {
+                        "back": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20256%22%20width%3D%22256%22%20height%3D%22256%22%20data-tier%3D%22tier-none%22%3E%3Crect%20width%3D%22256%22%20height%3D%22256%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Crect%20x%3D%2288%22%20y%3D%2280%22%20width%3D%2280%22%20height%3D%2264%22%20rx%3D%228%22%20fill%3D%22none%22%20stroke%3D%22%23A8A29E%22%20stroke-width%3D%223%22%2F%3E%3Ccircle%20cx%3D%22111%22%20cy%3D%22102%22%20r%3D%226%22%20fill%3D%22%23A8A29E%22%2F%3E%3Cpath%20d%3D%22M89%20135l24-22%2016%2014%2013-12%2025%2022%22%20fill%3D%22none%22%20stroke%3D%22%23A8A29E%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M80%20160L176%2064%22%20stroke%3D%22%23DC2626%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E"
+                      },
+                      "rawWhere": "id = NEW.card_id\n  AND NOT EXISTS (SELECT 1 FROM card_art s WHERE s.card_id = NEW.card_id AND s.id <> NEW.id AND s.status IN ('waiting', 'pending', 'drawn'))\n  AND (NEW.level = 3 OR EXISTS (SELECT 1 FROM card_art s WHERE s.card_id = NEW.card_id AND s.level = 3))"
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "failed",
+                "actions": [
+                  {
+                    "assign": {
+                      "detail": {
+                        "raw": "COALESCE(outcome->>'data', outcome->>'kind')"
+                      }
+                    }
+                  },
+                  {
+                    "effect": {
+                      "op": "update",
+                      "table": "flashcard",
+                      "values": {
+                        "back": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20256%22%20width%3D%22256%22%20height%3D%22256%22%20data-tier%3D%22tier-none%22%3E%3Crect%20width%3D%22256%22%20height%3D%22256%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Crect%20x%3D%2288%22%20y%3D%2280%22%20width%3D%2280%22%20height%3D%2264%22%20rx%3D%228%22%20fill%3D%22none%22%20stroke%3D%22%23A8A29E%22%20stroke-width%3D%223%22%2F%3E%3Ccircle%20cx%3D%22111%22%20cy%3D%22102%22%20r%3D%226%22%20fill%3D%22%23A8A29E%22%2F%3E%3Cpath%20d%3D%22M89%20135l24-22%2016%2014%2013-12%2025%2022%22%20fill%3D%22none%22%20stroke%3D%22%23A8A29E%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M80%20160L176%2064%22%20stroke%3D%22%23DC2626%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E"
+                      },
+                      "rawWhere": "id = NEW.card_id\n  AND NOT EXISTS (SELECT 1 FROM card_art s WHERE s.card_id = NEW.card_id AND s.id <> NEW.id AND s.status IN ('waiting', 'pending', 'drawn'))\n  AND (NEW.level = 3 OR EXISTS (SELECT 1 FROM card_art s WHERE s.card_id = NEW.card_id AND s.level = 3))"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "drawn": {
+          "on": {
+            "restart": [
+              {
+                "target": "waiting"
+              }
+            ]
+          }
+        },
+        "failed": {
+          "on": {
+            "restart": [
+              {
+                "target": "waiting"
+              }
+            ]
+          }
+        },
+        "unknown": {
+          "on": {
+            "restart": [
+              {
+                "target": "waiting"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "CardRedrawMachine": {
+      "cortex": {
+        "id": "card_redraw",
+        "sourceEvents": [
+          "facts.redraw"
+        ]
+      },
+      "name": "CardRedrawMachine",
+      "ir": "CardRedrawMachine",
+      "entity": "Flashcard",
+      "field": "redraw",
+      "guards": {},
+      "hatches": [],
+      "initial": "settled",
+      "level": "replicated",
+      "states": {
+        "settled": {
+          "on": {
+            "draw": [
+              {
+                "target": "drawing",
+                "guard": "EXISTS (SELECT 1 FROM card_art a WHERE a.id = NEW.id || ':3' AND a.status IN ('drawn', 'failed', 'unknown'))",
+                "actions": [
+                  {
+                    "effect": [
+                      {
+                        "op": "update",
+                        "table": "card_art",
+                        "values": {
+                          "status": "waiting",
+                          "detail": "",
+                          "description": {
+                            "raw": "NEW.description"
+                          },
+                          "redraws": {
+                            "raw": "redraws + 1"
+                          }
+                        },
+                        "rawWhere": "id = NEW.id || ':3' AND status IN ('drawn', 'failed', 'unknown')"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "drawing": {
+          "on": {
+            "settle": [
+              {
+                "target": "settled"
+              }
+            ],
+            "facts.redraw": [
+              {
+                "target": "settled",
+                "guard": "cortex_payload->>'status' IN ('drawn', 'failed', 'unknown')"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "DeckLevelMachine": {
+      "cortex": {
+        "id": "deck_level",
+        "sourceEvents": [
+          "facts.level"
+        ]
+      },
+      "name": "DeckLevelMachine",
+      "ir": "DeckLevelMachine",
+      "entity": "DeckLevel",
+      "field": "status",
+      "guards": {},
+      "hatches": [],
+      "initial": "running",
+      "level": "replicated",
+      "states": {
+        "running": {
+          "on": {
+            "complete": [
+              {
+                "target": "complete"
+              }
+            ],
+            "short": [
+              {
+                "target": "partial"
+              }
+            ],
+            "fail": [
+              {
+                "target": "failed"
+              }
+            ],
+            "facts.level": [
+              {
+                "target": "complete",
+                "guard": "(cortex_payload->>'pending')::integer = 0 AND (cortex_payload->>'drawn')::integer = (cortex_payload->>'total')::integer"
+              },
+              {
+                "target": "failed",
+                "guard": "(cortex_payload->>'pending')::integer = 0 AND (cortex_payload->>'drawn')::integer = 0"
+              },
+              {
+                "target": "partial",
+                "guard": "(cortex_payload->>'pending')::integer = 0 AND (cortex_payload->>'drawn')::integer > 0 AND (cortex_payload->>'drawn')::integer < (cortex_payload->>'total')::integer"
+              }
+            ]
+          }
+        },
+        "complete": {
+          "on": {
+            "restart": [
+              {
+                "target": "running"
+              }
+            ],
+            "facts.level": [
+              {
+                "target": "running",
+                "guard": "(cortex_payload->>'pending')::integer > 0 OR (NEW.status = 'complete' AND (cortex_payload->>'drawn')::integer < (cortex_payload->>'total')::integer)\nOR (NEW.status = 'failed' AND (cortex_payload->>'drawn')::integer > 0)\nOR (NEW.status = 'partial' AND ((cortex_payload->>'drawn')::integer = 0 OR (cortex_payload->>'drawn')::integer = (cortex_payload->>'total')::integer))"
+              }
+            ]
+          }
+        },
+        "partial": {
+          "on": {
+            "restart": [
+              {
+                "target": "running"
+              }
+            ],
+            "facts.level": [
+              {
+                "target": "running",
+                "guard": "(cortex_payload->>'pending')::integer > 0 OR (NEW.status = 'complete' AND (cortex_payload->>'drawn')::integer < (cortex_payload->>'total')::integer)\nOR (NEW.status = 'failed' AND (cortex_payload->>'drawn')::integer > 0)\nOR (NEW.status = 'partial' AND ((cortex_payload->>'drawn')::integer = 0 OR (cortex_payload->>'drawn')::integer = (cortex_payload->>'total')::integer))"
+              }
+            ]
+          }
+        },
+        "failed": {
+          "on": {
+            "restart": [
+              {
+                "target": "running"
+              }
+            ],
+            "facts.level": [
+              {
+                "target": "running",
+                "guard": "(cortex_payload->>'pending')::integer > 0 OR (NEW.status = 'complete' AND (cortex_payload->>'drawn')::integer < (cortex_payload->>'total')::integer)\nOR (NEW.status = 'failed' AND (cortex_payload->>'drawn')::integer > 0)\nOR (NEW.status = 'partial' AND ((cortex_payload->>'drawn')::integer = 0 OR (cortex_payload->>'drawn')::integer = (cortex_payload->>'total')::integer))"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "GenerationProvision": {
+      "name": "GenerationProvision",
+      "ir": "GenerationProvision",
+      "entity": "GenerationDraft",
+      "guards": {},
+      "level": "replicated",
+      "hatches": [],
+      "on": {
+        "insert": {
+          "actions": [
+            {
+              "effect": {
+                "op": "ensure",
+                "table": "generation_draft",
+                "values": {
+                  "id": {
+                    "raw": "split_part(NEW.id, ':', 1) || ':draft-cheap'"
+                  },
+                  "topic": "",
+                  "category": "",
+                  "locale": {
+                    "raw": "NEW.locale"
+                  },
+                  "region": "",
+                  "card_count": 0,
+                  "status": "idle",
+                  "set_id": "",
+                  "details": ""
+                }
+              }
+            },
+            {
+              "effect": {
+                "op": "ensure",
+                "table": "generation_draft",
+                "values": {
+                  "id": {
+                    "raw": "split_part(NEW.id, ':', 1) || ':draft-heavy'"
+                  },
+                  "topic": "",
+                  "category": "",
+                  "locale": {
+                    "raw": "NEW.locale"
+                  },
+                  "region": "",
+                  "card_count": 0,
+                  "status": "idle",
+                  "set_id": "",
+                  "details": ""
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "PrintOrderMachine": {
+      "name": "PrintOrderMachine",
+      "ir": "PrintOrderMachine",
+      "entity": "PrintOrder",
+      "guards": {},
+      "level": "external",
+      "hatches": [],
+      "field": "status",
+      "initial": "draft",
+      "states": {
+        "draft": {
+          "on": {
+            "quote": {
+              "target": "quoting",
+              "guard": "NEW.country <> 'BR'"
+            },
+            "quote_br": {
+              "target": "quoting_br",
+              "guard": "NEW.country = 'BR'"
+            }
+          }
+        },
+        "quoting": {
+          "invoke": {
+            "src": "print-quote",
+            "onDone": {
+              "target": "converting",
+              "actions": [
+                {
+                  "assign": {
+                    "cost": {
+                      "raw": "(outcome->'data'->>'cost')::int"
+                    },
+                    "cost_shipping": {
+                      "raw": "(outcome->'data'->>'shipping')::int"
+                    },
+                    "currency": {
+                      "raw": "CASE NEW.country WHEN 'BR' THEN 'brl' WHEN 'AR' THEN 'ars' WHEN 'IL' THEN 'ils' WHEN 'US' THEN 'usd' WHEN 'GB' THEN 'gbp' WHEN 'CN' THEN 'cny' END"
+                    },
+                    "sku": {
+                      "raw": "outcome->'data'->>'sku'"
+                    },
+                    "shipping_method": {
+                      "raw": "outcome->'data'->>'shipping_method'"
+                    }
+                  }
+                }
+              ]
+            },
+            "onError": {
+              "target": "quote_failed",
+              "actions": [
+                {
+                  "assign": {
+                    "failure": {
+                      "raw": "(outcome->>'kind') || ': ' || COALESCE(outcome->>'data', '')"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "quoting_br": {
+          "invoke": {
+            "src": "print-quote-br",
+            "onDone": {
+              "target": "converting",
+              "actions": [
+                {
+                  "assign": {
+                    "cost": {
+                      "raw": "(outcome->'data'->>'cost')::int"
+                    },
+                    "cost_shipping": {
+                      "raw": "(outcome->'data'->>'shipping')::int"
+                    },
+                    "currency": {
+                      "raw": "'brl'"
+                    },
+                    "sku": {
+                      "raw": "outcome->'data'->>'sku'"
+                    },
+                    "shipping_method": {
+                      "raw": "outcome->'data'->>'shipping_method'"
+                    }
+                  }
+                }
+              ]
+            },
+            "onError": {
+              "target": "quote_failed",
+              "actions": [
+                {
+                  "assign": {
+                    "failure": {
+                      "raw": "(outcome->>'kind') || ': ' || COALESCE(outcome->>'data', '')"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "converting": {
+          "invoke": {
+            "src": "print-fx",
+            "onDone": {
+              "target": "quoted",
+              "actions": [
+                {
+                  "assign": {
+                    "item": {
+                      "raw": "(outcome->'data'->>'item')::int"
+                    },
+                    "shipping": {
+                      "raw": "(outcome->'data'->>'shipping')::int"
+                    },
+                    "total": {
+                      "raw": "(outcome->'data'->>'total')::int"
+                    },
+                    "fx_quote": {
+                      "raw": "outcome->'data'->>'quote'"
+                    },
+                    "fx_rates": {
+                      "raw": "(outcome->'data'->'rates')::json"
+                    },
+                    "fx_brl": {
+                      "raw": "(outcome->'data'->>'brl')::int"
+                    }
+                  }
+                }
+              ]
+            },
+            "onError": {
+              "target": "quote_failed",
+              "actions": [
+                {
+                  "assign": {
+                    "failure": {
+                      "raw": "(outcome->>'kind') || ': ' || COALESCE(outcome->>'data', '')"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "quote_failed": {
+          "type": "final"
+        },
+        "quoted": {
+          "on": {
+            "open": {
+              "target": "opening",
+              "actions": [
+                {
+                  "assign": {
+                    "opened_at": {
+                      "raw": "machine_clock()"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "opening": {
+          "invoke": {
+            "src": "print-session",
+            "onDone": {
+              "target": "awaiting_payment",
+              "actions": [
+                {
+                  "assign": {
+                    "session_id": {
+                      "raw": "outcome->'data'->>'id'"
+                    },
+                    "checkout_url": {
+                      "raw": "outcome->'data'->>'url'"
+                    },
+                    "print_file": {
+                      "raw": "substring(outcome->'data'->>'file' from 'mecha-objects/(.+)$')"
+                    },
+                    "cover_file": {
+                      "raw": "substring(outcome->'data'->>'cover' from 'mecha-objects/(.+)$')"
+                    }
+                  }
+                }
+              ]
+            },
+            "onError": {
+              "target": "open_failed",
+              "actions": [
+                {
+                  "assign": {
+                    "failure": {
+                      "raw": "(outcome->>'kind') || ': ' || COALESCE(outcome->>'data', '')"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "open_failed": {
+          "type": "final"
+        },
+        "awaiting_payment": {
+          "on": {
+            "recheck": "checking"
+          },
+          "after": {
+            "600000": {
+              "target": "checking",
+              "guard": "COALESCE(OLD.opened_at, OLD.created_at) > machine_clock() - interval '27 hours'",
+              "actions": [
+                {
+                  "assign": {
+                    "checks": {
+                      "raw": "OLD.checks + 1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "checking": {
+          "invoke": {
+            "src": "print-check",
+            "onDone": {
+              "target": "confirming",
+              "actions": [
+                {
+                  "assign": {
+                    "paid_at": {
+                      "raw": "machine_clock()"
+                    },
+                    "payment_state": {
+                      "raw": "'paid'"
+                    },
+                    "payment_intent": {
+                      "raw": "outcome->'data'->>'payment_intent'"
+                    },
+                    "customer_email": {
+                      "raw": "outcome->'data'->>'email'"
+                    }
+                  }
+                }
+              ]
+            },
+            "onError": [
+              {
+                "target": "unpaid",
+                "guard": "outcome->'data'->>'state' IN ('expired', 'failed')",
+                "actions": [
+                  {
+                    "assign": {
+                      "payment_state": {
+                        "raw": "outcome->'data'->>'state'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "awaiting_payment",
+                "actions": [
+                  {
+                    "assign": {
+                      "payment_state": {
+                        "raw": "COALESCE(outcome->'data'->>'state', outcome->>'kind')"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "confirming": {
+          "invoke": {
+            "src": "print-confirm",
+            "onDone": [
+              {
+                "target": "placing_br",
+                "guard": "NEW.country = 'BR' AND NEW.cover_file IS NOT NULL",
+                "actions": [
+                  {
+                    "assign": {
+                      "mail_message_id": {
+                        "raw": "outcome->'data'->>'message_id'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "placing",
+                "actions": [
+                  {
+                    "assign": {
+                      "mail_message_id": {
+                        "raw": "outcome->'data'->>'message_id'"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "onError": [
+              {
+                "target": "placing_br",
+                "guard": "NEW.country = 'BR' AND NEW.cover_file IS NOT NULL"
+              },
+              {
+                "target": "placing"
+              }
+            ]
+          }
+        },
+        "unpaid": {
+          "type": "final"
+        },
+        "placing": {
+          "invoke": {
+            "src": "print-place",
+            "onDone": {
+              "target": "recording",
+              "actions": [
+                {
+                  "assign": {
+                    "vendor_order_id": {
+                      "raw": "outcome->'data'->>'id'"
+                    },
+                    "vendor_state": {
+                      "raw": "CASE outcome->'data'->>'stage' WHEN 'OnHold' THEN 'on_hold' ELSE 'in_progress' END"
+                    }
+                  }
+                }
+              ]
+            },
+            "onError": {
+              "target": "alerting",
+              "actions": [
+                {
+                  "assign": {
+                    "failure": {
+                      "raw": "(outcome->>'kind') || ': ' || COALESCE(outcome->>'data', '')"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "placing_br": {
+          "invoke": {
+            "src": "print-place-br",
+            "onDone": {
+              "target": "recording",
+              "actions": [
+                {
+                  "assign": {
+                    "vendor_order_id": {
+                      "raw": "outcome->'data'->>'id'"
+                    },
+                    "vendor_state": {
+                      "raw": "COALESCE(outcome->'data'->>'stage', 'in_progress')"
+                    }
+                  }
+                }
+              ]
+            },
+            "onError": {
+              "target": "alerting",
+              "actions": [
+                {
+                  "assign": {
+                    "failure": {
+                      "raw": "(outcome->>'kind') || ': ' || COALESCE(outcome->>'data', '')"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "recording": {
+          "invoke": {
+            "src": "print-record",
+            "onDone": [
+              {
+                "target": "placed_br",
+                "guard": "NEW.country = 'BR' AND NEW.cover_file IS NOT NULL"
+              },
+              {
+                "target": "placed"
+              }
+            ],
+            "onError": [
+              {
+                "target": "placed_br",
+                "guard": "NEW.country = 'BR' AND NEW.cover_file IS NOT NULL"
+              },
+              {
+                "target": "placed"
+              }
+            ]
+          }
+        },
+        "placed": {
+          "on": {
+            "vendor_changed": "vendor_checking"
+          },
+          "after": {
+            "7200000": {
+              "target": "vendor_checking",
+              "guard": "COALESCE(OLD.vendor_state, '') NOT IN ('completed', 'cancelled') AND COALESCE(OLD.paid_at, OLD.created_at) > machine_clock() - interval '30 days'",
+              "actions": [
+                {
+                  "assign": {
+                    "vendor_checks": {
+                      "raw": "OLD.vendor_checks + 1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "placed_br": {
+          "on": {
+            "vendor_changed_br": "vendor_checking_br"
+          },
+          "after": {
+            "7200000": {
+              "target": "vendor_checking_br",
+              "guard": "COALESCE(OLD.vendor_state, '') NOT IN ('completed', 'cancelled') AND COALESCE(OLD.paid_at, OLD.created_at) > machine_clock() - interval '30 days'",
+              "actions": [
+                {
+                  "assign": {
+                    "vendor_checks": {
+                      "raw": "OLD.vendor_checks + 1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "vendor_checking": {
+          "invoke": {
+            "src": "print-status",
+            "onDone": [
+              {
+                "target": "notifying_shipped",
+                "guard": "OLD.shipped_at IS NULL AND outcome->'data'->>'state' IN ('shipped', 'partially_shipped', 'completed')",
+                "actions": [
+                  {
+                    "assign": {
+                      "vendor_state": {
+                        "raw": "outcome->'data'->>'state'"
+                      },
+                      "tracking_carrier": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'carrier', ''), OLD.tracking_carrier)"
+                      },
+                      "tracking_number": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'tracking_number', ''), OLD.tracking_number)"
+                      },
+                      "tracking_url": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'tracking_url', ''), OLD.tracking_url)"
+                      },
+                      "shipped_at": {
+                        "raw": "machine_clock()"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "placed",
+                "actions": [
+                  {
+                    "assign": {
+                      "vendor_state": {
+                        "raw": "outcome->'data'->>'state'"
+                      },
+                      "tracking_carrier": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'carrier', ''), OLD.tracking_carrier)"
+                      },
+                      "tracking_number": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'tracking_number', ''), OLD.tracking_number)"
+                      },
+                      "tracking_url": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'tracking_url', ''), OLD.tracking_url)"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "onError": {
+              "target": "alerting",
+              "actions": [
+                {
+                  "assign": {
+                    "failure": {
+                      "raw": "(outcome->>'kind') || ': ' || COALESCE(outcome->>'data', '')"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "vendor_checking_br": {
+          "invoke": {
+            "src": "print-status-br",
+            "onDone": [
+              {
+                "target": "notifying_shipped",
+                "guard": "OLD.shipped_at IS NULL AND outcome->'data'->>'state' IN ('shipped', 'partially_shipped', 'completed')",
+                "actions": [
+                  {
+                    "assign": {
+                      "vendor_state": {
+                        "raw": "outcome->'data'->>'state'"
+                      },
+                      "tracking_carrier": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'carrier', ''), OLD.tracking_carrier)"
+                      },
+                      "tracking_number": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'tracking_number', ''), OLD.tracking_number)"
+                      },
+                      "tracking_url": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'tracking_url', ''), OLD.tracking_url)"
+                      },
+                      "shipped_at": {
+                        "raw": "machine_clock()"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "target": "placed_br",
+                "actions": [
+                  {
+                    "assign": {
+                      "vendor_state": {
+                        "raw": "outcome->'data'->>'state'"
+                      },
+                      "tracking_carrier": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'carrier', ''), OLD.tracking_carrier)"
+                      },
+                      "tracking_number": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'tracking_number', ''), OLD.tracking_number)"
+                      },
+                      "tracking_url": {
+                        "raw": "COALESCE(NULLIF(outcome->'data'->>'tracking_url', ''), OLD.tracking_url)"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "onError": {
+              "target": "alerting",
+              "actions": [
+                {
+                  "assign": {
+                    "failure": {
+                      "raw": "(outcome->>'kind') || ': ' || COALESCE(outcome->>'data', '')"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "notifying_shipped": {
+          "invoke": {
+            "src": "print-shipped",
+            "onDone": [
+              {
+                "target": "placed_br",
+                "guard": "NEW.country = 'BR' AND NEW.cover_file IS NOT NULL"
+              },
+              {
+                "target": "placed"
+              }
+            ],
+            "onError": [
+              {
+                "target": "placed_br",
+                "guard": "NEW.country = 'BR' AND NEW.cover_file IS NOT NULL"
+              },
+              {
+                "target": "placed"
+              }
+            ]
+          }
+        },
+        "alerting": {
+          "invoke": {
+            "src": "print-alert",
+            "onDone": "attention",
+            "onError": "attention"
+          }
+        },
+        "attention": {
+          "type": "final"
+        }
+      }
+    },
+    "ProgressProvision": {
+      "name": "ProgressProvision",
+      "ir": "ProgressProvision",
+      "entity": "CardSet",
+      "guards": {},
+      "level": "replicated",
+      "hatches": [
+        "generation-slot-bootstrap"
+      ],
+      "on": {
+        "insert": {
+          "actions": [
+            {
+              "effect": {
+                "op": "ensure",
+                "table": "deck_progress",
+                "values": {
+                  "id": {
+                    "raw": "NEW.id"
+                  },
+                  "run": "run-0",
+                  "status": "drafting"
+                }
+              }
+            },
+            {
+              "hatch": {
+                "name": "generation-slot-bootstrap",
+                "call": "snapcards_bootstrap_generation",
+                "args": [
+                  {
+                    "raw": "NEW.device"
+                  },
+                  {
+                    "raw": "NEW.locale"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "schema": {
+    "pgroll": {
+      "target": "migrate",
+      "dir": "/pgroll",
+      "baseline": "00_initdb"
+    },
+    "target": "database",
+    "initdb": "/docker-entrypoint-initdb.d"
+  },
+  "database": "bonitao/mecha-database:0.34.0@sha256:1e65261fd9507f7c935a939c43916fb3a61f335cf50002478b31a8d643a103df",
+  "server": true,
+  "tokenRoles": [
+    "anon",
+    "app_user",
+    "service"
+  ],
+  "computations": [],
+  "drains": [
+    {
+      "name": "deck-level",
+      "on": [
+        "card_art",
+        "flashcard"
+      ],
+      "call": "snapcards_count_art",
+      "body": {}
+    },
+    {
+      "name": "deck-favorites",
+      "on": [
+        "favorite"
+      ],
+      "call": "refresh_deck_favorites",
+      "body": {}
+    },
+    {
+      "name": "deck-covers",
+      "on": [
+        "flashcard"
+      ],
+      "call": "refresh_deck_covers",
+      "body": {}
+    }
+  ]
+}

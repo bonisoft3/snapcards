@@ -1,0 +1,265 @@
+<section class="screen" data-screen="explore">
+  <button type="button" class="btn-more" popovertarget="more-sheet-explore" aria-label="{msg.nav_more}"><span aria-hidden="true">⋯</span></button>
+  <nav id="more-sheet-explore" class="more-sheet" popover aria-label="{msg.nav_more}">
+    <a data-route="cards" data-param-shelf="mine" class="more-link"><span class="more-icon" aria-hidden="true">🗂️</span><span data-text="{msg.nav_my_cards}"></span></a>
+    <a data-route="cards" data-param-shelf="gallery" class="more-link"><span class="more-icon" aria-hidden="true">🌐</span><span data-text="{msg.nav_gallery}"></span></a>
+    <a data-route="about" class="more-link"><span class="more-icon" aria-hidden="true">📖</span><span data-text="{msg.nav_about}"></span></a>
+  </nav>
+  <!-- The device's key scopes every read of its draft slots: a server render has no device, so it reads none. -->
+  <div class="device-scope" data-live="device" data-filter="id=eq.device" data-empty-row='{"id":"device","key":"","theme":"auto"}' data-theme="{theme}" data-cortex="exploreRows" data-machine-ref="theme">
+  <!-- A finished translation names its deck in details, and only then are that deck's cards read. -->
+  <div hidden data-live="generation_draft" data-filter="id=eq.{device.key}:draft-cheap&amp;status=eq.done" data-empty=""><template data-item><div>
+    <div id="translation-settles" data-empty="" data-live="flashcard" data-filter="set_id=eq.{details}" data-reads="play_session,card_set,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{details}" data-read-card_translation="card_translation?set_id=eq.{details}" data-on-mutation="create_set"><template data-item><span></span></template></div>
+  </div></template></div>
+  <!-- A world of its own, so a seat of its own: this seat waits on the server, and the card's must not. -->
+  <div hidden data-live="play_session" data-filter="id=eq.session" data-empty-row='{"id":"session","set_id":""}'><template data-item><div>
+    <div hidden id="translation-asks" data-empty="" data-live="generation_draft" data-filter="id=eq.{device.key}:draft-cheap" data-reads="play_session,card_set,device,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="play_select"><template data-item><span></span></template></div>
+    <div hidden id="translation-asks-cards" data-empty="" data-live="flashcard" data-filter="set_id=eq.{set_id}" data-reads="play_session,card_set,device,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="play_select"><template data-item><span></span></template></div>
+    <div data-empty="" data-live="play_session" data-filter="id=eq.session" data-reads="play_session,card_set,localized_card,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="play_select"><template data-item><span></span></template></div>
+    <div id="card-delete-sync" data-empty="" class="generated-drafts-sync" data-live="card_delete" data-filter="state=eq.confirmed" data-reads="card_delete,card_set,play_session,print_config,device,me" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="create_set"><template data-item><span></span></template></div>
+  </div></template></div>
+  <!-- Labels for the cards this screen can show. -->
+  <div hidden data-live="play_session" data-filter="id=eq.session" data-empty-row='{"id":"session","set_id":""}'><template data-item><div>
+    <div data-empty="" data-live="card_set" data-reads="card_set,deck_translation,localized_card,localized_deck" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="localize_content"><template data-item><span></span></template></div>
+    <div data-empty="" data-live="flashcard" data-filter="set_id=eq.{set_id}" data-reads="card_set,deck_translation,localized_card,localized_deck" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="localize_content"><template data-item><span></span></template></div>
+  </div></template></div>
+  <!-- What creating a deck reads is that deck, so a seat follows the form to it. -->
+  <div hidden data-live="generation_form" data-filter="id=eq.draft" data-empty-row='{"id":"draft","set_id":""}'><template data-item><div>
+    <div id="generated-drafts-sync" class="generated-drafts-sync" data-empty="" data-live="generation_draft" data-filter="set_id=eq.{set_id}" data-order="id.asc" data-reads="play_session,card_set,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="create_set">
+    <template data-item><span></span></template>
+  </div>
+    <div id="generated-flashcards-sync" class="generated-drafts-sync" data-empty="" data-live="flashcard" data-filter="set_id=eq.{set_id}" data-reads="play_session,card_set,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="create_set">
+    <template data-item><span></span></template>
+  </div>
+  </div></template></div>
+  <div class="play-container" data-live="play_session" data-filter="id=eq.session" data-empty-row='{"id":"session","set_id":"69618be6-9206-f9c7-59eb-b5e4b072cf3d","card_index":0,"flipped":"no","mastered":0,"total":20,"status":"playing","finished":"","front":"","back":"","hint":"","emoji":""}' data-reads="play_session,card_set,localized_card,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-cortex="exploreRows" data-machine-ref="study" data-status="{status}" data-index="{card_index}" data-translation-failed="{translation_failed_topic}">
+    <header class="play-header">
+      <div class="desk-header-left">
+        <div class="desk-crumb-row">
+          <a data-route="cards" class="nav-back-link" data-text="{msg.back_to_cards}"></a>
+          <span class="crumb-sep" aria-hidden="true">/</span>
+          <span class="desk-tag" data-text="{msg.explore_desk_subtitle}"></span>
+          <span class="stat-pill" hidden><span data-text="{msg.mastered_count}"></span>: <b data-text="{mastered}">0</b> / <span data-text="{total}">5</span></span>
+        </div>
+        <div class="desk-title-list" data-live="localized_deck" data-filter="id=eq.{set_id}">
+          <template data-item>
+            <div class="desk-title-row">
+              <span class="desk-deck-emoji" data-text="{cover_emoji}">🐾</span>
+              <h1 class="desk-deck-title" data-text="{name}"></h1>
+              <span class="desk-category-badge" data-text="{category}"></span>
+              <span class="desk-locale-pill">🌐 <span data-text="{locale}" data-text-format="language"></span> · <b data-text="{count}"></b> <span data-text="{msg.cards_count}"></span></span>
+              <span class="desk-drawing" data-live="generation_draft" data-filter="status=in.(drafting,illustrating)&amp;set_id=eq.{id}"><template data-item><span class="desk-drawing-level desk-drawing-text" role="status" aria-busy="true" aria-label="{msg.gen_phase_ai}"></span></template></span>
+              <span class="desk-drawing" data-live="deck_level" data-filter="set_id=eq.{id}&amp;status=eq.running" data-order="level.asc"><template data-item><span class="desk-drawing-level" data-level="{level}" role="status" aria-busy="true" aria-label="{msg.gen_phase_ai}" style="--drawn: {drawn}; --failed: {failed}; --unknown: {unknown}; --total: {total}"></span></template></span>
+            </div>
+          </template>
+        </div>
+      </div>
+      <div class="play-header-actions">
+        <div class="lang-switch">
+          <a data-route="explore" data-locale="pt" data-locale-current="page" id="lang-pt" data-on-click="play_select" class="lang-link" data-text="{msg.lang_pt}"></a>
+          <a data-route="explore" data-locale="es" data-locale-current="page" id="lang-es" data-on-click="play_select" class="lang-link" data-text="{msg.lang_es}"></a>
+          <a data-route="explore" data-locale="en" data-locale-current="page" id="lang-en" data-on-click="play_select" class="lang-link" data-text="{msg.lang_en}"></a>
+          <a data-route="explore" data-locale="he" data-locale-current="page" id="lang-he" data-on-click="play_select" class="lang-link" data-text="{msg.lang_he}"></a>
+          <a data-route="explore" data-locale="zh" data-locale-current="page" id="lang-zh" data-on-click="play_select" class="lang-link" data-text="{msg.lang_zh}"></a>
+        </div>
+        <div data-live="generation_draft" data-filter="status=eq.drafting&amp;topic=like.{set_id}*">
+          <template data-item><span class="translation-pending" data-topic="{topic}" data-target="{locale}" role="status" aria-live="polite" aria-busy="true" data-text="{msg.translation_pending}"></span></template>
+        </div>
+        <span class="translation-error" role="status" data-text="{msg.translation_failed}"></span>
+        <div class="theme-switch" role="group">
+          <button type="button" id="theme-auto" class="theme-btn" data-theme-val="auto" data-text="{msg.theme_auto}">Auto</button>
+          <button type="button" id="theme-light" class="theme-btn" data-theme-val="light" >☀️</button>
+          <button type="button" id="theme-dark" class="theme-btn" data-theme-val="dark" >🌙</button>
+        </div>
+        <button type="button" id="btn-fullscreen-toggle" class="btn btn-outline btn-fullscreen-toggle" commandfor="play_select" command="fullscreen" title="{msg.fullscreen_label}">
+          <span class="fs-icon" aria-hidden="true">⛶</span>
+          <span class="fs-label" data-text="{msg.fullscreen_label}"></span>
+        </button>
+        <a data-route="print" id="btn-header-print" class="btn btn-primary btn-header-print" data-on-click="print_select" data-id="{set_id}" data-text="{msg.print_action}"></a>
+      </div>
+    </header>
+
+    <!-- 2-Column Split Studio Workbench -->
+    <div class="explore-workbench">
+      <!-- LEFT COLUMN (65%): Tactile Flashcard Stage on Dotted Drafting Canvas -->
+      <div class="explore-stage-col">
+        <!-- Fullscreen Exhibition Top Bar (Visible in Fullscreen Mode) -->
+        <div class="fullscreen-topbar">
+          <button type="button" id="btn-fullscreen-exit" class="fullscreen-exit-btn" commandfor="play_select" command="exit-fullscreen">
+            <span class="exit-arrow" aria-hidden="true">←</span>
+            <span class="exit-text" data-text="{msg.back_to_studio}"></span>
+          </button>
+          <span class="fullscreen-stat-pill" hidden><span data-text="{msg.mastered_count}"></span>: <b data-text="{mastered}">0</b> / <span data-text="{total}">5</span></span>
+        </div>
+
+        <div class="flashcard-deck" data-status="{status}">
+          <div class="flashcard-stack-wrap">
+            <div class="card-stack-layer-2" aria-hidden="true"></div>
+            <div class="card-stack-layer-1" aria-hidden="true"></div>
+
+            <div class="flashcard-frame" data-flipped="{flipped}">
+              <div class="card-inner" id="card-flip">
+                <!-- FRONT FACE (Illustration Only) -->
+                <div class="card-face card-front" data-front="{front}" data-emoji="{emoji}">
+                  <div class="plate-header">
+                    <div class="plate-header-left">
+                      <span class="card-specimen-seal" data-text="{msg.preview_front_side}"></span>
+                    </div>
+                    <div class="plate-header-right">
+                      <button type="button" class="btn-edit-card" popovertarget="card-edit-sheet" aria-label="{msg.edit_card}" title="{msg.edit_card}"><span aria-hidden="true">✏️</span></button>
+                      <a data-route="card" data-param-deck="{set_id}" data-param-card="{original_front}" class="card-permalink" title="{front}" aria-label="{front}">
+                        <span class="card-link-icon" aria-hidden="true">🔗</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Specimen Illustration Plate (Image Only) -->
+                  <!-- The next card's picture, so a click on Next waits for nothing. -->
+                  <span hidden data-live="next_picture" data-filter="id=eq.next"><template data-item><img class="next-card-preload" src="{back}" alt="" /></template></span>
+                  <div class="plate-solo-visual" id="card-flip-visual">
+                    <div class="plate-litho-frame">
+                      <div class="crop-mark crop-tl" aria-hidden="true"></div>
+                      <div class="crop-mark crop-tr" aria-hidden="true"></div>
+                      <div class="crop-mark crop-bl" aria-hidden="true"></div>
+                      <div class="crop-mark crop-br" aria-hidden="true"></div>
+                      <div class="card-illustration" data-live="flashcard" data-filter="id=eq.{card_id}" data-empty="">
+                        <template data-item>
+                          <img class="card-illustration-img" src="{back}" alt="" />
+                        </template>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Card Front Display Footer (Single Flip Prompt) -->
+                  <div class="plate-footer prompt" id="card-flip-prompt">
+                    <div class="footer-prompt-left">
+                      <span class="prompt-icon" aria-hidden="true">↻</span>
+                      <span data-text="{msg.tap_to_flip}"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- BACK FACE (Target Word Only, Centered in Bold Typography) -->
+                <div class="card-face card-back">
+                  <div class="plate-header">
+                    <div class="plate-header-left">
+                      <span class="card-specimen-seal" data-text="{msg.preview_back_side}"></span>
+                    </div>
+                    <div class="plate-header-right">
+                      <a data-route="card" data-param-deck="{set_id}" data-param-card="{original_front}" class="card-permalink" title="{front}" aria-label="{front}">
+                        <span class="card-link-icon" aria-hidden="true">🔗</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="face-content-back" id="card-flip-back">
+                    <h2 class="card-back-title" data-text="{front}"></h2>
+                  </div>
+
+                  <div class="plate-footer prompt" id="card-flip-back-prompt">
+                    <div class="footer-prompt-left">
+                      <span class="prompt-icon" aria-hidden="true">↺</span>
+                      <span data-text="{msg.flip_back}"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Centered Ergonomic Controls -->
+          <div class="play-controls">
+            <span class="previous-control-slot" data-live="play_session" data-filter="id=eq.session" data-reads="localized_card" data-project='{"first":{"eq":["card_index","0"]}}'><template data-item><button type="button" class="btn btn-secondary btn-control-prev" id="btn-prev" disabled="{first}" data-on-click="play_prev" data-text="{msg.prev_card}"></button></template></span>
+            <button type="button" class="btn btn-accent-master btn-control-master" id="btn-master" hidden data-on-click="play_master" data-text="{msg.mark_mastered}"></button>
+            <button type="button" class="btn btn-primary btn-control-next" id="btn-next" data-on-click="play_next" data-text="{msg.next_card}"></button>
+          </div>
+
+          <div class="play-completed-card">
+            <div class="completed-icon" aria-hidden="true">🏆</div>
+            <h2 class="completed-title" data-text="{msg.session_completed}"></h2>
+            <p class="completed-desc" data-text="{msg.session_completed_sub}"></p>
+            <div class="completed-actions">
+              <button type="button" class="btn btn-primary btn-control-restart" id="btn-restart" data-on-click="play_restart" data-text="{msg.restart_session}"></button>
+              <a data-route="print" id="btn-completed-print" class="btn btn-outline" data-on-click="print_select" data-id="{set_id}" data-text="{msg.view_print_sheet}"></a>
+            </div>
+          </div>
+        </div>
+        <!-- The card in view, edited in a sheet: its description and a redraw of its level 3 (CardRedrawMachine). -->
+        <div id="card-edit-sheet" class="card-edit-sheet" popover role="dialog" aria-labelledby="card-edit-title">
+          <div class="card-edit-body" data-live="flashcard" data-filter="id=eq.{card_id}" data-empty="" data-reads="card_art">
+            <template data-item>
+              <form class="card-edit-form" data-entity="flashcard" data-action="update" data-redraw="{redraw}">
+                <h2 id="card-edit-title" class="card-edit-title" data-text="{front}"></h2>
+                <div class="card-edit-art">
+                  <img class="card-edit-img" src="{back}" alt="" />
+                </div>
+                <span class="card-edit-progress" data-live="card_art" data-filter="id=eq.{id}:3" data-empty="" data-art="{status}" aria-hidden="true"></span>
+                <span class="card-edit-status card-edit-status-drawing" role="status" data-text="{msg.edit_drawing}"></span>
+                <span class="card-edit-status card-edit-status-failed" role="status" data-text="{msg.edit_failed}"></span>
+                <label class="card-edit-label" for="card-edit-details" data-text="{msg.edit_details_label}"></label>
+                <textarea id="card-edit-details" class="card-edit-details" name="description" rows="4" autofocus data-value="{description}"></textarea>
+                <input type="hidden" name="redraw" value="drawing" />
+                <p class="store-error" role="alert" hidden data-text="{msg.edit_refused}"></p>
+                <div class="card-edit-actions">
+                  <button type="submit" class="btn btn-primary btn-regenerate" data-text="{msg.edit_regenerate}"></button>
+                  <button type="button" class="btn btn-outline btn-edit-done" popovertarget="card-edit-sheet" popovertargetaction="hide" data-text="{msg.edit_done}"></button>
+                </div>
+              </form>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN (35%): Visual Deck Contact-Sheet Sidebar -->
+      <aside class="explore-contact-sidebar">
+        <!-- Present exactly when the reader owns the deck: `me` is visible to its own reader alone. -->
+        <span hidden data-live="card_set" data-filter="id=eq.{set_id}"><template data-item><span><span data-live="me" data-filter="id=eq.{owner}"><template data-item><span class="owned-deck"></span></template></span></span></template></span>
+        <div class="contact-sheet-header">
+          <div class="contact-header-titles">
+            <h3 class="contact-sheet-title" data-text="{msg.deck_rail_label}"></h3>
+            <p class="contact-sheet-sub" data-text="{msg.contact_sheet_sub}"></p>
+          </div>
+          <span class="contact-count-pill"><b data-text="{total}">20</b> <span data-text="{msg.cards_count}"></span></span>
+        </div>
+
+        <nav class="play-card-rail" aria-label="{msg.deck_rail_label}" data-live="localized_card" data-filter="set_id=eq.{set_id}" data-reads="play_session,card_set,print_config" data-order="id.asc">
+          <template data-item>
+            <div class="card-rail-item">
+              <a data-route="card" data-param-deck="{set_id}" data-param-card="{original_front}" class="card-rail-pill" data-on-click="play_select" data-id="{id}" data-card="{id}" data-name="{front}" data-front="{front}" data-emoji="{emoji}">
+                <div class="mini-card-thumb">
+                  <span data-live="flashcard" data-filter="id=eq.{id}"><template data-item><img class="card-illustration-img" data-image-src="{back}" sizes="auto, 160px" alt="" loading="lazy" /></template></span>
+                  <span class="mini-card-emoji" data-text="{emoji}">✨</span>
+                </div>
+                <div class="mini-card-foot">
+                  <span class="pill-label" data-text="{front}"></span>
+                  <span class="pill-dot" aria-hidden="true">●</span>
+                </div>
+              </a>
+              <!-- One tap arms the button, a second within four seconds confirms; create_set applies the confirmed row. -->
+              <span class="card-delete" data-live="card_delete" data-filter="id=eq.{id}" data-empty-row='{"id":"{id}","state":"idle"}' data-cortex="exploreRows" data-machine-ref="deletion" data-delete="{state}" aria-live="polite">
+                <button type="button" class="btn-delete-card">
+                  <span class="card-delete-idle" aria-hidden="true">🗑️</span>
+                  <span class="card-delete-name" data-text="{msg.delete_card}"></span>
+                  <span class="card-delete-armed" data-text="{msg.delete_card_confirm}"></span>
+                </button>
+              </span>
+            </div>
+          </template>
+        </nav>
+
+        <!-- Print Readiness Card Docked at Bottom of Contact Sheet -->
+        <div class="print-readiness-banner">
+          <div class="banner-top-row">
+            <div class="banner-icon" aria-hidden="true">🖨️</div>
+            <div class="banner-content">
+              <h4 class="banner-title" data-text="{msg.print_sheet_ready}"></h4>
+              <p class="banner-tip" data-text="{msg.print_sheet_tip}"></p>
+            </div>
+          </div>
+          <a data-route="print" id="btn-banner-print" class="btn btn-primary btn-banner-action" data-on-click="print_select" data-id="{set_id}" data-text="{msg.view_print_sheet}"></a>
+        </div>
+      </aside>
+    </div>
+  </div>
+  </div>
+</section>

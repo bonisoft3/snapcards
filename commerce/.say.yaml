@@ -1,0 +1,26 @@
+say:
+  self: {}
+  build:
+    rulemap:
+      commerce:
+        platform: host
+        priority: -1
+        stop: true
+        cmds:
+          - do: "mise exec github:denoland/deno@v2.9.7 -- deno check --no-lock *.ts"
+  lint:
+    rulemap:
+      commerce:
+        platform: host
+        priority: -1
+        stop: true
+        cmds:
+          - do: "mise exec github:denoland/deno@v2.9.7 -- deno lint *.ts"
+  test:
+    rulemap:
+      commerce:
+        platform: host
+        priority: -1
+        stop: true
+        cmds:
+          - do: "mise exec github:denoland/deno@v2.9.7 -- deno task test"

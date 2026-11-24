@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Snapcards — Journal</title>
+<style>
+  body { margin:0; background:#faf8f5; color:#181d25; font:17px/1.6 system-ui, sans-serif; }
+  main { max-width:1050px; margin:auto; padding:48px 24px; display:grid; gap:36px; }
+  h1 { font-size:44px; line-height:1.1; margin:8px 0; }
+  h2 { margin:24px 0 8px; }
+  h3 { margin:16px 0 6px; }
+  article, figure { background:white; border:1px solid #ddd8d0; border-radius:18px; padding:24px; margin:16px 0; }
+  img { width:100%; height:auto; border-radius:10px; }
+  small, figcaption { color:#5f636b; }
+  .comparison { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  time, .label { font-size:12px; text-transform:uppercase; letter-spacing:.15em; color:#945220; font-weight:700; display:block; }
+  a { color:#945220; }
+  @media(max-width:600px) { .comparison { grid-template-columns:1fr; } h1 { font-size:32px; } }
+  .gallery { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:24px 0; }
+  .gallery figure { margin:0; padding:0; overflow:hidden; }
+  .gallery img { border-radius:0; }
+  .gallery figcaption { padding:14px 18px; font-size:14px; }
+  figcaption strong { display:block; }
+  table { border-collapse:collapse; width:100%; font-size:14px; }
+  th, td { padding:12px; text-align:left; border-bottom:1px solid #ddd8d0; vertical-align:top; }
+  .notice { padding:16px; border-inline-start:4px solid #945220; background:#f6efdf; }
+  .muted { color:#5f636b; font-size:13px; }
+  @media(max-width:600px) { .gallery { grid-template-columns:1fr; } table { display:block; overflow:auto; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="label">Snapcards · Project journal</span>
+    <h1>Snapcards — Cultural Flashcard Press &amp; Study Desk</h1>
+    <p>A multilingual cultural flashcard press and study desk in five languages (English, Portuguese, Spanish, Hebrew, Chinese): browse illustrated decks, flip and master specimen cards, generate new decks with local WebGPU or cloud AI, and print A4/Letter sheets with cutting guides. <a href="#initial-brief">Latest product brief ↓</a></p>
+  </header>
+
+  <article id="turn-2026-11-22-tag-frame-and-consent">
+    <time datetime="2026-11-22">2026-11-22 · Delivery Journal</time>
+    <h2>Google Ads in a tag frame, and one consent bar for every reader</h2>
+    <div class="comparison">
+      <div><p class="label">Before</p><p>Snapcards had no advertising measurement. A Google tag in the page itself could not remarket: the terminal's Trusted Types refused Google's <code>viewthroughconversion</code> script, and admitting it threw under the SES lockdown. Nothing asked a reader for consent, so readers in Brazil and the EEA could only ever send cookieless pings.</p></div>
+      <div><p class="label">After</p><p>Google's tag (<code>AW-11407991574</code>) runs in <code>/shell/tag.html</code>, a hidden frame of the app's own origin with its own policy and realm, so its <code>_gcl_*</code> cookies are first-party and the app's document stays Google-free. On the first view, every reader, wherever they are, sees a compact bar in their language asking about advertising cookies. Accept and Reject look the same, and the page stays usable. Until the reader answers, advertising is denied and the bar stays. A Reject, or Global Privacy Control, is not asked again. The choice is kept on the device, stated to the frame before Google's tag configures, and can be reopened from a shield in the corner.</p></div>
+    </div>
+    <div class="gallery">
+      <figure><img src="journal/2026-11-22-consent-bar-pt-light.png" alt="About page in Portuguese with a one-line bar along the bottom: a question about advertising cookies, a Política de privacidade link, and equal Recusar and Aceitar buttons"><figcaption><strong>Portuguese, light</strong>The first view. Nothing of Google's is stored until Aceitar.</figcaption></figure>
+      <figure><img src="journal/2026-11-22-consent-bar-pt-dark.png" alt="The same bar in dark mode, with light buttons on a dark strip"><figcaption><strong>Portuguese, dark</strong>Built from the design's tokens, it follows the theme.</figcaption></figure>
+      <figure><img src="journal/2026-11-22-consent-bar-en-light.png" alt="About page in English with the consent bar: May we and Google use cookies…, Privacy policy, Reject and Accept"><figcaption><strong>English, light</strong>The <code>chrome_consent_*</code> keys are in all five catalogues, and <code>check i18n</code> asks for each one.</figcaption></figure>
+      <figure><img src="journal/2026-11-22-consent-bar-en-dark.png" alt="English consent bar in dark mode"><figcaption><strong>English, dark</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-22-consent-bar-pt-phone.png" alt="Phone-width About page with the bar wrapped to the sentence above two equal buttons"><figcaption><strong>Phone, 390 × 844</strong>The bar wraps to the sentence above the two buttons, 139 pixels tall.</figcaption></figure>
+      <figure><img src="journal/2026-11-22-consent-bar-reopened-en.png" alt="Consent bar reopened from the keyboard with Accept marked by a check and focus on Reject"><figcaption><strong>Reopened</strong>The shield reopens the bar from the keyboard with the held choice checked (<code>aria-pressed</code>). Escape returns focus to the shield.</figcaption></figure>
+      <figure><img src="journal/2026-11-22-consent-bar-gpc-shield.png" alt="About page in English with no bar and a round shield button at the bottom right corner"><figcaption><strong>Global Privacy Control</strong>Read as a Reject. No bar is shown, and the shield offers the choice.</figcaption></figure>
+    </div>
+    <h3>What each reader gets</h3>
+    <p>The check ran in Playwright 1.61.1's Chromium against this tree's <code>shell/index.html</code>, <code>shell/tag.html</code> and the terminal, with <code>snapcards.fun</code> mapped to a local door over TLS. Each landing carried <code>?gclid=TESTGCLID123</code>, and the requests reached Google.</p>
+    <table>
+      <tr><th>Reader</th><th>Bar</th><th>Consent told to the frame before <code>config</code></th><th>Google cookies</th><th>Remarketing requests</th></tr>
+      <tr><td>Reject</td><td>shown, then the shield</td><td>denied</td><td>none</td><td>0</td></tr>
+      <tr><td>Reject, reload</td><td>not asked again</td><td>denied</td><td>none</td><td>0</td></tr>
+      <tr><td>Accept</td><td>shown, then the shield</td><td>denied, then granted</td><td><code>_gcl_au</code>, <code>_gcl_aw</code></td><td>4 (<code>viewthroughconversion</code>, <code>rmkt/collect</code>, <code>1p-user-list</code> ×2)</td></tr>
+      <tr><td>Accept, reload</td><td>not asked again</td><td>granted</td><td><code>_gcl_au</code>, <code>_gcl_aw</code></td><td>4</td></tr>
+      <tr><td>Ignored, then Gallery, then a new load</td><td>still shown</td><td>denied</td><td>none</td><td>0</td></tr>
+      <tr><td>Global Privacy Control</td><td>not shown; shield offered</td><td>denied</td><td>none</td><td>0</td></tr>
+      <tr><td><code>mode: "none"</code>, advertising denied</td><td>nothing drawn</td><td>denied</td><td>none</td><td>0</td></tr>
+      <tr><td><code>mode: "none"</code>, advertising granted</td><td>nothing drawn</td><td>granted</td><td><code>_gcl_au</code>, <code>_gcl_aw</code></td><td>4</td></tr>
+    </table>
+    <p class="notice">Advertising is the only purpose asked. Google's <code>analytics_storage</code> follows it, and the app's own measurement is never asked. Where the reader is does not matter: everyone sees the same bar. On localhost and every test host nothing is drawn, because only <code>snapcards.fun</code> and <code>www.snapcards.fun</code> run the tag. The replicated evidence row, the privacy policy's own text and conversion events are still to come.</p>
+    <p>Gates: <code>generate</code>, <code>lint</code> and <code>test</code> green. The browser check ran without a cluster, so the screenshots are taken on the pre-rendered About page.</p>
+    <p>Snapcards now measures its Google Ads from a first-party frame and asks every reader before writing advertising cookies.</p>
+  </article>
+
+  <article id="turn-2026-11-18-checkout-markup-and-cancel">
+    <time datetime="2026-11-18">2026-11-18 · Delivery Journal</time>
+    <h2>Item-only print markup and starting anew from a cancelled checkout</h2>
+    <div class="comparison">
+      <div><p class="label">Before</p><p><code>print-fx</code> applied the 80% markup to Prodigi’s entire <code>totalCost</code> (including international courier shipping) and stuffed the shipping markup into the cards line, while cancelling an embedded Checkout session left the buyer on a pending receipt with no way to edit a mistyped email or start a new order until the two-hour Stripe session expired.</p></div>
+      <div><p class="label">After</p><p><code>print-fx</code> marks up Prodigi’s non-shipping cost (<code>cost - shipping</code>) alone and passes shipping through at 1×, and pending/cancelled receipts expose <code>#btn-checkout-new</code> (and clear on modal close) to restore the prior delivery fields into <code>.checkout-delivery</code> and focus <code>#delivery-email</code> immediately.</p></div>
+    </div>
+    <div class="gallery">
+      <figure><img src="journal/2026-11-18-cancelled-checkout-new-order.png" alt="Cancelled print checkout dialog showing Resume checkout, Refresh order status, and Start a new print order"><figcaption>Cancelled checkout receipt with <em>Start a new print order</em> alongside <em>Resume checkout</em>.</figcaption></figure>
+      <figure><img src="docs/evidence/print-vendor/receipt.png" alt="Print order receipt showing 5 postcards at R$ 26,25 plus R$ 28,63 shipping for R$ 54,88 total"><figcaption>Simulator receipt with 80% markup on cards alone (<code>R$ 26,25</code> + <code>R$ 28,63</code> shipping = <code>R$ 54,88</code>).</figcaption></figure>
+    </div>
+    <p>Gates: <code>generate</code>, <code>build</code>, <code>lint</code>, <code>test</code> (128/128), and <code>integrate@host</code> (<code>replay</code>, <code>check-acceptance</code>, <code>check-checkout-ui</code>, <code>check-commerce</code>, <code>check-visual</code>) green.</p>
+  </article>
+
+  <article id="turn-2026-11-18-responsive-nav">
+    <time datetime="2026-11-18">2026-11-18 · Delivery Journal</time>
+    <h2>Three-tier responsive navigation: phone top CTAs + avatar sheet, tablet rail, desktop sidebar</h2>
+    <div class="comparison">
+      <div><p class="label">Before</p><p>Phones squeezed all six navigation entries into one horizontal top strip and hid <code>.shell-me</code>, leaving tiny labels and no visible account avatar on mobile, while narrow tablets inherited the phone strip up to 859 pixels.</p></div>
+      <div><p class="label">After</p><p>Phones (<code>&lt;768px</code>) keep the sticky 64-pixel top bar to the three primary calls to action (<code>Home</code>, <code>Create</code>, <code>Print</code>) plus the active screen’s <code>#btn-top-login</code> avatar tile in the fourth column, opening a bottom sheet with <code>My Cards</code>, <code>Gallery</code>, <code>About</code>, account status, Passkey/Google/Guest sign-in, and signed-in sign-out alongside inline library shelf tabs. Tablets (<code>768px–1099px</code>) use an 88-pixel icon+label left rail with a two-column card grid; desktops (<code>&gt;=1100px</code>) keep the 240-pixel sidebar.</p></div>
+    </div>
+    <div class="gallery">
+      <figure><img src="journal/2026-11-18-mobile-nav-home.png" alt="Phone library view at 390 pixels wide showing Home, Create, Print and the fourth-column avatar button above inline shelf tabs"><figcaption>Phone (<code>390×844</code>): three primary CTAs plus the fourth-column avatar button and inline shelf switcher.</figcaption></figure>
+      <figure><img src="journal/2026-11-18-mobile-nav-sheet.png" alt="Phone bottom sheet opened from the fourth-column avatar showing My Cards, Gallery, About and account portability controls"><figcaption>Phone avatar sheet: secondary destinations (<code>My Cards</code>, <code>Gallery</code>, <code>About</code>) and account portability.</figcaption></figure>
+    </div>
+    <figure><img src="journal/2026-11-18-tablet-rail.png" alt="Tablet library view at 820 pixels wide showing the 88-pixel left icon+label rail beside a two-column flashcard deck grid"><figcaption>Tablet (<code>820×1180</code>): 88-pixel icon+label navigation rail and two-column <code>4:3</code> deck grid.</figcaption></figure>
+  </article>
+
+  <article id="turn-2026-11-07-presentation-watch">
+    <time datetime="2026-11-07">2026-11-07 · Delivery Journal</time>
+    <h2>Measured Docker watch: presentation saves in 532–654 ms</h2>
+    <p>Authored HTML and CSS now reach Docker launch directly, with no compiler on save. Native watch is disabled pending lifecycle design. Existing declared capabilities can gain new HTML bindings without generation. <a href="journal/2026-11-07-presentation-watch.html">Measurements, browser evidence, and scope</a>.</p>
+    <figure><img src="journal/2026-11-07-presentation-watch.png" alt="Snapcards catalog verified in Chromium with an active service worker"><figcaption>The existing catalog after a measured presentation edit and refresh.</figcaption></figure>
+  </article>
+
+  <article id="turn-2026-11-05-cortex">
+    <time datetime="2026-11-05">2026-11-05 · Delivery Journal</time>
+    <h2>A collection continues while its screen comes and goes</h2>
+    <p>Generation and its progress now follow durable charts on the server. The creation screen attaches to the collection it names, and a saved form from the previous release can recover its collection after a reload. Existing decks and pending work stay in place during the database upgrade.</p>
+    <div class="gallery">
+      <figure><img src="journal/2026-11-05-cortex-generation.png" alt="A five-card Planetas e Estrelas collection and its completed preview"><figcaption>Created in the isolated app: five cards and their completed generation progress.</figcaption></figure>
+      <figure><img src="journal/2026-11-05-cortex-print.png" alt="Print studio with the generated collection and Prodigi postcard settings"><figcaption>The new collection follows through to the print studio and its postcard options.</figcaption></figure>
+      <figure><img src="journal/2026-11-05-cortex-phone-recovery.png" alt="Phone-sized creation screen after reloading a five-card Brazilian Animals collection"><figcaption>At 400 pixels wide, the saved collection returned after a reload and finished its five cards.</figcaption></figure>
+    </div>
+    <p>The live playtest created the collection, moved from Saturno to Júpiter, and changed the print vendor and stock. On a 400-pixel phone viewport, an immediate reload returned a server 504 under concurrent load; a retry recovered the same five-card collection and reached Ready. The integration run passed acceptance, checkout, commerce, replay and visual checks. Retained-database tests cover forward migration, replay, existing effects and jobs, and forms from the earlier release.</p>
+  </article>
+
+  <article id="turn-2026-10-31">
+    <time datetime="2026-10-31">2026-10-31 · Delivery Journal</time>
+    <h2>Decks their authors own, favourites of their own, and progress that tells the truth</h2>
+    <p>A deck belongs to the person who generated it, guest or signed in: only they edit or delete it, and it stays theirs after a reload. Each reader favourites any deck for themselves and every deck shows how many have; a translation is a cache every reader shares. The /generate form survives a reload, and each of a deck's three progress bars is there from submit and fills from what really happened.</p>
+    <div class="comparison">
+      <div><p class="label">Before</p><p>Which decks were yours lived in a tab-only list, so a reload or a pasted link hid ✏️ from a deck's own author, while the server took anyone's writes to any deck. One favourite flag was every visitor's. Reading a deck in another language wrote into its cards. Level 1 looked finished before anything started, levels 2 and 3 appeared only once their art was queued, and a reload mid-generation forgot the deck.</p></div>
+      <div><p class="label">After</p><p>Decks and cards carry their owner and only the owner writes them; the page asks the reader's own <code>me</code> row. A favourite is the reader's private row, counted in <code>deck_stats</code>. Translations live in <code>deck_translation</code> and <code>card_translation</code>. The form is the browser's, durability <code>device</code>. Level 1 is the form's own state; levels 2 and 3 fill from their counts, green drawn, red refused, the track still waiting.</p></div>
+    </div>
+    <div class="comparison">
+      <figure><img src="journal/2026-10-31-progress-start-pt.png" alt="A generation job row with three bars: the first green, the second and third an empty track"><figcaption>At submit: the words are written, both pictures still waiting.</figcaption></figure>
+      <figure><img src="journal/2026-10-31-progress-settled-pt.png" alt="The same job row with all three bars green"><figcaption>Settled: every card drawn at both levels.</figcaption></figure>
+    </div>
+    <div class="comparison">
+      <figure><img src="journal/2026-10-31-favorite-count-pt.png" alt="A deck cover with a red heart and the count 1 in its corner"><figcaption>The reader's own favourite and everyone's count.</figcaption></figure>
+      <figure><img src="journal/2026-10-31-edit-after-reload-pt.png" alt="A card's header with the pencil edit button beside the link button"><figcaption>✏️ on the author's deck, after a reload.</figcaption></figure>
+    </div>
+    <p>A <code>device</code> row had read as an unconfirmed write forever, since TanStack's localStorage collection never cleared its own optimistic row: mecha's client now keeps a device table local-only and writes it through to the same storage, so stored rows stay. Gates: <code>generate</code>, <code>lint</code> and <code>test</code> green; <code>integrate</code>'s acceptance driver walks two readers' favourites, a reload mid-generation and the ✏️ for its author and nobody else.</p>
+  </article>
+
+  <article id="turn-2026-10-30">
+    <time datetime="2026-10-30">2026-10-30 · Delivery Journal</time>
+    <h2>Editing a card, deleting it in two taps, and decks that finish on their own</h2>
+    <p>A reader names a deck with a short title and refines it with optional details; each card carries what its picture shows in the deck's language, editable in a bottom sheet that redraws the card's picture from it; a card goes with two taps on one button; the /generate preview shows the deck being generated; and a deck's text levels start on the server, so it finishes with no tab open.</p>
+    <div class="comparison">
+      <div><p class="label">Before</p><p>The topic box was both the deck's name and its instructions. The only picture description was English. Deleting asked its question in a native disclosure, and the rail's sheet of styles never loaded on the study screens. After exploring another deck, /generate kept showing it while a new one generated. A deck's heavy text started only if its author's tab stayed open.</p></div>
+      <div><p class="label">After</p><p>"Título da coleção" names the deck and "Detalhes (opcional)" only steers its text. ✏️ opens a sheet with the card's image, its Portuguese description and "Gerar de novo", which draws a new run of the card's level 3 after translating the description; a refusal shows the no-art frame in the sheet and keeps the card's art. 🗑 turns into a red "Apagar?" for four seconds. The preview binds the generation draft. The deck-advance hatch starts each level from the rows.</p></div>
+    </div>
+    <div class="comparison">
+      <figure><img src="journal/2026-10-30-title-details-pt.png" alt="Generation form with a Título da coleção field holding Flores do Cerrado and a Detalhes (opcional) field below"><figcaption>Title and details, apart.</figcaption></figure>
+      <figure><img src="journal/2026-10-30-delete-armed-pt.png" alt="Card rail with the second card's delete button turned into a red Apagar? button"><figcaption>One tap arms the button; it reverts after four seconds.</figcaption></figure>
+    </div>
+    <div class="comparison">
+      <figure><img src="journal/2026-10-30-edit-sheet-pt.png" alt="Bottom sheet at 375px with the card's image, a green bar, the Portuguese description and Gerar de novo and Pronto buttons"><figcaption>The edit sheet at 375px, the description in the deck's language.</figcaption></figure>
+      <figure><img src="journal/2026-10-30-edit-sheet-refused-pt.png" alt="Edit sheet showing the no-art frame and a red bar after a refused drawing"><figcaption>A refused redraw: the no-art frame and a red bar, the card's own art untouched.</figcaption></figure>
+    </div>
+    <figure><img src="journal/2026-10-30-edit-sheet-drawn-pt.png" alt="Edit sheet with a newly drawn image and a green bar"><figcaption>Redrawn: the new image replaces the card's art.</figcaption></figure>
+    <p>Gates: <code>generate</code>, <code>lint</code> and <code>test</code> green; <code>integrate</code>'s acceptance driver walks the title, the preview, the edit sheet and the two-tap delete in the cluster.</p>
+  </article>
+
+  <article id="turn-2026-10-29">
+    <time datetime="2026-10-29">2026-10-29 · Delivery Journal</time>
+    <h2>A phone-first library and honest generation</h2>
+    <p>The featured hero becomes one link with its photo in view; navigation, pickers and labels stay readable and in the reader's language on a phone; and generation reports each level's real outcome.</p>
+    <div class="comparison">
+      <div><p class="label">Before</p><p>Print and explore buttons covered the hero's image. The country picker was the operating system's list, unreadable in dark mode. Ver Minhas Fichas opened the unfiltered home. Level-1 labels outlived level-3 images, and a level that failed showed as complete.</p></div>
+      <div><p class="label">After</p><p>The hero shows only its badge and title over the photo. Countries open in a styled sheet that names the pick. My Cards opens filtered. Labels follow each level's word. Transient image failures retry through the airlock, and a level short of art shows as partial or failed with its count.</p></div>
+    </div>
+    <div class="comparison">
+      <figure><img src="journal/2026-10-29-mobile-hero-before.png" alt="Mobile hero with Print Sheets and Explore Collection buttons covering the illustration"><figcaption>Before: the hero at 375px, buttons over the image.</figcaption></figure>
+      <figure><img src="journal/2026-10-29-mobile-hero-after.png" alt="Mobile hero showing the featured badge on top and the collection title at the foot of the photo"><figcaption>After: badge and title only, the photo in view.</figcaption></figure>
+    </div>
+  </article>
+
+  <article id="turn-2026-10-29-print-order">
+    <time datetime="2026-10-29">2026-10-28 – 2026-10-29 · Print order journal</time>
+    <h2>From a catalogue link to a print order.</h2>
+    <p>The previous “Mail to home via Prodigi” button opened Prodigi’s product catalogue. It did not create an order or carry the selected cards into a fulfillment flow. Print Studio now prepares a fixed PDF of the chosen collection and offers a checkout path. The existing paper, layout and illustration design is retained.</p>
+    <p class="notice" id="integration-status">The redesigned dialog passed the focused checkout acceptance scenario in the local Docker application after installing the rebuilt static assets. Desktop and 390px captures show the actual selected illustrations. No live purchase was attempted, no payment was charged, and no fulfillment email was sent.</p>
+    <h3>Before the redesign · generated application</h3><p>The earlier Portuguese interface selected the Spanish fauna collection, “South American Giants,” switched to horizontal duplex, downloaded its two-page A4 PDF, and simulated approval. The test verified the PDF title and rejected commerce, Stripe or EmailJS requests. <a href="docs/evidence/checkout/app-order.pdf">Download the captured order PDF</a>.</p><section class="gallery" aria-label="Actual application and order PDF"><figure><a href="docs/evidence/checkout/legacy-checkout-before.png"><img src="docs/evidence/checkout/legacy-checkout-before.png" alt="Portuguese checkout panel with the explicit no-charge demo notice."></a><figcaption><strong>Before payment · earlier application</strong>Portuguese checkout panel with the explicit no-charge demo notice.</figcaption></figure><figure><a href="docs/evidence/checkout/legacy-checkout-after.png"><img src="docs/evidence/checkout/legacy-checkout-after.png" alt="The result states that nothing was charged or sent."></a><figcaption><strong>After approval · earlier application</strong>The result states that nothing was charged or sent.</figcaption></figure><figure><a href="docs/evidence/checkout/app-pdf-front.png"><img src="docs/evidence/checkout/app-pdf-front.png" alt="All four selected cards retain their illustrations and cutting guides."></a><figcaption><strong>Illustrated front · actual order PDF</strong>All four selected cards retain their illustrations and cutting guides.</figcaption></figure><figure><a href="docs/evidence/checkout/app-pdf-back.png"><img src="docs/evidence/checkout/app-pdf-back.png" alt="Spanish labels retain their accents and mirror horizontally for duplex printing."></a><figcaption><strong>Mirrored back · actual order PDF</strong>Spanish labels retain their accents and mirror horizontally for duplex printing.</figcaption></figure></section><h3>An order review for the press</h3>
+    <section class="gallery" aria-label="Redesigned actual application">
+    <figure><a href="docs/evidence/checkout/app-before-payment.png"><img src="docs/evidence/checkout/app-before-payment.png" alt="Order review with the selected illustrated cards and a clear primary action"></a><figcaption><strong>Order review · actual local app</strong>The selected collection leads the review.</figcaption></figure>
+    <figure><a href="docs/evidence/checkout/app-after-payment.png"><img src="docs/evidence/checkout/app-after-payment.png" alt="Simulated approval and PDF download with the original card illustrations"></a><figcaption><strong>Confirmation · actual local app</strong>The fixed PDF remains available after approval.</figcaption></figure>
+    <figure><a href="docs/evidence/checkout/app-mobile.png"><img src="docs/evidence/checkout/app-mobile.png" alt="Actual order review at a 390 pixel viewport"></a><figcaption><strong>390px · actual local app</strong>Stacked cards and details, without horizontal overflow.</figcaption></figure>
+    </section>
+    <p>The inline box made an order feel like another setting in the studio. The redesigned modal gives the chosen collection room to lead: a fan of its own illustrated cards, its name and print layout, and a concise order summary. A single dark action anchors the review; the PDF remains available after preparation. Desktop places the cards beside the details, while the narrow view stacks them. Escape closes the dialog and returns focus to the studio.</p>
+    <h3>A deliberate demo, without accidental delivery</h3>
+    <p>The Pages mode is explicitly simulated. It shows that no charge, email or physical delivery will occur. The reader can prepare and download the actual PDF, then simulate approval or refusal. A live release instead obtains its price and shipping coverage from the server, opens Stripe Checkout, and uses the protected receipt to refresh order status.</p>
+    <section class="gallery" aria-label="Checkout fixture before and after simulated payment">
+    <figure><a href="docs/evidence/checkout/fixture-before-payment.png"><img src="docs/evidence/checkout/fixture-before-payment.png" alt="Rendered checkout fixture before PDF preparation, with the explicit demo notice"></a><figcaption><strong>Before payment · rendered fixture</strong>The review shows the collection and makes the no-charge demo mode visible. The artwork here is synthetic test data.</figcaption></figure>
+    <figure><a href="docs/evidence/checkout/fixture-after-payment.png"><img src="docs/evidence/checkout/fixture-after-payment.png" alt="Rendered checkout fixture after simulated approval, stating nothing was charged or sent"></a><figcaption><strong>After approval · rendered fixture</strong>Simulated fulfillment is labelled as simulated. The frozen PDF remains downloadable.</figcaption></figure>
+    <figure><a href="docs/evidence/checkout/fixture-mobile.png"><img src="docs/evidence/checkout/fixture-mobile.png" alt="Redesigned order review stacked at a 390-pixel viewport"></a><figcaption><strong>390px review · rendered fixture</strong>The card fan and order details stack on a narrow screen. The artwork is synthetic test data.</figcaption></figure>
+    </section>
+    <h3>A PDF that still contains the cards</h3>
+    <p>The browser captures a fixed-size clone of the print layout into PDF pages. It resolves each illustration before capture and fails if an illustration cannot be loaded. Pagination includes the full collection; duplex backs mirror positions within each physical sheet. Front and back registration uses matching masthead and row dimensions.</p>
+    <section class="gallery" aria-label="Rendered multilingual PDF fixture">
+    <figure><a href="docs/evidence/checkout/fixture-pdf-front.png"><img src="docs/evidence/checkout/fixture-pdf-front.png" alt="First page of the PDF fixture, showing four illustrated cards with cutting guides"></a><figcaption><strong>Illustrated front · PDF rasterized with Poppler</strong>The fixture uses simple colored artwork to make missing images obvious.</figcaption></figure>
+    <figure><a href="docs/evidence/checkout/fixture-pdf-back.png"><img src="docs/evidence/checkout/fixture-pdf-back.png" alt="Mirrored back page of the PDF fixture, with Portuguese, Hebrew and Chinese labels"></a><figcaption><strong>Mirrored back · PDF rasterized with Poppler</strong>Portuguese, Hebrew and Chinese remain visible. The printed text is rasterized with the page.</figcaption></figure>
+    </section>
+    <h3>29 October · Where the cards go</h3>
+    <p>An order now says where it goes, in the reader's own terms. The checkout asks “Where should we send it?” and keeps three statements side by side: the reader's words, a pin on a map, and the postal fields. They need not agree. A search runs on OpenStreetMap only when the reader presses Enter or Search, never while they type, and needs no key. Applying a suggestion places the pin and fills the street, city, state and postal code, and leaves the reader's words as written. Moving the pin away offers the street near it, and the street in the fields on the map, without choosing for the reader. The order freezes all three beside its PDF.</p>
+    <section class="gallery" aria-label="Delivery collection in the actual application">
+    <figure><a href="docs/evidence/delivery/1-initial.png"><img src="docs/evidence/delivery/1-initial.png" alt="The delivery question with search and Use my location"></a><figcaption><strong>Asked, not assumed</strong>A search box, an explicit “Use my location”, and a way to type the address by hand.</figcaption></figure>
+    <figure><a href="docs/evidence/delivery/3-accepted.png"><img src="docs/evidence/delivery/3-accepted.png" alt="A suggestion applied: pin on the map, the typed words unchanged"></a><figcaption><strong>A suggestion, applied</strong>The pin and postal fields move; the reader’s words stay theirs.</figcaption></figure>
+    <figure><a href="docs/evidence/delivery/4-pin-moved.png"><img src="docs/evidence/delivery/4-pin-moved.png" alt="The pin moved away, with two reconciling offers"></a><figcaption><strong>Two statements disagree</strong>The street near the pin, and the fields’ street on the map, each offered, neither imposed.</figcaption></figure>
+    <figure><a href="docs/evidence/delivery/5-receipt.png"><img src="docs/evidence/delivery/5-receipt.png" alt="The demo receipt carrying the frozen delivery"></a><figcaption><strong>Frozen with the order</strong>The receipt names the street and that a pin was placed; the draft is put away.</figcaption></figure>
+    <figure><a href="docs/evidence/delivery/7-locate-first.png"><img src="docs/evidence/delivery/7-locate-first.png" alt="Use my location as the first act places the pin"></a><figcaption><strong>Location first</strong>The reader’s position may be the first thing they give.</figcaption></figure>
+    <figure><a href="docs/evidence/delivery/8-he-mobile.png"><img src="docs/evidence/delivery/8-he-mobile.png" alt="Hebrew at 390 pixels, right to left, map frame included"></a><figcaption><strong>Hebrew, 390px</strong>The map frame takes the page’s language and direction.</figcaption></figure>
+    </section>
+    <p>Getting there changed the platform beneath it. A unit's events are now typed by the program: the seat's printable-ASCII rule, which could not carry “Praça da Sé”, became a size bound plus the payload shape each event declares. The map runs in a sandboxed frame that is granted the reader's position only when it asks; the search runs in a worker under the app's own security policy. The single-file Pages release carries both: the page frames itself for the map, and its first script installs the policy before anything else runs.</p>
+    <p>Four reviews found what the gates did not: a country the form could not show slipping past the shipping check, a long place name refusing a whole suggestion list, “Use my location” failing silently as a first act, the address lookup asking while the reader typed, realm files loadable outside their sandbox. Each is fixed with a test that names it.</p>
+    <h3>Evidence and remaining configuration</h3>
+    <table><thead><tr><th>Check</th><th>Observed result</th></tr></thead><tbody>
+    <tr><td>Browser bundle, type checking and lint</td><td>Passed using pinned Deno dependencies and the frozen lockfile.</td></tr>
+    <tr><td>Browser/PDF fixture</td><td>Passed: 17 cards become a 10-page duplex A4 PDF of approximately 2.4 MiB; the reader downloads it and selects simulated approval.</td></tr>
+    <tr><td>Missing illustration</td><td>Fails visibly and removes the temporary capture surface; no blank PDF is silently accepted.</td></tr>
+    <tr><td>Application acceptance</td><td id="app-acceptance-status">Passed print-checkout-demo against the refreshed local Docker app: real artwork, 390px overflow, Escape and focus return, duplex PDF title, download and simulated approval. No commerce, Stripe or EmailJS requests occurred.</td></tr>
+    <tr><td>Full integration</td><td>Not green: Docker image preparation exceeded its deadline before the full acceptance suite. The narrower static-assets build and focused local application scenario passed. No Cloudflare deployment was performed.</td></tr>
+    <tr><td>Delivery collection (29 October)</td><td>generate, lint, build and test passed; print-delivery and print-checkout-demo acceptance passed against the local app; the Pages bundle was walked in a browser through search, pin and both offers. Searches here asked OpenStreetMap a handful of times; acceptance answers them from fixtures.</td></tr>
+    <tr><td>Live sales</td><td>Require configured pricing, shipping countries, Stripe credentials and fulfillment mail setup. Provider tests do not establish a real charge or delivery.</td></tr>
+    </tbody></table>
+    <p>Payment confirmation belongs to the verified server callback and order machine. Returning from Checkout does not mark an order paid. A paid order whose email fails remains a fulfillment problem; the reader is not asked to pay again.</p>
+    <p class="muted">Actual application and fixture evidence are labelled separately. The redesigned local scenario passes; this journal does not claim a completed live purchase or full Sayt integration gate.</p>
+  </article>
+
+  <article id="turn-2026-10-28">
+    <time datetime="2026-10-28">2026-10-28 · Delivery Journal</time>
+    <h2>Illustrated cards, stable journeys</h2>
+    <p>The existing studio design remains the visual reference. This turn repairs generation, navigation, translation, and print behavior within that design.</p>
+    <div class="comparison">
+      <div><p class="label">Before</p><p>Unrelated decks could inherit a generating badge. Deletion could hit an oversized worker queue key. Translation could reorder cards or dismiss completion. The audience field remained Portuguese, and previews always claimed five cards.</p></div>
+      <div><p class="label">After</p><p>Generation markers follow the owned deck, deletion targets its ID, and queue keys are bounded. Translation retains the selected position and completion state. Audience labels use the UI language; preview numbering follows the actual ordered card collection.</p></div>
+    </div>
+    <figure><img src="journal/2026-10-28-audience-en.png" alt="English creation studio showing Kids (6–10) in the target audience field"><figcaption>Live Cloudflare verification: English audience label. The content language and cultural region remain independently selectable.</figcaption></figure>
+    <h3>Illustration, print, and UGC transfer</h3>
+    <p>A neutral placeholder gives way to a fast Flux draft and then a Leonardo illustration. Border-connected neutral gray is whitened while enclosed illustration detail is preserved. The print back sheet appears for duplex modes, and front/back dimensions match. A read-only Neon export (201 decks, 1,680 cards) was imported into Cloudflare and R2 with all 1,678 referenced image objects verified by size and MD5.</p>
+    <h3>Links and translations</h3>
+    <p>Direct card links resolve the exact original word even after translation metadata is appended. Translation attempts use the committed draft revision as their identity, preventing old queue keys from being reused.</p>
+    <figure><img src="journal/2026-10-28-rib-route-pt.png" alt="Portuguese bone collection with the rib-cage illustration selected and five matching cards"><figcaption>Live Cloudflare verification: the original English card URL selects Caixa Torácica, the deck title is translated, and the illustration loads from R2 through the Images binding.</figcaption></figure>
+    <h3>Card navigation and collection entry</h3>
+    <p>Previous stops at the first card. Next, Previous, collection links, and browser history keep the selected card and URL aligned without remounting the study screen.</p>
+    <figure><img src="journal/2026-10-28-card-navigation-en.png" alt="Charmander selected in the English Pokémon collection"><figcaption>Live Cloudflare navigation verification.</figcaption></figure>
+    <figure><img src="journal/2026-10-28-deck-entry-en.png" alt="Charmander selected after entering the Pokémon deck through its collection URL"><figcaption>Cloudflare verification in a fresh Safari session: the collection URL resolved to Pikachu, the first collection click selected Charmander in place, and browser Back skipped the entry URL.</figcaption></figure>
+    <h3>Translations belong to the reader’s view</h3>
+    <figure><img src="journal/2026-10-28-language-switch-en.png" alt="English capybara study view with its image and English collection labels"><figcaption>Live Cloudflare: Spanish → English retains the selected image and English labels, including while a Hebrew tab is open.</figcaption></figure>
+    <figure><img src="journal/2026-10-28-north-pole-he.png" alt="North Pole Animals deck with Hebrew title, natural science category and card labels, and a beluga illustration"><figcaption>Live Cloudflare: the previously mixed North Pole metadata and all fifteen card labels now resolve to Hebrew.</figcaption></figure>
+    <h3>Stable study layout and continuous cold navigation</h3>
+    <figure><img src="journal/2026-10-28-study-layout-laptop.png" alt="Laptop study layout with contained thumbnail images and controls beside the deck title"><figcaption>Study layout with contained thumbnail images and header controls beside the deck title.</figcaption></figure>
+    <figure><img src="journal/2026-10-28-cold-navigation-during.png" alt="Library and complete sidebar stay visible while butterfly deck assets are delayed"><figcaption>Delayed cold navigation: the library stays visible while the destination loads.</figcaption></figure>
+    <figure><img src="journal/2026-10-28-cold-navigation-after.png" alt="Butterfly deck shown after the delayed navigation finishes"><figcaption>The destination after the handoff.</figcaption></figure>
+    <h3>Persistent library browsing and translation feedback</h3>
+    <figure><img src="journal/2026-10-28-library-search-before.png" alt="Search results with Home incorrectly selected and the featured hero visible"><figcaption>Before: searching Gallery cleared its filter and showed Home.</figcaption></figure>
+    <figure><img src="journal/2026-10-28-library-search-after.png" alt="Gallery selected with the solar query and matching collections after returning from Study"><figcaption>After: Gallery and the solar query remain selected after opening a deck and returning with Back.</figcaption></figure>
+    <figure><img src="journal/2026-10-28-translation-glow-first.png" alt="Spanish selected with an immediately visible amber translation glow"><figcaption>Initial frame of the translation pulse.</figcaption></figure>
+    <figure><img src="journal/2026-10-28-translation-glow-peak.png" alt="Spanish language button at the brighter peak of the translation glow"><figcaption>Peak frame of the translation pulse.</figcaption></figure>
+    <figure><img src="journal/2026-10-28-translation-glow-reduced.png" alt="Spanish language button with a static outline for reduced motion"><figcaption>Reduced-motion presentation.</figcaption></figure>
+  </article>
+
+  <article id="initial-brief">
+    <time datetime="2026-10-01">2026-10-01 · Initial Brief</time>
+    <h2>Snapcards — Cultural Publishing &amp; Flashcard Press</h2>
+    <p>A flashcard and cultural publishing press for children learning new words. Pick a topic, get illustrated cards with cultural context, review and play in the browser, or layout cards for physical printing.</p>
+    <h3>Data</h3>
+    <p>Card sets, illustrated cards, review sessions, print layouts, and creation drafts, all held in the browser tab or synced across devices.</p>
+    <h3>Screens</h3>
+    <ul>
+      <li><strong>Cards</strong> — browse cultural card sets, filter by category and locale, search, see card counts, toggle favorites, and start a play or print session.</li>
+      <li><strong>Generate</strong> — create a new card set by topic, category, locale, and region, dealing illustrated cards with cultural context.</li>
+      <li><strong>Play</strong> — interactive flashcard reader. Flip cards to reveal word definitions, pronunciation hints, track mastered count, and celebrate completion.</li>
+      <li><strong>Print Studio</strong> — the printing press. Layout cards on A4 or Letter sheets in 2×2 or 3×3 grids with cutting guides for physical card printing.</li>
+    </ul>
+  </article>
+</main>
+</body>
+</html>

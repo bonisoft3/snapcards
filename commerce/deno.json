@@ -1,0 +1,9 @@
+{
+	"tasks": {
+		"test": "deno test --allow-env --allow-read --allow-net=127.0.0.1 effects_test.ts simulator_test.ts"
+	},
+	"imports": {
+		"@pdfme/pdf-lib": "npm:@pdfme/pdf-lib@6.2.8",
+		"stripe": "npm:stripe@23.0.1"
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"name": "snapcards-fun-redirect",
+	"main": "worker.js",
+	"compatibility_date": "2026-11-01",
+	"workers_dev": false,
+	"routes": [
+		{ "pattern": "www.snapcards.fun", "custom_domain": true },
+		{ "pattern": "snapcards.bonisoft3.com", "custom_domain": true }
+	]
+}

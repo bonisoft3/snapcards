@@ -1,0 +1,333 @@
+/* Responsive navigation:
+   - Phone (<768px): sticky 64px top bar with the 3 primary CTAs (Home, Create,
+     Print), then the active screen's ⋯ (.btn-more), opening a bottom sheet of
+     the secondary routes, and the terminal's own account chip, whose panel
+     opens as a bottom sheet too.
+   - Tablet (768px..1099px): compact 88px icon+label left rail.
+   - Desktop (>=1100px): full 240px left sidebar from chrome.css.
+   Shared across all screens so visit-order style injection never overrides it. */
+.btn-more {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  html {
+    scrollbar-gutter: auto;
+  }
+
+  body > nav {
+    position: sticky;
+    inset-block: 0 auto;
+    inset-inline: 0;
+    z-index: 100;
+    height: var(--size-9);
+    min-height: var(--size-9);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-sm);
+    padding-block: 6px;
+    padding-inline-start: var(--sp-sm);
+    padding-inline-end: calc(2 * var(--size-8) + var(--sp-sm) + var(--size-1));
+    overflow: hidden;
+    background: var(--snapcards-surface);
+    border: none;
+    border-block-end: var(--border-size-1) solid var(--snapcards-border);
+    box-sizing: border-box;
+  }
+
+  body > nav::before,
+  body > nav::after,
+  body > nav > a[data-param-shelf],
+  body > nav > a[data-route="about"] {
+    display: none !important;
+  }
+
+  body > nav > a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-width: 0;
+    min-height: 51px;
+    height: 51px;
+    box-sizing: border-box;
+    padding: var(--size-1);
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--snapcards-secondary);
+    font-size: var(--type-label);
+    font-weight: 600;
+    line-height: 1.15;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-tap-highlight-color: transparent;
+    transition: background var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
+  }
+
+  body > nav > a::before {
+    font-size: 19px;
+    line-height: 1;
+  }
+
+  body > nav > a[data-route="cards"]::before { content: "🏠"; }
+  body > nav > a[data-route="generate"]::before { content: "✨"; }
+  body > nav > a[data-route="print"]::before { content: "🖨️"; }
+
+  body > nav > a[aria-current="page"] {
+    background: #F59E0B;
+    color: #181D25;
+    font-weight: 700;
+    box-shadow: none;
+  }
+
+  body > main#app {
+    margin-inline-start: 0;
+    margin-block-end: 0;
+  }
+
+  /* The two right-hand tiles, out of the grid: ⋯ and the account chip. */
+  main#app > .shell-screen:not([hidden]) .btn-more,
+  body > nav .shell-me {
+    position: fixed;
+    inset-block-start: 6px;
+    z-index: 102;
+  }
+
+  main#app > .shell-screen:not([hidden]) .btn-more {
+    inset-inline-end: calc(var(--sp-sm) + var(--size-8) + var(--size-1));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--size-8);
+    height: 51px;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--snapcards-secondary);
+    font: inherit;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body:has(> nav > a[data-param-shelf][aria-current="page"], > nav > a[data-route="about"][aria-current="page"]) .btn-more {
+    background: #F59E0B;
+    color: #181D25;
+  }
+
+  body > nav .shell-me {
+    inset-inline-end: var(--sp-sm);
+    display: block;
+  }
+
+  body > nav .shell-me > :is(.shell-signin, .shell-person) {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--size-8);
+    min-width: var(--size-8);
+    height: 51px;
+    min-height: 51px;
+    padding: 0;
+    gap: 0;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    font-size: 0;
+  }
+
+  body > nav .shell-me > :is(.shell-signin, .shell-person) :is(.shell-chip-who, .shell-lock) {
+    display: none;
+  }
+
+  body > nav .shell-me .shell-avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+    border: 1.5px solid var(--snapcards-border);
+    box-sizing: border-box;
+  }
+
+  /* A visitor's Sign in is a person in a circle. */
+  body > nav .shell-me > .shell-signin:not(.shell-guest)::before {
+    content: "";
+    width: 34px;
+    height: 34px;
+    border-radius: var(--r-full);
+    background-color: var(--snapcards-surface-muted);
+    border: 1.5px solid var(--snapcards-border);
+    box-sizing: border-box;
+  }
+
+  body > nav .shell-me > .shell-signin:not(.shell-guest)::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: var(--snapcards-primary);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E") center / contain no-repeat;
+    pointer-events: none;
+  }
+
+  /* Both sheets rise from the bottom edge. */
+  body > nav .shell-me > .shell-signin-panel,
+  .more-sheet:popover-open {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: auto;
+    max-width: none;
+    max-height: 85dvh;
+    margin: 0;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: var(--size-4) var(--size-4) calc(var(--size-4) + env(safe-area-inset-bottom, 0px));
+    border: none;
+    border-radius: var(--size-4) var(--size-4) 0 0;
+    background: var(--snapcards-surface);
+    box-shadow: 0 -12px 32px rgba(15, 23, 42, 0.18);
+    z-index: 103;
+  }
+
+  .more-sheet:popover-open {
+    display: grid;
+    gap: 6px;
+  }
+
+  .more-sheet::backdrop {
+    background: rgba(15, 23, 42, 0.35);
+  }
+
+  .more-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: var(--sp-sm) 14px;
+    border-radius: 12px;
+    color: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+
+  .more-link:hover {
+    background: var(--snapcards-surface-muted);
+  }
+
+  .more-icon {
+    font-size: 1.125rem;
+    line-height: 1;
+  }
+
+  body:has(> nav > a[data-param-shelf="mine"][aria-current="page"]) .more-link[data-param-shelf="mine"],
+  body:has(> nav > a[data-param-shelf="gallery"][aria-current="page"]) .more-link[data-param-shelf="gallery"],
+  body:has(> nav > a[data-route="about"][aria-current="page"]) .more-link[data-route="about"] {
+    background: #F59E0B;
+    color: #181D25;
+  }
+
+  /* Fullscreen study hides both tiles, as it does the bar. */
+  body:has(.play-container[data-status="fullscreen"]) > main#app > .shell-screen:not([hidden]) .btn-more,
+  body:has(.play-container[data-status="fullscreen"]) > nav .shell-me {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1099px) {
+  body > nav {
+    width: 88px;
+    padding: var(--sp-sm) 6px;
+    align-items: center;
+  }
+
+  body > nav::before {
+    content: "S";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-h-lg);
+    height: var(--control-h-lg);
+    margin: var(--size-1) auto 10px;
+    padding: 0;
+    border-radius: 12px;
+    background: var(--snapcards-primary);
+    color: var(--snapcards-surface);
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  body > nav > a {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    width: 76px;
+    margin: 2px 0;
+    padding: 6px var(--size-1);
+    height: auto;
+    min-height: 52px;
+    font-size: 11px;
+    line-height: 1.15;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  body > nav > a::before {
+    font-size: 18px !important;
+    line-height: 1;
+  }
+
+  body > nav > a[data-route="generate"]::after {
+    inset-inline: var(--sp-sm);
+  }
+
+  body > nav .shell-me {
+    padding: var(--sp-sm) var(--size-1);
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* The panel opens beside the rail, level with the chip's foot. */
+  body > nav:has(.shell-signin-panel:not([hidden])) {
+    overflow: visible;
+  }
+
+  body > nav .shell-me > .shell-signin-panel {
+    inset-block: auto 0;
+    inset-inline: calc(100% + var(--sp-sm)) auto;
+  }
+
+  /* The rail is too narrow for a name: an account is its avatar. */
+  body > nav .shell-me > :is(.shell-signin, .shell-person) :is(.shell-chip-who, .shell-lock) {
+    display: none;
+  }
+
+  body > nav .shell-me > :is(.shell-signin, .shell-person) {
+    justify-content: center;
+    font-size: 11px;
+    padding: 6px var(--size-1);
+    min-height: var(--control-h);
+    gap: 3px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  body > main#app {
+    margin-inline-start: 88px;
+    width: calc(100% - 88px);
+    max-width: calc(100% - 88px);
+  }
+}

@@ -1,0 +1,169 @@
+/* A deck still drawing (deck_level), and deleting one card of a deck this tab generated. */
+.desk-drawing { display: contents; }
+.desk-drawing-level {
+  display: inline-block;
+  width: 56px;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--snapcards-accent) 35%, transparent);
+  animation: deck-drawing-pulse 1.4s ease-in-out infinite;
+}
+.desk-drawing-level[data-level] {
+  background: linear-gradient(to right,
+    #15803D 0 calc(var(--drawn) / var(--total) * 100%),
+    var(--danger) 0 calc((var(--drawn) + var(--failed) + var(--unknown)) / var(--total) * 100%),
+    color-mix(in srgb, var(--snapcards-accent) 35%, transparent) 0);
+}
+.desk-drawing-level ~ .desk-drawing-level,
+.desk-title-row:has(.desk-drawing-level[data-level]) .desk-drawing-text { display: none; }
+@keyframes deck-drawing-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .desk-drawing-level { animation: none; }
+}
+
+.card-rail-item { position: relative; display: flex; flex-direction: column; min-width: 0; }
+.card-rail-item > .card-rail-pill { flex: 1 1 auto; }
+.card-delete { display: none; position: absolute; top: 6px; right: 6px; z-index: 1; }
+/* Owned decks only, and never a deck's last card. */
+.explore-contact-sidebar:has(.owned-deck) .card-rail-item:not(:only-child) .card-delete { display: block; }
+.btn-delete-card {
+  min-width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border-radius: 7px;
+  border: 1px solid var(--snapcards-border);
+  background: var(--snapcards-surface);
+  color: var(--snapcards-primary);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-delete-card:hover { border-color: var(--danger); }
+.btn-delete-card:focus-visible { outline: 2px solid var(--snapcards-accent); outline-offset: 2px; }
+.card-delete-name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.card-delete-armed { display: none; }
+.card-delete:is([data-delete="armed"], [data-delete="confirmed"]) .btn-delete-card {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: var(--snapcards-surface);
+}
+.card-delete:is([data-delete="armed"], [data-delete="confirmed"]) :is(.card-delete-idle, .card-delete-name) { display: none; }
+.card-delete:is([data-delete="armed"], [data-delete="confirmed"]) .card-delete-armed { display: inline; }
+
+/* Editing the card in view: a sheet over the bottom of the screen. */
+.btn-edit-card {
+  display: none;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--snapcards-border);
+  background: var(--snapcards-surface);
+  font-size: 14px;
+  cursor: pointer;
+}
+.play-container:has(.owned-deck) .btn-edit-card { display: inline-flex; }
+.btn-edit-card:focus-visible { outline: 2px solid var(--snapcards-accent); outline-offset: 2px; }
+
+.card-edit-sheet {
+  position: fixed;
+  inset: auto 0 0 0;
+  width: min(100%, 560px);
+  max-height: 92dvh;
+  margin: 0 auto;
+  padding: 0;
+  overflow-y: auto;
+  box-sizing: border-box;
+  border: 1px solid var(--snapcards-border);
+  border-bottom: 0;
+  border-radius: 18px 18px 0 0;
+  background: var(--snapcards-surface);
+  color: var(--snapcards-primary);
+  box-shadow: 0 -12px 40px rgba(15, 23, 42, 0.18);
+}
+.card-edit-sheet::backdrop { background: rgba(15, 23, 42, 0.38); }
+.card-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 16px calc(16px + env(safe-area-inset-bottom));
+}
+.card-edit-title { margin: 0; font-size: 18px; font-weight: 800; overflow-wrap: anywhere; }
+.card-edit-art {
+  align-self: center;
+  width: min(100%, 220px);
+  aspect-ratio: 1;
+  border: 1px solid var(--snapcards-border);
+  border-radius: 12px;
+  background: #FFFFFF;
+  overflow: hidden;
+}
+.card-edit-img { display: block; width: 100%; height: 100%; object-fit: contain; }
+/* A refused or unanswered drawing: the no-art frame, as a card no level drew. */
+.card-edit-form:has(.card-edit-progress:is([data-art="failed"], [data-art="unknown"])) .card-edit-art {
+  background: #FFFFFF url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20256%22%3E%3Crect%20x%3D%2288%22%20y%3D%2280%22%20width%3D%2280%22%20height%3D%2264%22%20rx%3D%228%22%20fill%3D%22none%22%20stroke%3D%22%23A8A29E%22%20stroke-width%3D%223%22%2F%3E%3Ccircle%20cx%3D%22111%22%20cy%3D%22102%22%20r%3D%226%22%20fill%3D%22%23A8A29E%22%2F%3E%3Cpath%20d%3D%22M89%20135l24-22%2016%2014%2013-12%2025%2022%22%20fill%3D%22none%22%20stroke%3D%22%23A8A29E%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M80%20160L176%2064%22%20stroke%3D%22%23DC2626%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
+}
+.card-edit-form:has(.card-edit-progress:is([data-art="failed"], [data-art="unknown"])) .card-edit-img { visibility: hidden; }
+/* The level-3 row's state in colour alone, as the generation bars show it. */
+.card-edit-progress {
+  display: block;
+  align-self: center;
+  width: min(100%, 220px);
+  height: 6px;
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--snapcards-accent) 35%, transparent);
+}
+.card-edit-progress:is([data-art="waiting"], [data-art="pending"]) { animation: deck-drawing-pulse 1.4s ease-in-out infinite; }
+.card-edit-progress[data-art="drawn"] { background: #15803D; }
+.card-edit-progress:is([data-art="failed"], [data-art="unknown"]) { background: var(--danger); }
+.card-edit-status { display: none; }
+.card-edit-form:has(.card-edit-progress:is([data-art="waiting"], [data-art="pending"])) .card-edit-status-drawing,
+.card-edit-form:has(.card-edit-progress:is([data-art="failed"], [data-art="unknown"])) .card-edit-status-failed {
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.card-edit-label { font-size: 13px; font-weight: 700; color: var(--snapcards-secondary); }
+.card-edit-details {
+  width: 100%;
+  min-height: 88px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--snapcards-border);
+  border-radius: 10px;
+  background: var(--snapcards-surface);
+  color: var(--snapcards-primary);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.45;
+  resize: vertical;
+}
+.card-edit-details:focus { outline: none; border-color: var(--snapcards-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--snapcards-accent) 20%, transparent); }
+.card-edit-form .store-error { margin: 0; font-size: 13px; color: var(--danger); }
+.card-edit-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.card-edit-actions .btn { min-height: 44px; }
+/* A redraw is asked only of settled art. */
+.btn-regenerate { display: none; }
+.card-edit-form:not([data-redraw="drawing"]):has(.card-edit-progress:is([data-art="drawn"], [data-art="failed"], [data-art="unknown"])) .btn-regenerate { display: inline-flex; }
+@media (prefers-reduced-motion: reduce) {
+  .card-edit-progress { animation: none; }
+}

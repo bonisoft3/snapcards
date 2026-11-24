@@ -1,0 +1,123 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-launch:
+    build:
+      additional_contexts:
+        snapcards-seed-blobs: service:snapcards-seed-blobs
+        snapcards-render: service:snapcards-render
+        snapcards-smollm3: service:snapcards-smollm3
+        snapcards-diffusion: service:snapcards-diffusion
+        snapcards-caddy: service:snapcards-caddy
+        snapcards-database: service:snapcards-database
+        snapcards-crud: service:snapcards-crud
+        snapcards-electric: service:snapcards-electric
+        snapcards-redis: service:snapcards-redis
+        snapcards-mesh-events: service:snapcards-mesh-events
+        snapcards-conduit: service:snapcards-conduit
+        snapcards-transform: service:snapcards-transform
+        snapcards-auth: service:snapcards-auth
+        snapcards-rclone-s3: service:snapcards-rclone-s3
+        snapcards-imgproxy: service:snapcards-imgproxy
+        snapcards-clock: service:snapcards-clock
+        snapcards-airlock: service:snapcards-airlock
+      context: ..
+      dockerfile: .bayt/Dockerfile.launch
+      target: launch
+      tags:
+      - bayt-snapcards-launch:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-launch:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    depends_on:
+      snapcards-seed-blobs:
+        condition: service_completed_successfully
+      snapcards-render:
+        condition: service_healthy
+        restart: true
+      snapcards-smollm3:
+        condition: service_healthy
+        restart: true
+      snapcards-diffusion:
+        condition: service_healthy
+        restart: true
+      snapcards-caddy:
+        condition: service_healthy
+        restart: true
+      snapcards-database:
+        condition: service_healthy
+        restart: true
+      snapcards-crud:
+        condition: service_healthy
+        restart: true
+      snapcards-electric:
+        condition: service_healthy
+        restart: true
+      snapcards-redis:
+        condition: service_healthy
+        restart: true
+      snapcards-mesh-events:
+        condition: service_healthy
+        restart: true
+      snapcards-conduit:
+        condition: service_healthy
+        restart: true
+      snapcards-transform:
+        condition: service_started
+      snapcards-auth:
+        condition: service_started
+      snapcards-rclone-s3:
+        condition: service_healthy
+        restart: true
+      snapcards-imgproxy:
+        condition: service_healthy
+        restart: true
+      snapcards-clock:
+        condition: service_started
+      snapcards-airlock:
+        condition: service_healthy
+        restart: true
+    healthcheck:
+      test:
+      - CMD
+      - echo
+      - snapcards is healthy
+      interval: 5s
+      timeout: 2s
+      retries: 3
+    image: bayt-snapcards-launch:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    networks:
+      default:
+        aliases:
+        - launch
+  snapcards-launch_bayt:
+    build:
+      additional_contexts:
+        snapcards-build_bayt: service:snapcards-build_bayt
+        snapcards-seed-blobs_bayt: service:snapcards-seed-blobs_bayt
+        snapcards-render_bayt: service:snapcards-render_bayt
+        snapcards-smollm3_bayt: service:snapcards-smollm3_bayt
+        snapcards-diffusion_bayt: service:snapcards-diffusion_bayt
+        snapcards-caddy_bayt: service:snapcards-caddy_bayt
+        snapcards-database_bayt: service:snapcards-database_bayt
+        snapcards-crud_bayt: service:snapcards-crud_bayt
+        snapcards-electric_bayt: service:snapcards-electric_bayt
+        snapcards-redis_bayt: service:snapcards-redis_bayt
+        snapcards-mesh-events_bayt: service:snapcards-mesh-events_bayt
+        snapcards-conduit_bayt: service:snapcards-conduit_bayt
+        snapcards-transform_bayt: service:snapcards-transform_bayt
+        snapcards-auth_bayt: service:snapcards-auth_bayt
+        snapcards-rclone-s3_bayt: service:snapcards-rclone-s3_bayt
+        snapcards-imgproxy_bayt: service:snapcards-imgproxy_bayt
+        snapcards-clock_bayt: service:snapcards-clock_bayt
+        snapcards-airlock_bayt: service:snapcards-airlock_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.launch
+      target: launch_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-launch_bayt:latest
+    scale: 0

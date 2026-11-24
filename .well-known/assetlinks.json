@@ -1,0 +1,1 @@
+[{"relation":["delegate_permission/common.handle_all_urls","delegate_permission/common.get_login_creds"],"target":{"namespace":"android_app","package_name":"app.hosted.us_central1.flashcards__trash_362115.twa","sha256_cert_fingerprints":["26:2F:A4:67:25:EA:40:FD:1E:31:13:37:E7:EE:5B:37:B9:7F:AF:1D:15:7D:C0:D8:56:DF:4E:A9:2A:76:35:AC"]}}]

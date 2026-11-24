@@ -1,0 +1,638 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": false,
+    "manual": false,
+    "build": {
+      "additional_contexts": {
+        "plugins_omnishell-runtime-image": "${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/omnishell:0.34.0@sha256:cd4cd6fc4b2b8eec05a1f3628c00d9c06eb943b0e6abb1b9bc900250680e5c01}${MONOREPO_COMPOSE_MODE:+:plugins_omnishell-runtime-image}"
+      },
+      "secrets": [],
+      "args": {}
+    },
+    "environment": {
+      "DOOR": "http://caddy:8080",
+      "DOOR_TIMEOUT_MS": "41000",
+      "ENTRY": "/render/entry.html",
+      "ORIGIN": "${ORIGIN:-https://localhost:${CADDY_TLS_HOST_PORT}}",
+      "PORT": "8090"
+    },
+    "ports": [],
+    "volumes": [],
+    "depends_on": {
+      "snapcards-caddy": {
+        "condition": "service_healthy"
+      },
+      "snapcards-crud": {
+        "condition": "service_healthy"
+      },
+      "snapcards-electric": {
+        "condition": "service_healthy"
+      },
+      "snapcards-auth": {
+        "condition": "service_started"
+      }
+    },
+    "networks": {
+      "default": {
+        "aliases": [
+          "render"
+        ]
+      }
+    },
+    "restart": "on-failure",
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "/usr/local/lib/bayt/http200/busybox",
+        "sh",
+        "-ec",
+        "export CURL_CA_BUNDLE=\"$${SSL_CERT_FILE:-/usr/local/lib/bayt/http200/ca.pem}\"; status=$$(\"$$@\"); [ \"$$status\" = 200 ] || { printf 'HTTP status %s, expected 200\\n' \"$$status\" >&2; exit 1; }",
+        "http200",
+        "/usr/local/lib/bayt/http200/curl",
+        "--disable",
+        "--silent",
+        "--show-error",
+        "--head",
+        "--request",
+        "GET",
+        "--location",
+        "--max-redirs",
+        "9",
+        "--max-time",
+        "5",
+        "--proto",
+        "=http,https",
+        "--proto-redir",
+        "=http,https",
+        "--output",
+        "/dev/null",
+        "--write-out",
+        "%{http_code}",
+        "http://127.0.0.1:8090/health"
+      ],
+      "interval": "1s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "120s",
+      "start_interval": "200ms"
+    },
+    "develop": {
+      "watch": [
+        {
+          "action": "sync+restart",
+          "path": "../shell/index.html",
+          "target": "/render/entry.html"
+        }
+      ]
+    }
+  },
+  "dockerfile": {
+    "preamble": [],
+    "preambleCopyContexts": [],
+    "from": {
+      "name": "denoland/deno:debian-2.9.7@sha256:fa335acdf6b72106eda2cb6a8cb5f4187e7630e357467489db4b2e7352d5e432"
+    },
+    "workdir": "/render",
+    "add": [],
+    "mounts": [],
+    "secrets": {},
+    "extra_hosts": [],
+    "copy": [
+      {
+        "from": {
+          "name": "bonitao/lazybox:0.8.6@sha256:0f30c48513fac757f844f02c864802991dec045f9c4189e3db2ae4ac297544df"
+        },
+        "srcs": [
+          "/lazybox/share/ca-certificates/ca-certificates.crt"
+        ],
+        "dst": "/usr/local/lib/bayt/http200/ca.pem",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "bonitao/lazybox:0.8.6@sha256:0f30c48513fac757f844f02c864802991dec045f9c4189e3db2ae4ac297544df"
+        },
+        "srcs": [
+          "/lazybox/libexec/static-curl"
+        ],
+        "dst": "/usr/local/lib/bayt/http200/curl",
+        "chmod": "755",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223"
+        },
+        "srcs": [
+          "/bin/busybox"
+        ],
+        "dst": "/usr/local/lib/bayt/http200/busybox",
+        "chmod": "755",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "plugins_omnishell-runtime-image"
+        },
+        "srcs": [
+          "/interpreter"
+        ],
+        "dst": "/render/plugins/omnishell/interpreter",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "plugins_omnishell-runtime-image"
+        },
+        "srcs": [
+          "/server"
+        ],
+        "dst": "/render/plugins/omnishell/server",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "ref": ":served",
+          "name": "snapcards-served"
+        },
+        "srcs": [
+          "/served/shell/index.html"
+        ],
+        "dst": "/render/entry.html",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      }
+    ],
+    "epilogue": [
+      "RUN deno cache --frozen --config plugins/omnishell/server/deno.json plugins/omnishell/server/render.ts"
+    ],
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "/usr/local/lib/bayt/http200/busybox",
+        "sh",
+        "-ec",
+        "export CURL_CA_BUNDLE=\"${SSL_CERT_FILE:-/usr/local/lib/bayt/http200/ca.pem}\"; status=$(\"$@\"); [ \"$status\" = 200 ] || { printf 'HTTP status %s, expected 200\\n' \"$status\" >&2; exit 1; }",
+        "http200",
+        "/usr/local/lib/bayt/http200/curl",
+        "--disable",
+        "--silent",
+        "--show-error",
+        "--head",
+        "--request",
+        "GET",
+        "--location",
+        "--max-redirs",
+        "9",
+        "--max-time",
+        "5",
+        "--proto",
+        "=http,https",
+        "--proto-redir",
+        "=http,https",
+        "--output",
+        "/dev/null",
+        "--write-out",
+        "%{http_code}",
+        "http://127.0.0.1:8090/health"
+      ],
+      "interval": "1s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "120s"
+    },
+    "expose": [],
+    "entrypoint": null,
+    "incremental": false,
+    "cmd": [
+      "deno",
+      "run",
+      "--frozen",
+      "--cached-only",
+      "--config",
+      "plugins/omnishell/server/deno.json",
+      "--allow-net",
+      "--allow-env",
+      "--allow-read=/render",
+      "plugins/omnishell/server/render.ts"
+    ]
+  },
+  "entrypoint": {
+    "do": "let omni = (if (($env.OMNISHELL_DIR? | default '') != '') { $env.OMNISHELL_DIR } else { (^mise where github:bonisoft3/omnishell | str trim) }); let served = ($env.BAYT_LOCAL_SERVED_DIR? | default ''); let cfg = ($env.BAYT_LOCAL_RENDER_ENTRY? | default (if $served != '' { ($served | path join 'srv/shell/index.html') } else { 'shell/index.html' })); let entry = (if ($cfg | path exists) { $cfg } else { 'shell/index.html' }); with-env { ENTRY: $entry } { ^deno run --frozen --config ($omni | path join 'server/deno.json') --allow-net --allow-env --allow-read ($omni | path join 'server/render.ts') }",
+    "shell": "nu",
+    "env": {
+      "DOOR": {
+        "peer": "caddy",
+        "port": "http",
+        "part": "addr",
+        "prefix": "http://",
+        "suffix": ""
+      },
+      "DOOR_TIMEOUT_MS": "41000",
+      "ORIGIN": "${ORIGIN:-https://localhost:${CADDY_TLS_HOST_PORT}}"
+    },
+    "after": {
+      "caddy": "healthy",
+      "crud": "healthy",
+      "electric": "healthy",
+      "auth": "started"
+    },
+    "host": true
+  },
+  "expose": {
+    "http": {
+      "port": 8090,
+      "env": "PORT"
+    }
+  },
+  "healthcheck": {
+    "template": "http200",
+    "scheme": "http",
+    "host": "127.0.0.1",
+    "port": 8090,
+    "path": "/health",
+    "url": "http://127.0.0.1:8090/health",
+    "headers": {},
+    "start_interval": "200ms",
+    "interval": "1s",
+    "timeout": "5s",
+    "retries": 30,
+    "start_period": "120s"
+  },
+  "name": "render",
+  "process-compose": {
+    "activate": "mise x --",
+    "availability": {
+      "restart": "on_failure",
+      "backoff_seconds": 1,
+      "max_restarts": 15
+    }
+  },
+  "project": "snapcards",
+  "dir": ".",
+  "activate": "",
+  "srcs": {
+    "globs": [
+      "shell/index.html",
+      "shell/shell.css",
+      "shell/boot.js",
+      "shell/shell.yaml",
+      "shell/shell.json",
+      "shell/design.css",
+      "shell/screens/cards.css",
+      "shell/screens/generate.css",
+      "shell/screens/explore.css",
+      "shell/screens/deck.html",
+      "shell/screens/deck.css",
+      "shell/screens/card.css",
+      "shell/screens/print.css",
+      "shell/screens/about.html",
+      "shell/screens/about.css",
+      "shell/handlers/count-step.js",
+      "shell/handlers/create_set.js",
+      "shell/handlers/delivery_accept.js",
+      "shell/handlers/delivery_address_q.js",
+      "shell/handlers/delivery_found.js",
+      "shell/handlers/delivery_offers.js",
+      "shell/handlers/delivery_pin.js",
+      "shell/handlers/delivery_submitted.js",
+      "shell/handlers/generation-input.js",
+      "shell/handlers/is_key.js",
+      "shell/handlers/legacy-generation-run.js",
+      "shell/handlers/localize_content.js",
+      "shell/handlers/play_master.js",
+      "shell/handlers/play_next.js",
+      "shell/handlers/play_prev.js",
+      "shell/handlers/play_restart.js",
+      "shell/handlers/play_select.js",
+      "shell/handlers/print_select.js",
+      "shell/handlers/row-is.js",
+      "shell/handlers/tab-fill.js",
+      "shell/handlers/value-is.js",
+      "shell/shared/address-formats.css",
+      "shell/shared/card-art.css",
+      "shell/shared/chrome-ready.css",
+      "shell/shared/chrome.css",
+      "shell/shared/nav.css",
+      "shell/shared/translation-feedback.css",
+      "shell/hatches/print-checkout.js",
+      "shell/hatches/window-print.js",
+      "shell/units/ai-browser/unit.js",
+      "shell/units/delivery-map/index.html",
+      "shell/units/delivery-map/vendor/maplibre-gl.css",
+      "shell/units/delivery-map/vendor/maplibre-gl.js",
+      "shell/units/geocoder/unit.js",
+      "shell/units/print-payment/index.html",
+      "messages/pt.json",
+      "messages/es.json",
+      "messages/en.json",
+      "messages/he.json",
+      "messages/zh.json",
+      "shell/shared/fonts/nunito-latin-wght-normal.woff2",
+      "shell/shared/fonts/nunito-latin-wght-italic.woff2",
+      "shell/shared/fonts/nunito-latin-ext-wght-normal.woff2",
+      "shell/shared/fonts/nunito-latin-ext-wght-italic.woff2",
+      "shell/shared/fonts/dm-sans-latin-wght-normal.woff2",
+      "shell/shared/fonts/dm-sans-latin-wght-italic.woff2",
+      "shell/shared/fonts/dm-sans-latin-ext-wght-normal.woff2",
+      "shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2",
+      "shell/favicon.svg",
+      "shell/tag.html"
+    ],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {},
+  "synthetics": {
+    "bayt": {
+      "name": "render_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.render.yaml",
+          ".bayt/Dockerfile.render",
+          ".bayt/bayt.render.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.render.yaml",
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.electric.yaml",
+        "./.bayt/compose.auth.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.timer-check.yaml"
+      ]
+    },
+    "outs": {
+      "name": "render_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.render.yaml",
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.electric.yaml",
+        "./.bayt/compose.auth.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.timer-check.yaml"
+      ]
+    },
+    "srcs": {
+      "name": "render_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          "shell/index.html",
+          "shell/shell.css",
+          "shell/boot.js",
+          "shell/shell.yaml",
+          "shell/shell.json",
+          "shell/design.css",
+          "shell/screens/cards.css",
+          "shell/screens/generate.css",
+          "shell/screens/explore.css",
+          "shell/screens/deck.html",
+          "shell/screens/deck.css",
+          "shell/screens/card.css",
+          "shell/screens/print.css",
+          "shell/screens/about.html",
+          "shell/screens/about.css",
+          "shell/handlers/count-step.js",
+          "shell/handlers/create_set.js",
+          "shell/handlers/delivery_accept.js",
+          "shell/handlers/delivery_address_q.js",
+          "shell/handlers/delivery_found.js",
+          "shell/handlers/delivery_offers.js",
+          "shell/handlers/delivery_pin.js",
+          "shell/handlers/delivery_submitted.js",
+          "shell/handlers/generation-input.js",
+          "shell/handlers/is_key.js",
+          "shell/handlers/legacy-generation-run.js",
+          "shell/handlers/localize_content.js",
+          "shell/handlers/play_master.js",
+          "shell/handlers/play_next.js",
+          "shell/handlers/play_prev.js",
+          "shell/handlers/play_restart.js",
+          "shell/handlers/play_select.js",
+          "shell/handlers/print_select.js",
+          "shell/handlers/row-is.js",
+          "shell/handlers/tab-fill.js",
+          "shell/handlers/value-is.js",
+          "shell/shared/address-formats.css",
+          "shell/shared/card-art.css",
+          "shell/shared/chrome-ready.css",
+          "shell/shared/chrome.css",
+          "shell/shared/nav.css",
+          "shell/shared/translation-feedback.css",
+          "shell/hatches/print-checkout.js",
+          "shell/hatches/window-print.js",
+          "shell/units/ai-browser/unit.js",
+          "shell/units/delivery-map/index.html",
+          "shell/units/delivery-map/vendor/maplibre-gl.css",
+          "shell/units/delivery-map/vendor/maplibre-gl.js",
+          "shell/units/geocoder/unit.js",
+          "shell/units/print-payment/index.html",
+          "messages/pt.json",
+          "messages/es.json",
+          "messages/en.json",
+          "messages/he.json",
+          "messages/zh.json",
+          "shell/shared/fonts/nunito-latin-wght-normal.woff2",
+          "shell/shared/fonts/nunito-latin-wght-italic.woff2",
+          "shell/shared/fonts/nunito-latin-ext-wght-normal.woff2",
+          "shell/shared/fonts/nunito-latin-ext-wght-italic.woff2",
+          "shell/shared/fonts/dm-sans-latin-wght-normal.woff2",
+          "shell/shared/fonts/dm-sans-latin-wght-italic.woff2",
+          "shell/shared/fonts/dm-sans-latin-ext-wght-normal.woff2",
+          "shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2",
+          "shell/favicon.svg",
+          "shell/tag.html"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.render.yaml",
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.electric.yaml",
+        "./.bayt/compose.auth.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.timer-check.yaml"
+      ]
+    }
+  },
+  "visibility": "internal",
+  "emitsSrcs": true,
+  "deps": [
+    "caddy_outs",
+    "crud_outs",
+    "electric_outs",
+    "auth_outs",
+    "served_outs"
+  ],
+  "sameProjectDeps": [
+    "caddy_outs",
+    "crud_outs",
+    "electric_outs",
+    "auth_outs",
+    "served_outs"
+  ],
+  "transitiveDeps": [
+    "caddy_outs",
+    "crud_outs",
+    "electric_outs",
+    "auth_outs",
+    "served_outs"
+  ],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "./.bayt/compose.render.yaml",
+    "./.bayt/compose.caddy.yaml",
+    "./.bayt/compose.crud.yaml",
+    "./.bayt/compose.electric.yaml",
+    "./.bayt/compose.auth.yaml",
+    "./.bayt/compose.served.yaml",
+    "./.bayt/compose.airlock-upgrade.yaml",
+    "./.bayt/compose.database.yaml",
+    "./.bayt/compose.migrate.yaml",
+    "./.bayt/compose.timer-check.yaml"
+  ],
+  "chainedDeps": [
+    {
+      "name": "caddy_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "crud_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "electric_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "auth_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "served_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    }
+  ],
+  "cmds": [],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

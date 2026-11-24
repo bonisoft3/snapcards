@@ -1,0 +1,181 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": false,
+    "manual": false,
+    "environment": {
+      "RCLONE_LOCAL_BUCKET": "mecha-objects"
+    },
+    "ports": [],
+    "volumes": [],
+    "depends_on": {},
+    "networks": {
+      "default": {
+        "aliases": [
+          "rclone-s3"
+        ]
+      },
+      "airlock-egress": {
+        "aliases": [
+          "rclone-s3"
+        ]
+      }
+    },
+    "healthcheck": {
+      "test": [
+        "CMD-SHELL",
+        "wget -S -O /dev/null http://127.0.0.1:3900/ 2>&1 | grep -q 'HTTP/'"
+      ],
+      "interval": "5s",
+      "timeout": "5s",
+      "retries": 6,
+      "start_period": "10s",
+      "start_interval": "500ms"
+    }
+  },
+  "dockerfile": {
+    "preamble": [],
+    "preambleCopyContexts": [],
+    "from": {
+      "name": "rclone/rclone:1.71.0@sha256:fd635aecd9667ee3c3bf920d14118090d4f2a83a080c1fa77e0bafbd4587ca87"
+    },
+    "add": [],
+    "mounts": [],
+    "secrets": {},
+    "extra_hosts": [],
+    "epilogue": [],
+    "copy": [],
+    "healthcheck": null,
+    "expose": [],
+    "entrypoint": [
+      "sh",
+      "-c",
+      "mkdir -p \"/data/$RCLONE_LOCAL_BUCKET\" && exec rclone serve s3 --addr=0.0.0.0:3900 --vfs-cache-mode=off /data"
+    ],
+    "incremental": false,
+    "cmd": null
+  },
+  "entrypoint": {
+    "do": "let base = ($env.BAYT_LOCAL_WORK_DIR? | default $nu.temp-dir); let dir = ($base | path join $'rclone-s3-($nu.pid)-(random int 1000..9999)'); mkdir ($dir | path join $env.RCLONE_LOCAL_BUCKET); exec rclone serve s3 $\"--addr=127.0.0.1:($env.RCLONE_PORT? | default '3900')\" --vfs-cache-mode=off $dir",
+    "shell": "nu",
+    "env": {
+      "RCLONE_LOCAL_BUCKET": "mecha-objects"
+    },
+    "after": {},
+    "host": true
+  },
+  "expose": {
+    "http": {
+      "port": 3900,
+      "env": "RCLONE_PORT"
+    }
+  },
+  "healthcheck": {
+    "template": "tcp",
+    "port": 3900,
+    "start_interval": "200ms",
+    "interval": "1s",
+    "timeout": "5s",
+    "retries": 10,
+    "start_period": "0s"
+  },
+  "name": "rclone-s3",
+  "process-compose": {
+    "activate": "mise x --"
+  },
+  "project": "snapcards",
+  "dir": ".",
+  "activate": "",
+  "srcs": {
+    "globs": [],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {},
+  "synthetics": {
+    "bayt": {
+      "name": "rclone-s3_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.rclone-s3.yaml",
+          ".bayt/Dockerfile.rclone-s3",
+          ".bayt/bayt.rclone-s3.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.rclone-s3.yaml"
+      ]
+    },
+    "outs": {
+      "name": "rclone-s3_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.rclone-s3.yaml"
+      ]
+    }
+  },
+  "visibility": "internal",
+  "emitsSrcs": false,
+  "deps": [],
+  "sameProjectDeps": [],
+  "transitiveDeps": [],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "./.bayt/compose.rclone-s3.yaml"
+  ],
+  "chainedDeps": [],
+  "cmds": [],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

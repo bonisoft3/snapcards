@@ -1,0 +1,63 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-checkout-simulator:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.checkout-simulator
+      target: checkout-simulator
+      tags:
+      - bayt-snapcards-checkout-simulator:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-checkout-simulator:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    environment:
+      PORT: "8080"
+      STRIPE_SECRET_KEY: simulator
+      STRIPE_WEBHOOK_SECRET: whsec_simulator
+      WEBHOOK_URL: http://caddy:8080/signal/stripe
+    healthcheck:
+      test:
+      - CMD
+      - httpcheck
+      - http://127.0.0.1:8080/_simulator/health
+      interval: 1s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+      start_interval: 200ms
+    image: bayt-snapcards-checkout-simulator:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    networks:
+      default:
+        aliases:
+        - checkout-simulator
+      airlock-out:
+        aliases:
+        - checkout-simulator
+      bridge-stripe-egress:
+        aliases:
+        - checkout-simulator
+    restart: on-failure
+  snapcards-checkout-simulator_bayt:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.checkout-simulator
+      target: checkout-simulator_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-checkout-simulator_bayt:latest
+    scale: 0
+  snapcards-checkout-simulator_srcs:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.checkout-simulator
+      target: checkout-simulator_srcs
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-checkout-simulator_srcs:latest
+    scale: 0

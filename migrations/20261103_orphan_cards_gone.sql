@@ -1,0 +1,29 @@
+-- The cards of decks deleted before 20261103_deck_takes_its_cards. The decks are
+-- named so this removes what was inspected and nothing a later deck leaves behind.
+SET lock_timeout = '5s';
+SET statement_timeout = '60s';
+
+DELETE FROM flashcard f
+WHERE f.set_id IN (
+  '22616292-ed71-4e79-8c8f-af2d98539779',
+  '233405f6-18ef-49c5-83d1-35a2e41bd591',
+  '2853ce3f-88ff-4a0d-bd16-d0bb61cc30f5',
+  '40a535f4-7f5d-4020-820b-6ada0d4a5ec9',
+  '4e157a6d-db11-4ac5-b505-2e1b0e2599ba',
+  '56b1d38f-79d3-4fb0-8ba3-2921652abd18',
+  '6dc4ab81-93fc-43e3-b237-7ffe86fb5f0d',
+  '6e945db5-f279-4849-a15f-e71df4f8c366',
+  '7437b12a-6d94-4ef4-916f-56f118057f62',
+  '832769ef-ed89-41a9-b64d-b4b9d710118e',
+  '9f61e3b4-08af-48ab-b913-a9fd9f2911ff',
+  'a2e7612c-edfe-4399-b928-3444dfe4311d',
+  'acad76bb-ee32-4448-a33a-e61b1818ca44',
+  'b9ca76b9-077e-40b1-bbde-4cef88e2b5da',
+  'c87de013-1216-4106-a914-a0dc3cbf5722',
+  'cc0cffc0-8d94-4562-b12f-f67ea58b58f8',
+  'd5e33903-5a28-43e1-848e-65f6b1780f70',
+  'e030dc4d-77bb-4a8c-9ca1-af7d6db1d51e',
+  'e8a2712d-4bde-455a-8918-c457ca01c200',
+  'eb004643-fea3-48ee-a28b-b6affe750107'
+)
+AND NOT EXISTS (SELECT 1 FROM card_set s WHERE s.id = f.set_id);

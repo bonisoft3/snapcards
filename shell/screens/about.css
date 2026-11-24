@@ -1,0 +1,203 @@
+@import url("shared/chrome-ready.css");
+
+/* Snapcards' own tokens and scale, as the print and library screens use them;
+   only the studio box keeps Bonisoft's serif wordmark. */
+.about {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--sp-md) var(--sp-lg) var(--sp-xl);
+  box-sizing: border-box;
+  color: var(--snapcards-primary);
+}
+
+.about-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-sm); margin-block-end: 8px; }
+/* The print screen's switches; each screen carries its own copy of them. */
+.about-top .lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--snapcards-border);
+  border-radius: 9999px;
+  background: var(--snapcards-surface-muted);
+}
+.about-top .lang-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--snapcards-secondary);
+  text-decoration: none;
+  transition: all .15s ease;
+}
+.about-top .lang-link:hover { color: var(--snapcards-primary); background: var(--snapcards-surface); }
+.about-top .lang-link[aria-current="page"] { background: #F59E0B; color: #181D25; box-shadow: 0 1px 2px #181d251f; }
+.about-crumb {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  margin: 0;
+  font: 500 var(--type-caption)/1.4 var(--font-body);
+  color: var(--snapcards-secondary);
+}
+.about-crumb-brand { font-weight: 700; letter-spacing: -.01em; color: var(--snapcards-primary); }
+.about-crumb-sep { opacity: .4; }
+.about-crumb-section { font-weight: 600; color: var(--snapcards-accent); }
+
+.about-label {
+  margin: 0;
+  font: 800 var(--type-label)/1.4 var(--font-body);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--snapcards-primary);
+}
+
+.about-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+  padding-block-end: var(--sp-xl);
+}
+.about-hero-copy { display: grid; gap: var(--sp-md); }
+.about-title {
+  margin: 0;
+  font: 800 var(--type-title)/var(--type-leading-title) var(--font-display);
+  letter-spacing: -.025em;
+  color: var(--snapcards-primary);
+}
+.about-lede { max-width: 40rem; margin: 0; font: 400 var(--type-body)/var(--type-leading-body) var(--font-body); color: var(--snapcards-secondary); }
+.about-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-block-start: var(--sp-sm); }
+
+/* The print screen's primary action: ink on the page's own surface. */
+.about-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--snapcards-primary);
+  border-radius: 10px;
+  background: var(--snapcards-primary);
+  box-shadow: var(--shadow-1);
+  color: var(--snapcards-surface);
+  font: 700 var(--type-body)/1 var(--font-display);
+  text-decoration: none;
+  transition: border-color var(--motion-fast, .15s) ease, box-shadow var(--motion-fast, .15s) ease;
+}
+.about-btn:hover { border-color: var(--snapcards-accent); box-shadow: var(--shadow-2); }
+.about-link { display: inline-flex; gap: 6px; font: 700 var(--type-body)/1.4 var(--font-display); color: var(--snapcards-primary); text-decoration: none; }
+.about-link:hover { color: var(--snapcards-accent); }
+.about :is(a, .about-btn):focus-visible { outline: 3px solid var(--snapcards-accent); outline-offset: 3px; }
+
+/* Three cards fanned on a panel of the page's muted surface. */
+.about-art {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 320px;
+  margin: 0;
+  padding: 24px;
+  overflow: hidden;
+  background: var(--snapcards-surface-muted);
+  border: 1px solid var(--snapcards-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-2);
+}
+.about-art-label, .about-art-footer { position: relative; z-index: 1; font: 700 var(--type-label)/1.4 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--snapcards-secondary); }
+.about-art-footer { align-self: flex-end; }
+/* Sized by the fan's height as well as its width: a single column made the panel wide and short,
+   and three cards offset by most of their own height overflowed it. */
+.about-fan { position: absolute; inset: 56px 24px 48px; display: flex; align-items: center; justify-content: center; container-type: size; }
+.about-fan img {
+  position: absolute;
+  box-sizing: border-box;
+  width: min(56cqw, 60cqh);
+  height: auto;
+  aspect-ratio: 152 / 102;
+  object-fit: contain;
+  padding: 3%;
+  border: 1px solid var(--snapcards-border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow-2);
+  transition: transform .4s cubic-bezier(.2, .8, .2, 1);
+}
+.about-fan img:nth-child(1) { transform: translate(-14%, -62%) rotate(-7deg); }
+.about-fan img:nth-child(2) { transform: translate(14%, 62%) rotate(5deg); }
+.about-fan img:nth-child(3) { transform: rotate(-2deg); }
+.about-art:hover .about-fan img:nth-child(1) { transform: translate(-20%, -66%) rotate(-10deg); }
+.about-art:hover .about-fan img:nth-child(2) { transform: translate(20%, 66%) rotate(8deg); }
+
+.about-steps { display: grid; gap: var(--sp-md); padding-block: var(--sp-lg); }
+.about-steps ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-md); margin: 0; padding: 0; list-style: none; }
+.about-steps li {
+  padding: 20px;
+  border: 1px solid var(--snapcards-border);
+  border-radius: 14px;
+  background: var(--snapcards-surface);
+  box-shadow: var(--shadow-1);
+}
+.about-step-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--snapcards-surface-muted); font-size: 20px; }
+.about-steps h2 { margin: 14px 0 6px; font: 800 var(--type-subtitle)/1.3 var(--font-display); letter-spacing: -.01em; color: var(--snapcards-primary); }
+.about-steps li p { margin: 0; font: 400 var(--type-caption)/var(--type-leading-body) var(--font-body); color: var(--snapcards-secondary); }
+
+/* Bonisoft's mark is the deck's last card: paper like the hero's fanned cards,
+   whatever the theme, with the sentence beside it as its caption. */
+.about-studio {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(24px, 5vw, 56px);
+  margin-block: var(--sp-lg);
+  padding-block: var(--sp-lg);
+  border-top: 1px solid var(--snapcards-border);
+}
+.about-maker {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  box-sizing: border-box;
+  width: clamp(200px, 22vw, 260px);
+  aspect-ratio: 152 / 102;
+  padding: 20px;
+  border: 1px solid var(--snapcards-border);
+  border-radius: 10px;
+  background: #fffdf8;
+  box-shadow: var(--shadow-2);
+  transform: rotate(-3deg);
+  color: #181D25;
+}
+.about-studio h2 { margin: 0; line-height: 1; }
+/* A span, because the chrome pins every h2 to the display face. */
+.about-mark {
+  display: inline-block;
+  direction: ltr;
+  font: 400 clamp(36px, 4vw, 48px)/1 Georgia, "Times New Roman", serif;
+  letter-spacing: -.04em;
+}
+.about-mark sup { font-size: .32em; vertical-align: top; position: relative; top: .3em; margin-inline-start: .03em; }
+.about-mark i { font-style: normal; color: #B45309; }
+.about-maker-motto { margin: 0; font: italic 400 var(--type-caption)/1.4 Georgia, "Times New Roman", serif; color: #525B6C; }
+.about-studio-copy { display: grid; justify-items: start; gap: var(--sp-sm); }
+.about-studio-body { max-width: 36rem; margin: 0; font: 400 var(--type-subtitle)/1.5 var(--font-body); color: var(--snapcards-primary); }
+
+.about-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-block: var(--sp-md); font: 400 var(--type-caption)/1.5 var(--font-body); color: var(--snapcards-secondary); }
+.about-footer a { color: var(--snapcards-secondary); text-underline-offset: 3px; }
+.about-footer a:hover { color: var(--snapcards-accent); }
+
+@media (max-width: 900px) {
+  .about-hero { grid-template-columns: 1fr; }
+  .about-art { min-height: 300px; }
+  .about-steps ol { grid-template-columns: 1fr; }
+  .about-studio { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .about-studio-copy { justify-items: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-fan img, .about-btn { transition: none; }
+}

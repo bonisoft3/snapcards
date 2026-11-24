@@ -1,0 +1,1522 @@
+{
+  "0xe86b9564aeac909a": {
+    "name": "card_art",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "card_id",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "run",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "level",
+        "type": "int32",
+        "retired": false
+      },
+      "6": {
+        "name": "position",
+        "type": "int32",
+        "retired": false
+      },
+      "7": {
+        "name": "subject",
+        "type": "string",
+        "retired": true
+      },
+      "8": {
+        "name": "frame_percent",
+        "type": "int32",
+        "retired": true
+      },
+      "9": {
+        "name": "status",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "detail",
+        "type": "string",
+        "retired": false
+      },
+      "11": {
+        "name": "description",
+        "type": "string",
+        "retired": false
+      },
+      "12": {
+        "name": "redraws",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0xf98ced57ed9a218d": {
+    "name": "deck_level",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "level",
+        "type": "int32",
+        "retired": false
+      },
+      "4": {
+        "name": "run",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "total",
+        "type": "int32",
+        "retired": false
+      },
+      "6": {
+        "name": "drawn",
+        "type": "int32",
+        "retired": false
+      },
+      "7": {
+        "name": "failed",
+        "type": "int32",
+        "retired": false
+      },
+      "8": {
+        "name": "unknown",
+        "type": "int32",
+        "retired": false
+      },
+      "9": {
+        "name": "pending",
+        "type": "int32",
+        "retired": false
+      },
+      "10": {
+        "name": "status",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0x94c353ea699a649e": {
+    "name": "deck_progress",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "run",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "status",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0x99e921962d8130b3": {
+    "name": "app_user",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "uuid",
+        "retired": false
+      },
+      "2": {
+        "name": "handle",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "created_at",
+        "type": "timestamp",
+        "retired": false
+      }
+    }
+  },
+  "0x8c3e5a01f2a4b6c8": {
+    "name": "card_set",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "name",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "category",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "locale",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "region",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "count",
+        "type": "int32",
+        "retired": false
+      },
+      "7": {
+        "name": "favorite",
+        "type": "string",
+        "retired": true
+      },
+      "8": {
+        "name": "cover_emoji",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "details",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "device",
+        "type": "string",
+        "retired": false
+      },
+      "11": {
+        "name": "owner",
+        "type": "uuid",
+        "retired": false
+      },
+      "12": {
+        "name": "audience_key",
+        "type": "string",
+        "retired": false
+      },
+      "13": {
+        "name": "audience",
+        "type": "string",
+        "retired": false
+      },
+      "14": {
+        "name": "number",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0x9d4e5f01a2b3c4d5": {
+    "name": "flashcard",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "front",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "back",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "hint",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "difficulty",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "emoji",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "color",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "description",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "redraw",
+        "type": "string",
+        "retired": false
+      },
+      "11": {
+        "name": "owner",
+        "type": "uuid",
+        "retired": false
+      }
+    }
+  },
+  "0xab19136dc12029d9": {
+    "name": "me",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "uuid",
+        "retired": false
+      }
+    }
+  },
+  "0xc0befe1cc9759f25": {
+    "name": "favorite",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "uuid",
+        "retired": false
+      },
+      "2": {
+        "name": "user_id",
+        "type": "uuid",
+        "retired": false
+      },
+      "3": {
+        "name": "deck_id",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "created_at",
+        "type": "timestamp",
+        "retired": false
+      },
+      "5": {
+        "name": "deleted_at",
+        "type": "timestamp",
+        "retired": false
+      }
+    }
+  },
+  "0xf237da033df93fb9": {
+    "name": "favorite_count",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "user_id",
+        "type": "uuid",
+        "retired": false
+      },
+      "3": {
+        "name": "deck_id",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "mine_counted",
+        "type": "int32",
+        "retired": false
+      },
+      "5": {
+        "name": "total_at_read",
+        "type": "int32",
+        "retired": false
+      },
+      "6": {
+        "name": "as_of_txid",
+        "type": "int64",
+        "retired": false
+      }
+    }
+  },
+  "0xe8771c4ea1cf7897": {
+    "name": "deck_stats",
+    "fields": {
+      "1": {
+        "name": "deck_id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "favorite_count",
+        "type": "int32",
+        "retired": false
+      },
+      "3": {
+        "name": "counted_txid",
+        "type": "int64",
+        "retired": false
+      },
+      "4": {
+        "name": "cover",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xd391a73037ff9e31": {
+    "name": "deck_translation",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "lang",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "name",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "category",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xf0a3308803dc8669": {
+    "name": "card_translation",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "card_id",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "lang",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "word",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xd8d5b715123d4b19": {
+    "name": "next_picture",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "back",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xf8f18df6b897af0b": {
+    "name": "generation_ask",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "run",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "input",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "created_at",
+        "type": "timestamp",
+        "retired": false
+      }
+    }
+  },
+  "0x8a719006cf76becc": {
+    "name": "card_delete",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "state",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xae702fa214382b33": {
+    "name": "localized_card",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "front",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "original_front",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "emoji",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xf41d06b85c125227": {
+    "name": "localized_deck",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "name",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "original_name",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "category",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "cover_emoji",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "count",
+        "type": "int32",
+        "retired": false
+      },
+      "7": {
+        "name": "locale",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "region",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "favorite",
+        "type": "string",
+        "retired": true
+      },
+      "10": {
+        "name": "art",
+        "type": "string",
+        "retired": true
+      },
+      "11": {
+        "name": "art1",
+        "type": "string",
+        "retired": true
+      },
+      "12": {
+        "name": "art2",
+        "type": "string",
+        "retired": true
+      },
+      "13": {
+        "name": "art3",
+        "type": "string",
+        "retired": true
+      },
+      "14": {
+        "name": "art1_count",
+        "type": "int32",
+        "retired": true
+      },
+      "15": {
+        "name": "art2_count",
+        "type": "int32",
+        "retired": true
+      },
+      "16": {
+        "name": "art3_count",
+        "type": "int32",
+        "retired": true
+      },
+      "17": {
+        "name": "owner",
+        "type": "string",
+        "retired": false
+      },
+      "18": {
+        "name": "number",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0xaf1b2c3d4e5f6071": {
+    "name": "play_session",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "card_index",
+        "type": "int32",
+        "retired": false
+      },
+      "4": {
+        "name": "flipped",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "mastered",
+        "type": "int32",
+        "retired": false
+      },
+      "6": {
+        "name": "total",
+        "type": "int32",
+        "retired": false
+      },
+      "7": {
+        "name": "status",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "front",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "back",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "hint",
+        "type": "string",
+        "retired": false
+      },
+      "11": {
+        "name": "emoji",
+        "type": "string",
+        "retired": false
+      },
+      "12": {
+        "name": "card_id",
+        "type": "string",
+        "retired": false
+      },
+      "13": {
+        "name": "original_front",
+        "type": "string",
+        "retired": false
+      },
+      "14": {
+        "name": "translation_failed_topic",
+        "type": "string",
+        "retired": false
+      },
+      "15": {
+        "name": "library_query",
+        "type": "string",
+        "retired": false
+      },
+      "16": {
+        "name": "library_filter",
+        "type": "string",
+        "retired": true
+      },
+      "17": {
+        "name": "finished",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xbf5e4d3c2b1a0987": {
+    "name": "print_config",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "paper",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "card_size",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "layout",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "cut_lines",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "orientation",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "vendor",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "stock",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xc0169c47cea14ea3": {
+    "name": "delivery_draft",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "step",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "text",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "pin_latitude",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "pin_longitude",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "pin_source",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "pin_q",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "recipient",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "line1",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "line2",
+        "type": "string",
+        "retired": false
+      },
+      "11": {
+        "name": "city",
+        "type": "string",
+        "retired": false
+      },
+      "12": {
+        "name": "region",
+        "type": "string",
+        "retired": false
+      },
+      "13": {
+        "name": "postal_code",
+        "type": "string",
+        "retired": false
+      },
+      "14": {
+        "name": "country",
+        "type": "string",
+        "retired": false
+      },
+      "15": {
+        "name": "instructions",
+        "type": "string",
+        "retired": false
+      },
+      "16": {
+        "name": "search_q",
+        "type": "string",
+        "retired": false
+      },
+      "17": {
+        "name": "address_q",
+        "type": "string",
+        "retired": false
+      },
+      "18": {
+        "name": "near",
+        "type": "string",
+        "retired": false
+      },
+      "19": {
+        "name": "phone",
+        "type": "string",
+        "retired": false
+      },
+      "20": {
+        "name": "email",
+        "type": "string",
+        "retired": false
+      },
+      "21": {
+        "name": "district",
+        "type": "string",
+        "retired": false
+      },
+      "22": {
+        "name": "pin_stale",
+        "type": "string",
+        "retired": false
+      },
+      "23": {
+        "name": "line2_stale",
+        "type": "string",
+        "retired": false
+      },
+      "24": {
+        "name": "line2_ghost",
+        "type": "string",
+        "retired": false
+      },
+      "25": {
+        "name": "search_stale",
+        "type": "string",
+        "retired": false
+      },
+      "26": {
+        "name": "order_id",
+        "type": "string",
+        "retired": false
+      },
+      "27": {
+        "name": "phone_country",
+        "type": "string",
+        "retired": false
+      },
+      "28": {
+        "name": "tax_id",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xadaae16743a33b19": {
+    "name": "delivery_choice",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "source",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "label",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0x82c0584d2d7ddc5d": {
+    "name": "place_answer",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "kind",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "q",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "lang",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "p0",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "p1",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "p2",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "p3",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "p4",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xa87b8e0f09ac85bd": {
+    "name": "place_suggestion",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "label",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "line1",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "city",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "region",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "postal_code",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "country",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "latitude",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "longitude",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "q",
+        "type": "string",
+        "retired": false
+      },
+      "11": {
+        "name": "district",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xc03dedddc2a33094": {
+    "name": "generation_form",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "topic",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "category",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "locale",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "region",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "card_count",
+        "type": "int32",
+        "retired": false
+      },
+      "7": {
+        "name": "status",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "details",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "words",
+        "type": "string",
+        "retired": false
+      },
+      "11": {
+        "name": "next",
+        "type": "int32",
+        "retired": false
+      },
+      "12": {
+        "name": "audience_key",
+        "type": "string",
+        "retired": false
+      },
+      "13": {
+        "name": "audience",
+        "type": "string",
+        "retired": false
+      },
+      "14": {
+        "name": "asked",
+        "type": "string",
+        "retired": true
+      },
+      "15": {
+        "name": "ended",
+        "type": "string",
+        "retired": true
+      },
+      "16": {
+        "name": "run",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0x81fb3b924095b255": {
+    "name": "device",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "key",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "theme",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xcf4d3c2b1a098765": {
+    "name": "generation_draft",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "topic",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "category",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "locale",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "region",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "card_count",
+        "type": "int32",
+        "retired": false
+      },
+      "7": {
+        "name": "status",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "details",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xd71f4bf5a741e3f4": {
+    "name": "deck_press_seat",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "instance_id",
+        "type": "uuid",
+        "retired": false
+      },
+      "3": {
+        "name": "actor",
+        "type": "uuid",
+        "retired": false
+      },
+      "4": {
+        "name": "seat",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "revision",
+        "type": "int64",
+        "retired": false
+      },
+      "6": {
+        "name": "phase",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "view",
+        "type": "json",
+        "retired": false
+      }
+    }
+  },
+  "0xb603ef324cd7ef35": {
+    "name": "browser_draft",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "topic",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "locale",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "status",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "w0",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "w1",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "w2",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "w3",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "w4",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "set_id",
+        "type": "string",
+        "retired": false
+      },
+      "11": {
+        "name": "run",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xf01a0e14b04263ee": {
+    "name": "print_order",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "uuid",
+        "retired": false
+      },
+      "2": {
+        "name": "owner_id",
+        "type": "uuid",
+        "retired": false
+      },
+      "3": {
+        "name": "status",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "created_at",
+        "type": "timestamp",
+        "retired": false
+      },
+      "5": {
+        "name": "title",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "stock",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "cards",
+        "type": "int32",
+        "retired": false
+      },
+      "8": {
+        "name": "country",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "delivery",
+        "type": "json",
+        "retired": false
+      },
+      "10": {
+        "name": "artwork",
+        "type": "json",
+        "retired": false
+      },
+      "11": {
+        "name": "item",
+        "type": "int32",
+        "retired": false
+      },
+      "12": {
+        "name": "shipping",
+        "type": "int32",
+        "retired": false
+      },
+      "13": {
+        "name": "total",
+        "type": "int32",
+        "retired": false
+      },
+      "14": {
+        "name": "cost",
+        "type": "int32",
+        "retired": false
+      },
+      "15": {
+        "name": "currency",
+        "type": "string",
+        "retired": false
+      },
+      "16": {
+        "name": "sku",
+        "type": "string",
+        "retired": false
+      },
+      "17": {
+        "name": "shipping_method",
+        "type": "string",
+        "retired": false
+      },
+      "18": {
+        "name": "session_id",
+        "type": "string",
+        "retired": false
+      },
+      "19": {
+        "name": "checkout_url",
+        "type": "string",
+        "retired": false
+      },
+      "20": {
+        "name": "checks",
+        "type": "int32",
+        "retired": false
+      },
+      "21": {
+        "name": "payment_state",
+        "type": "string",
+        "retired": false
+      },
+      "22": {
+        "name": "payment_intent",
+        "type": "string",
+        "retired": false
+      },
+      "23": {
+        "name": "customer_email",
+        "type": "string",
+        "retired": false
+      },
+      "24": {
+        "name": "paid_at",
+        "type": "timestamp",
+        "retired": false
+      },
+      "25": {
+        "name": "vendor_order_id",
+        "type": "string",
+        "retired": false
+      },
+      "26": {
+        "name": "vendor_state",
+        "type": "string",
+        "retired": false
+      },
+      "27": {
+        "name": "vendor_checks",
+        "type": "int32",
+        "retired": false
+      },
+      "28": {
+        "name": "failure",
+        "type": "string",
+        "retired": false
+      },
+      "29": {
+        "name": "cost_shipping",
+        "type": "int32",
+        "retired": false
+      },
+      "30": {
+        "name": "fx_quote",
+        "type": "string",
+        "retired": false
+      },
+      "31": {
+        "name": "fx_rates",
+        "type": "json",
+        "retired": false
+      },
+      "32": {
+        "name": "fx_brl",
+        "type": "int32",
+        "retired": false
+      },
+      "33": {
+        "name": "opened_at",
+        "type": "timestamp",
+        "retired": false
+      },
+      "34": {
+        "name": "print_file",
+        "type": "string",
+        "retired": false
+      },
+      "35": {
+        "name": "postal_code",
+        "type": "string",
+        "retired": false
+      },
+      "36": {
+        "name": "cover_file",
+        "type": "string",
+        "retired": false
+      },
+      "37": {
+        "name": "mail_message_id",
+        "type": "string",
+        "retired": false
+      },
+      "38": {
+        "name": "tracking_carrier",
+        "type": "string",
+        "retired": false
+      },
+      "39": {
+        "name": "tracking_number",
+        "type": "string",
+        "retired": false
+      },
+      "40": {
+        "name": "tracking_url",
+        "type": "string",
+        "retired": false
+      },
+      "41": {
+        "name": "shipped_at",
+        "type": "timestamp",
+        "retired": false
+      }
+    }
+  }
+}

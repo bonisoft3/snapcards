@@ -1,0 +1,43 @@
+.translation-error { display: none; }
+.play-container[data-translation-failed$="|pt"]:has(#lang-pt[aria-current="page"]) .translation-error,
+.play-container[data-translation-failed$="|en"]:has(#lang-en[aria-current="page"]) .translation-error,
+.play-container[data-translation-failed$="|es"]:has(#lang-es[aria-current="page"]) .translation-error,
+.play-container[data-translation-failed$="|he"]:has(#lang-he[aria-current="page"]) .translation-error,
+.play-container[data-translation-failed$="|zh"]:has(#lang-zh[aria-current="page"]) .translation-error { display: block; }
+
+.translation-pending { display: none; }
+.play-header-actions:has(#lang-pt[aria-current="page"]) .translation-pending[data-topic*="[TRANSLATE:"][data-target="pt"],
+.play-header-actions:has(#lang-en[aria-current="page"]) .translation-pending[data-topic*="[TRANSLATE:"][data-target="en"],
+.play-header-actions:has(#lang-es[aria-current="page"]) .translation-pending[data-topic*="[TRANSLATE:"][data-target="es"],
+.play-header-actions:has(#lang-he[aria-current="page"]) .translation-pending[data-topic*="[TRANSLATE:"][data-target="he"],
+.play-header-actions:has(#lang-zh[aria-current="page"]) .translation-pending[data-topic*="[TRANSLATE:"][data-target="zh"] { display: block; }
+.play-header-actions:has(.translation-pending[data-topic*="[TRANSLATE:"][data-target="pt"]) #lang-pt[aria-current="page"],
+.play-header-actions:has(.translation-pending[data-topic*="[TRANSLATE:"][data-target="en"]) #lang-en[aria-current="page"],
+.play-header-actions:has(.translation-pending[data-topic*="[TRANSLATE:"][data-target="es"]) #lang-es[aria-current="page"],
+.play-header-actions:has(.translation-pending[data-topic*="[TRANSLATE:"][data-target="he"]) #lang-he[aria-current="page"],
+.play-header-actions:has(.translation-pending[data-topic*="[TRANSLATE:"][data-target="zh"]) #lang-zh[aria-current="page"] { animation: translation-pulse 1.4s ease-in-out infinite; }
+@keyframes translation-pulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(24, 29, 37, 0.35), 0 0 8px 2px rgba(245, 158, 11, 0.35); }
+  50% { box-shadow: 0 0 0 2px currentColor, 0 0 12px 4px rgba(245, 158, 11, 0.6); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .play-header-actions:has(.translation-pending[data-topic*="[TRANSLATE:"][data-target="pt"]) #lang-pt[aria-current="page"],
+  .play-header-actions:has(.translation-pending[data-topic*="[TRANSLATE:"][data-target="en"]) #lang-en[aria-current="page"],
+  .play-header-actions:has(.translation-pending[data-topic*="[TRANSLATE:"][data-target="es"]) #lang-es[aria-current="page"],
+  .play-header-actions:has(.translation-pending[data-topic*="[TRANSLATE:"][data-target="he"]) #lang-he[aria-current="page"],
+  .play-header-actions:has(.translation-pending[data-topic*="[TRANSLATE:"][data-target="zh"]) #lang-zh[aria-current="page"] { animation: none; outline: 2px solid currentColor; outline-offset: 2px; }
+}
+
+.play-container[data-translation-failed$="|pt"] #lang-pt[aria-current="page"],
+.play-container[data-translation-failed$="|en"] #lang-en[aria-current="page"],
+.play-container[data-translation-failed$="|es"] #lang-es[aria-current="page"],
+.play-container[data-translation-failed$="|he"] #lang-he[aria-current="page"],
+.play-container[data-translation-failed$="|zh"] #lang-zh[aria-current="page"] { color: #6b211b; border-color: currentColor; }
+.translation-error, .translation-pending {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; base-uri &#39;none&#39;; object-src &#39;none&#39;; form-action &#39;none&#39;; script-src &#39;sha256-+q1e9GHNPgh+//KtQfeVaqsCxQFvIXSRad3jCxRgruY=&#39; https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://www.google.com; connect-src https://www.googletagmanager.com https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://ad.doubleclick.net https://pagead2.googlesyndication.com; img-src https:; frame-src https://www.googletagmanager.com">
+<script>if (parent === window || !["snapcards.fun","www.snapcards.fun"].includes(location.hostname)) throw new Error("the tag frame runs framed by the app on a declared host");
+const dataLayer = window.dataLayer = [];
+function gtag() { dataLayer.push(arguments); }
+gtag("consent", "default", {ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: "denied"});
+gtag("set", "ads_data_redaction", true);
+addEventListener("message", (event) => {
+  if (event.origin !== location.origin || event.source !== parent) return;
+  const message = event.data;
+  if (message.kind === "init") {
+    gtag("consent", "update", message.consent);
+    if (Object.keys(message.click).length > 0) history.replaceState(null, "", "?" + new URLSearchParams(message.click));
+    gtag("js", new Date());
+    gtag("config", "AW-11407991574", {page_location: message.page_location, page_referrer: message.page_referrer});
+    const tag = document.createElement("script");
+    tag.async = true;
+    tag.src = "https://www.googletagmanager.com/gtag/js?id=AW-11407991574";
+    document.head.append(tag);
+  } else if (message.kind === "page_view") {
+    gtag("event", "page_view", {send_to: "AW-11407991574", page_location: message.page_location, page_referrer: message.page_referrer});
+  } else if (message.kind === "gtag") {
+    gtag(...message.args);
+  } else {
+    throw new TypeError(`not a tag frame message: ${message.kind}`);
+  }
+});
+parent.postMessage({kind: "ready"}, location.origin);</script>
+</head>
+<body></body>
+</html>

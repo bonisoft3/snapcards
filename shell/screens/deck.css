@@ -1,0 +1,26 @@
+@import url("shared/chrome-ready.css");
+
+.deck-entry {
+  max-width: 42rem;
+  margin: var(--sp-xl) auto var(--sp-md);
+  padding: 0 var(--sp-lg);
+  color: var(--snapcards-primary);
+}
+.deck-empty-back {
+  display: none;
+  margin: 0 auto;
+  max-width: 42rem;
+  padding: 0 var(--sp-lg);
+  color: var(--snapcards-primary);
+}
+.deck-entry:has(.empty) + .deck-empty-back {
+  display: block;
+}
+
+.deck-loading {
+  max-width: 42rem;
+  margin: var(--sp-xl) auto var(--sp-md);
+  padding: 0 var(--sp-lg);
+  color: var(--snapcards-primary);
+}
+#deck-entry:has(.deck-entry .empty) > .deck-loading { display: none; }

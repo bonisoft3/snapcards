@@ -1,0 +1,72 @@
+<section class="screen" data-screen="about">
+  <button type="button" class="btn-more" popovertarget="more-sheet-about" aria-label="{msg.nav_more}"><span aria-hidden="true">⋯</span></button>
+  <nav id="more-sheet-about" class="more-sheet" popover aria-label="{msg.nav_more}">
+    <a data-route="cards" data-param-shelf="mine" class="more-link"><span class="more-icon" aria-hidden="true">🗂️</span><span data-text="{msg.nav_my_cards}"></span></a>
+    <a data-route="cards" data-param-shelf="gallery" class="more-link"><span class="more-icon" aria-hidden="true">🌐</span><span data-text="{msg.nav_gallery}"></span></a>
+    <a data-route="about" class="more-link"><span class="more-icon" aria-hidden="true">📖</span><span data-text="{msg.nav_about}"></span></a>
+  </nav>
+  <div class="device-scope" data-live="device" data-filter="id=eq.device" data-empty-row='{"id":"device","key":"","theme":"auto"}' data-theme="{theme}" data-cortex="aboutRows" data-machine-ref="theme">
+  <article class="about">
+    <div class="about-top">
+      <p class="about-crumb"><span class="about-crumb-brand" data-text="{msg.app_title}">Snapcards</span> <span class="about-crumb-sep" aria-hidden="true">/</span> <span class="about-crumb-section" data-text="{msg.nav_about}">About</span></p>
+      <div class="header-utility-actions">
+        <div class="lang-switch">
+          <a data-route="about" data-locale="pt" data-locale-current="page" class="lang-link" data-text="{msg.lang_pt}"></a>
+          <a data-route="about" data-locale="es" data-locale-current="page" class="lang-link" data-text="{msg.lang_es}"></a>
+          <a data-route="about" data-locale="en" data-locale-current="page" class="lang-link" data-text="{msg.lang_en}"></a>
+          <a data-route="about" data-locale="he" data-locale-current="page" class="lang-link" data-text="{msg.lang_he}"></a>
+          <a data-route="about" data-locale="zh" data-locale-current="page" class="lang-link" data-text="{msg.lang_zh}"></a>
+        </div>
+        <div class="theme-switch" role="group">
+          <button type="button" id="theme-auto" class="theme-btn" data-theme-val="auto" data-text="{msg.theme_auto}">Auto</button>
+          <button type="button" id="theme-light" class="theme-btn" data-theme-val="light">☀️</button>
+          <button type="button" id="theme-dark" class="theme-btn" data-theme-val="dark">🌙</button>
+        </div>
+      </div>
+    </div>
+    <header class="about-hero">
+      <div class="about-hero-copy">
+        <h1 class="about-title"><span data-text="{msg.about_title}">Picture cards for</span> <span data-text="{msg.about_title_accent}">little learners.</span></h1>
+        <p class="about-lede" data-text="{msg.about_lede}">Explore illustrated decks, create cards on any topic in five languages, and bring new words to life.</p>
+        <div class="about-actions">
+          <a class="about-btn" data-route="cards" data-text="{msg.about_cta_explore}">Explore the library</a>
+        </div>
+      </div>
+      <figure class="about-art" aria-hidden="true">
+        <span class="about-art-label" data-text="{msg.about_art_label}">Specimen deck</span>
+        <div class="about-fan">
+          <img src="/img/insecure/plain/s3://mecha-objects/seed/92971e066807d7824eacf36b02106769f373197982f847d385934cf2db63c66e.webp" alt="" width="152" height="102">
+          <img src="/img/insecure/plain/s3://mecha-objects/seed/b71a098b5a1e509edc634a9363c3c07de74229ff927e92626d2cabea048c0e56.webp" alt="" width="152" height="102">
+          <img src="/img/insecure/plain/s3://mecha-objects/seed/2356ed27fc3c151caa49612ec2e4e5f204e752e73ed06928b5867583c616e05a.webp" alt="" width="152" height="102">
+        </div>
+        <span class="about-art-footer" data-text="{msg.about_art_footer}">Printed on card stock</span>
+      </figure>
+    </header>
+
+    <section class="about-steps" aria-labelledby="about-steps-label">
+      <p class="about-label" id="about-steps-label" data-text="{msg.about_steps_label}">How it works</p>
+      <ol>
+        <li><span class="about-step-icon" aria-hidden="true">✨</span><h2 data-text="{msg.about_step_create_title}">Create</h2><p data-text="{msg.about_step_create}">Name a topic and a language; Snapcards drafts and illustrates the deck.</p></li>
+        <li><span class="about-step-icon" aria-hidden="true">🃏</span><h2 data-text="{msg.about_step_explore_title}">Explore</h2><p data-text="{msg.about_step_explore}">Flip through the cards on any screen, at the child's own pace.</p></li>
+        <li><span class="about-step-icon" aria-hidden="true">🖨️</span><h2 data-text="{msg.about_step_print_title}">Print</h2><p data-text="{msg.about_step_print}">Print at home or at a print shop, or have postcards printed and delivered.</p></li>
+      </ol>
+    </section>
+
+    <section class="about-studio" aria-labelledby="about-studio-title">
+      <div class="about-maker">
+        <h2 id="about-studio-title" aria-label="{msg.about_brand}"><span class="about-mark"><span data-text="{msg.about_brand_mark}">bonisoft</span><sup>3</sup><i>.</i></span></h2>
+        <p class="about-maker-motto" data-text="{msg.about_studio_motto}">Software, from first principles.</p>
+      </div>
+      <div class="about-studio-copy">
+        <p class="about-studio-body" data-text="{msg.about_studio_body}">Snapcards is made by Bonisoft: great software, built in the Pronto language.</p>
+        <a class="about-link" href="https://www.bonisoft3.com/" rel="author"><span data-text="{msg.about_studio_cta}">Visit bonisoft3.com</span> <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <footer class="about-footer">
+      <span data-text="{msg.about_signoff}">Built in Brazil. Shared with the world.</span>
+      <a href="https://www.bonisoft3.com/privacy.html" rel="privacy-policy" data-text="{msg.about_privacy}">Privacy policy</a>
+    </footer>
+  </article>
+  </div>
+</section>

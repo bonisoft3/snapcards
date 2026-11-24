@@ -1,0 +1,42 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-mailpit:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.mailpit
+      target: mailpit
+      tags:
+      - bayt-snapcards-mailpit:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-mailpit:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    environment:
+      MAILPIT_INBOX_PORT: "8025"
+      MAILPIT_SMTP_PORT: "1025"
+    healthcheck:
+      test:
+      - CMD
+      - /mailpit
+      - readyz
+      interval: 2s
+      start_interval: 200ms
+      start_period: 10s
+      retries: 15
+    image: bayt-snapcards-mailpit:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    networks:
+      default:
+        aliases:
+        - mailpit
+  snapcards-mailpit_bayt:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.mailpit
+      target: mailpit_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-mailpit_bayt:latest
+    scale: 0

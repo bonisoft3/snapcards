@@ -1,0 +1,1675 @@
+@import url("shared/chrome-ready.css");
+
+/* ==========================================================================
+   Generate Screen — Editorial Atelier & Creation Workshop
+   ========================================================================== */
+
+.generator-shell {
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--sp-md) var(--sp-lg) var(--sp-xl) var(--sp-lg);
+  box-sizing: border-box;
+}
+
+.studio-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Header & Breadcrumb */
+.generator-header {
+  margin-bottom: var(--sp-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.generator-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-md);
+  flex-wrap: wrap;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--snapcards-surface-muted);
+  border: 1px solid var(--snapcards-border);
+  border-radius: 9999px;
+  padding: 3px;
+}
+
+.lang-switch .lang-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--snapcards-secondary);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.lang-switch .lang-link:hover {
+  color: var(--snapcards-primary);
+  background: var(--snapcards-surface);
+}
+
+.lang-switch .lang-link[aria-current="page"],
+.screen[data-locale="pt"] .lang-switch .lang-link[data-locale="pt"],
+.screen[data-locale="es"] .lang-switch .lang-link[data-locale="es"],
+.screen[data-locale="en"] .lang-switch .lang-link[data-locale="en"],
+.screen[data-locale="he"] .lang-switch .lang-link[data-locale="he"],
+.screen[data-locale="zh"] .lang-switch .lang-link[data-locale="zh"] {
+  background: #F59E0B !important;
+  color: #181D25 !important;
+  box-shadow: 0 1px 2px rgba(24, 29, 37, 0.12) !important;
+}
+
+.header-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  font-size: var(--type-caption);
+  color: var(--snapcards-secondary);
+  font-weight: 500;
+  margin-bottom: var(--size-1);
+}
+
+.header-breadcrumb .crumb-brand {
+  font-weight: 700;
+  color: var(--snapcards-primary);
+  letter-spacing: -0.01em;
+}
+
+.header-breadcrumb .crumb-sep {
+  opacity: 0.4;
+}
+
+.header-breadcrumb .crumb-section {
+  color: var(--snapcards-accent);
+  font-weight: 600;
+}
+
+.generator-title {
+  font-size: var(--type-title);
+  font-weight: 800;
+  margin: 0;
+  color: var(--snapcards-primary);
+  letter-spacing: -0.025em;
+  line-height: var(--type-leading-title);
+}
+
+.generator-subtitle {
+  font-size: var(--type-body);
+  color: var(--snapcards-secondary);
+  margin: 0;
+  max-width: 680px;
+  line-height: var(--type-leading-body);
+}
+
+/* ==========================================================================
+   Option B Full-Width Hero Form + 58/42 Bottom Split Workbench:
+   Desktop (>=981px):
+     - Row 1 (100% full width): 2-Column Hero Form (55% Topic/Quick Picks/Langs | 45% Editable Params + CTA)
+     - Row 2 (2-Column Split): Left 58% Prévia da Ficha | Right 42% Coleções Geradas
+   Mobile (<=980px): 1. Form -> 2. Preview -> 3. Collections
+   ========================================================================== */
+
+.generator-shell {
+  max-width: 1360px;
+}
+
+.generator-workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 58fr) minmax(350px, 42fr);
+  grid-template-rows: auto auto;
+  gap: 20px 24px;
+  align-items: stretch;
+}
+
+.generator-form-panel {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-width: 0;
+  max-width: 100%;
+  background: var(--snapcards-surface);
+  border: var(--border-size-1) solid var(--snapcards-border);
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 0 4px 20px -2px rgba(28, 25, 23, 0.05);
+  display: grid;
+  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.form-col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.form-col-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  border-left: 1px solid var(--snapcards-border);
+  padding-left: 28px;
+  min-width: 0;
+}
+
+.generator-preview-panel {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.generated-deck-banner {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+@media (max-width: 980px) {
+  .generator-workbench {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: var(--sp-lg);
+  }
+
+  .generator-form-panel,
+  .generator-preview-panel,
+  .generated-deck-banner {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .generator-form-panel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .form-col-right {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--snapcards-border);
+    padding-top: 16px;
+  }
+}
+
+@media (max-width: 680px) {
+  .generator-form-panel {
+    padding: 18px 16px;
+    gap: 14px;
+  }
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-micro-label {
+  font-size: var(--type-label);
+  font-weight: 700;
+  color: var(--snapcards-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Quick Picks Horizontal Strip */
+.quick-picks-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.quick-pick-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: var(--border-size-1) solid var(--snapcards-border);
+  background: var(--snapcards-surface-muted);
+  color: var(--snapcards-primary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  user-select: none;
+}
+
+.quick-pick-pill:hover {
+  border-color: var(--snapcards-accent);
+  background: var(--snapcards-surface);
+  color: var(--snapcards-accent);
+}
+
+/* The trigger names the extra country the draft holds, so the pick stays
+   visible and is the button's accessible name. */
+.quick-pick-more-picked {
+  display: none;
+}
+.studio-container[data-ugc-locale="עברית"] .quick-pick-more-picked[data-locale-name="עברית"],
+.studio-container[data-ugc-locale="中文"] .quick-pick-more-picked[data-locale-name="中文"],
+.studio-container[data-ugc-locale="Français"] .quick-pick-more-picked[data-locale-name="Français"],
+.studio-container[data-ugc-locale="Deutsch"] .quick-pick-more-picked[data-locale-name="Deutsch"],
+.studio-container[data-ugc-locale="Italiano"] .quick-pick-more-picked[data-locale-name="Italiano"],
+.studio-container[data-ugc-locale="日本語"] .quick-pick-more-picked[data-locale-name="日本語"] {
+  display: inline;
+}
+.studio-container[data-ugc-locale="עברית"] .quick-pick-more-label,
+.studio-container[data-ugc-locale="中文"] .quick-pick-more-label,
+.studio-container[data-ugc-locale="Français"] .quick-pick-more-label,
+.studio-container[data-ugc-locale="Deutsch"] .quick-pick-more-label,
+.studio-container[data-ugc-locale="Italiano"] .quick-pick-more-label,
+.studio-container[data-ugc-locale="日本語"] .quick-pick-more-label {
+  display: none;
+}
+
+.studio-container[data-ugc-locale="עברית"] #draft-loc-he,
+.studio-container[data-ugc-locale="中文"] #draft-loc-zh,
+.studio-container[data-ugc-locale="Français"] #draft-loc-fr,
+.studio-container[data-ugc-locale="Deutsch"] #draft-loc-de,
+.studio-container[data-ugc-locale="Italiano"] #draft-loc-it,
+.studio-container[data-ugc-locale="日本語"] #draft-loc-ja {
+  background: var(--snapcards-surface-muted);
+  font-weight: 800;
+}
+
+.quick-pick-more::after {
+  content: "▾";
+  font-size: 11px;
+}
+
+/* Top-layer popover: a bottom sheet on phones, so the options never fall back to the OS picker. */
+.quick-pick-menu {
+  inset: auto 0 0 0;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: var(--sp-md) var(--sp-md) calc(var(--sp-md) + env(safe-area-inset-bottom));
+  border: none;
+  border-top: var(--border-size-1) solid var(--snapcards-border);
+  border-radius: 14px 14px 0 0;
+  background: var(--snapcards-surface);
+  color: var(--snapcards-primary);
+  box-shadow: var(--shadow-3);
+}
+
+.quick-pick-menu:popover-open {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quick-pick-menu::backdrop {
+  background: rgb(0 0 0 / 0.45);
+}
+
+.quick-pick-option {
+  width: 100%;
+  text-align: start;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--snapcards-primary);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.quick-pick-option:hover,
+.quick-pick-option:focus-visible {
+  background: light-dark(#9F3C16, #FBBF24);
+  color: light-dark(#FFFFFF, #111827);
+  outline: none;
+}
+
+@media (min-width: 640px) {
+  .quick-pick-menu {
+    inset: 0;
+    margin: auto;
+    width: min(320px, 90vw);
+    height: fit-content;
+    border: var(--border-size-1) solid var(--snapcards-border);
+    border-radius: 12px;
+    padding: 6px;
+  }
+}
+
+/* Active Quick Pick, Geo City Approximation, Country Pill & More-Countries Selector Highlights */
+.studio-container[data-region*="São Paulo"] #draft-geo-city,
+.studio-container[data-ugc-locale^="pt"] #draft-loc-pt,
+.studio-container[data-ugc-locale^="Português"] #draft-loc-pt,
+.studio-container[data-ugc-locale^="es"] #draft-loc-es,
+.studio-container[data-ugc-locale^="Español"] #draft-loc-es,
+.studio-container[data-ugc-locale^="en"] #draft-loc-en,
+.studio-container[data-ugc-locale^="English"] #draft-loc-en,
+.studio-container:not([data-ugc-locale=""]):not([data-ugc-locale^="pt"]):not([data-ugc-locale^="Português"]):not([data-ugc-locale^="es"]):not([data-ugc-locale^="Español"]):not([data-ugc-locale^="en"]):not([data-ugc-locale^="English"]) #draft-loc-more,
+.studio-container[data-topic*="Animais"] #quick-animals,
+.studio-container[data-topic*="Planetas"] #quick-planets,
+.studio-container[data-topic*="Frutas"] #quick-fruits,
+.studio-container[data-topic*="Cotidiano"] #quick-home,
+.studio-container[data-topic*="Alfabeto"] #quick-letters {
+  background: light-dark(#9F3C16, #FBBF24);
+  color: light-dark(#FFFFFF, #111827);
+  border-color: light-dark(#9F3C16, #FBBF24);
+  font-weight: 700;
+  box-shadow: var(--shadow-1);
+}
+
+/* Grayed Default + Tab Auto-Completion Overlay (powered by ai-browser model) */
+.field-autocomplete-wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.field-ghost-hint {
+  display: none;
+  position: absolute;
+  inset: 0;
+  padding: 6px 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  pointer-events: none;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.field-input:placeholder-shown + .field-ghost-hint {
+  display: flex;
+}
+
+.field-ghost-value {
+  font-size: 12.5px;
+  font-weight: 600;
+  font-style: italic;
+  color: light-dark(#78716C, #A8A29E);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.field-ghost-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--snapcards-border);
+  background: var(--snapcards-surface-muted);
+  color: light-dark(#57534E, #D6D3D1);
+  font-family: ui-monospace, "JetBrains Mono", monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+.field-ghost-tab::before {
+  content: "Tab\00a0";
+}
+
+/* Studio Combobox & Segmented Card Count Stepper */
+.studio-combobox-wrap {
+  position: relative;
+}
+
+.studio-combobox-wrap .field-input {
+  padding-right: 26px;
+}
+
+/* The chevron opens this field's menu and takes the hint's room: its suggestion, which Tab
+   still fills, was cut to two letters in the narrowest field. */
+.studio-combobox-wrap .field-ghost-hint {
+  right: 26px;
+}
+
+.studio-combobox-wrap .field-ghost-tab {
+  display: none;
+}
+
+.combobox-chevron-btn {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+  width: 24px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--snapcards-secondary);
+  font-size: 12px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+.combobox-chevron-btn:hover {
+  color: var(--snapcards-primary);
+  background: var(--snapcards-surface-muted);
+}
+
+.studio-combobox-wrap:has(.quick-pick-menu:popover-open) .combobox-chevron-btn {
+  color: var(--snapcards-accent);
+  transform: rotate(180deg);
+}
+
+/* The presets keep their width and the free count follows them, on a second
+ * row where the panel is narrow: a grid shrank the presets under their text. */
+.card-count-stepper {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid var(--snapcards-border);
+  background: var(--snapcards-surface);
+  min-height: 34px;
+  box-sizing: border-box;
+}
+
+.count-step-pill {
+  flex: 1 1 1.6em;
+  min-width: max-content;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--snapcards-secondary);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.count-step-pill:hover {
+  color: var(--snapcards-primary);
+  background: var(--snapcards-surface-muted);
+}
+
+.studio-container[data-count="5"] #count-pill-5,
+.studio-container[data-count="10"] #count-pill-10,
+.studio-container[data-count="15"] #count-pill-15,
+.studio-container[data-count="20"] #count-pill-20 {
+  background: light-dark(#9F3C16, #FBBF24);
+  color: light-dark(#FFFFFF, #111827);
+  box-shadow: 0 1px 2px rgba(28, 25, 23, 0.12);
+}
+
+/* Any count from 1 to 20 beside the presets: an arrow steps it, the field takes it typed. */
+.count-step-custom {
+  flex: 0 0 auto;
+  margin-left: auto;
+  display: grid;
+  grid-template-columns: 24px 34px 24px;
+  align-items: stretch;
+  border-left: 1px solid var(--snapcards-border);
+  padding-left: 4px;
+}
+
+.count-step-arrow {
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--snapcards-secondary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.count-step-arrow:hover {
+  color: var(--snapcards-primary);
+  background: var(--snapcards-surface-muted);
+}
+
+/* The arrows stop at the deck sizes the form makes, as the handler holds them. */
+.studio-container[data-count="1"] #count-minus,
+.studio-container[data-count="20"] #count-plus {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.count-step-input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--snapcards-primary);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  padding: 4px 0;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.count-step-input::-webkit-inner-spin-button,
+.count-step-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.count-step-input:focus-visible {
+  outline: 2px solid var(--snapcards-accent);
+  outline-offset: -2px;
+}
+
+/* Field Styles */
+.field-label {
+  font-size: var(--type-caption);
+  font-weight: 700;
+  color: var(--snapcards-primary);
+  letter-spacing: -0.01em;
+}
+
+.field-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: var(--border-size-1) solid var(--snapcards-border);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  background: var(--snapcards-surface);
+  color: var(--snapcards-primary);
+  line-height: 1.45;
+  box-sizing: border-box;
+  resize: vertical;
+  height: 76px;
+  min-height: 72px;
+  box-shadow: inset 0 1px 3px rgba(28, 25, 23, 0.05);
+  transition: border-color var(--motion-fast) var(--motion-ease), box-shadow var(--motion-fast) var(--motion-ease);
+}
+
+.field-textarea:focus {
+  outline: none;
+  background: var(--snapcards-surface);
+  border-color: var(--snapcards-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--snapcards-accent) 20%, transparent);
+}
+
+/* Option B 3x2 Editable Configuration Box inside Right Half of Hero Form */
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* The count's presets and free field need the room; the audience is one picker. */
+.config-grid .field-group-count {
+  grid-column: span 2;
+}
+
+@media (max-width: 640px) {
+  .config-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .config-grid .field-group-count,
+  .config-grid .field-group-audience {
+    grid-column: 1 / -1;
+  }
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  border: 1px solid var(--snapcards-border);
+  background: var(--snapcards-surface-muted);
+  min-width: 0;
+}
+
+.config-grid .field-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--snapcards-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.field-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: var(--border-size-1) solid var(--snapcards-border);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  background: var(--snapcards-surface);
+  color: var(--snapcards-primary);
+  box-sizing: border-box;
+  min-height: 34px;
+  transition: all var(--motion-fast) var(--motion-ease);
+}
+
+.field-input:focus {
+  outline: none;
+  background: var(--snapcards-surface);
+  border-color: var(--snapcards-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--snapcards-accent) 20%, transparent);
+}
+
+/* Study Mode Toggle */
+.study-mode-section {
+  display: none;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.btn-generate,
+.btn.btn-primary.btn-generate {
+  width: 100%;
+  min-height: 48px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  background: #9F3C16;
+  border-color: #9F3C16;
+  color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(159, 60, 22, 0.22);
+}
+
+.btn-generate:hover,
+.btn.btn-primary.btn-generate:hover {
+  background: #883110;
+  border-color: #883110;
+  box-shadow: 0 6px 16px rgba(159, 60, 22, 0.30);
+}
+
+.btn-generate::before {
+  content: "✨ ";
+}
+
+/* Right Column Bottom (Desktop) / Block #3 (Mobile): Generated Deck Progress & Recent Session Tray */
+.generated-deck-banner {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--snapcards-surface);
+  border: 1px solid var(--snapcards-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-1);
+  animation: genBannerReveal 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@keyframes genBannerReveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.studio-container[data-status="done"] .generated-deck-banner,
+.studio-container[data-state="done"] .generated-deck-banner,
+.studio-container[data-status="generating"] .generated-deck-banner,
+.studio-container[data-state="generating"] .generated-deck-banner,
+.studio-container[data-status="done"] ~ .generated-deck-banner,
+.studio-container[data-state="done"] ~ .generated-deck-banner,
+.studio-container[data-status="partial"] .generated-deck-banner,
+.studio-container[data-status="partial"] ~ .generated-deck-banner,
+.studio-container[data-status="generating"] ~ .generated-deck-banner,
+.studio-container[data-state="generating"] ~ .generated-deck-banner,
+.generated-deck-banner:has(.owned-generation) {
+  display: flex !important;
+}
+
+.gen-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  min-height: 30px;
+}
+
+.generated-banner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1 1 130px;
+  min-width: 130px;
+}
+
+.generated-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: #9F3C16;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.generated-banner-title {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--snapcards-primary);
+}
+
+.gen-phase-sub {
+  font-size: 11px;
+  color: var(--snapcards-secondary);
+  font-weight: 600;
+}
+
+.tray-library-link {
+  font-size: 11px;
+  font-weight: 700;
+  color: light-dark(#9F3C16, #FBBF24);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--snapcards-surface);
+  border: 1px solid var(--snapcards-border);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.tray-library-link:hover {
+  border-color: var(--snapcards-accent);
+  background: color-mix(in srgb, var(--snapcards-accent) 8%, var(--snapcards-surface));
+}
+
+/* A guest's decks are kept on this device alone until a passkey holds them. */
+.keep-decks-offer {
+  display: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--snapcards-accent) 8%, var(--snapcards-surface));
+  border: 1px solid var(--snapcards-border);
+}
+
+body[data-auth="guest"] .generated-deck-banner:has(.owned-generation) .keep-decks-offer {
+  display: flex;
+}
+
+.keep-decks-copy {
+  flex: 1 1 180px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--snapcards-primary);
+}
+
+.btn-keep-decks {
+  padding: 6px 14px;
+  min-height: 32px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.gen-progress-pct {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--snapcards-accent);
+  background: var(--snapcards-surface);
+  border: 1px solid var(--snapcards-border);
+  border-radius: 9999px;
+  padding: 2px 10px;
+}
+
+.gen-progress-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--snapcards-surface-muted);
+  border: 1px solid var(--snapcards-border);
+  overflow: hidden;
+}
+
+.gen-progress-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--snapcards-accent), color-mix(in srgb, var(--snapcards-accent) 70%, #F59E0B));
+  animation: genProgressFill 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes genProgressFill {
+  0% {
+    width: 14%;
+  }
+  55% {
+    width: 68%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.generated-banner-meta {
+  display: none;
+  margin: 0;
+  font-size: 13px;
+  color: var(--snapcards-secondary);
+}
+
+.gen-permalink-box {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  background: var(--snapcards-surface);
+  border: 1px solid var(--snapcards-border);
+  border-radius: var(--r-sm);
+}
+
+.gen-permalink-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.gen-permalink-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--snapcards-secondary);
+}
+
+.gen-permalink-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: light-dark(#9A3412, #FDE68A);
+  text-decoration: none;
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+  background: var(--snapcards-surface-muted);
+  border: 1px solid var(--snapcards-border);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.gen-permalink-link:hover {
+  border-color: var(--snapcards-accent);
+  background: color-mix(in srgb, var(--snapcards-accent) 10%, var(--snapcards-surface));
+}
+
+.gen-permalink-hint {
+  font-size: 11px;
+  color: var(--snapcards-secondary);
+}
+
+.generated-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--snapcards-border);
+}
+
+/* ==========================================================================
+   Right Column: Specimen Preview Panel
+   ========================================================================== */
+
+.generator-preview-panel {
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+  position: sticky;
+  top: var(--sp-lg);
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preview-kicker {
+  font-size: var(--type-label);
+  font-weight: 700;
+  color: var(--snapcards-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.preview-status {
+  font-size: var(--type-label);
+  font-weight: 600;
+  color: var(--snapcards-accent);
+}
+
+/* Dual-Sides Flashcard Showcase — Ink-Saving Pure White Printable Paper */
+.dual-sides-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+  color-scheme: light !important;
+}
+
+.specimen-preview-card {
+  position: relative;
+  color-scheme: light !important;
+  background: #FFFFFF !important;
+  color: #1C1B1C !important;
+  border: 2px solid var(--snapcards-accent);
+  border-radius: var(--r-md);
+  padding: var(--sp-md);
+  box-shadow: var(--shadow-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+  box-sizing: border-box;
+}
+
+.specimen-preview-card.side-front-card,
+.specimen-preview-card.side-back-card {
+  background: #FFFFFF !important;
+  border-color: var(--snapcards-accent);
+}
+
+.specimen-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--type-label);
+  color: #53433E !important;
+  padding-bottom: var(--size-1);
+  border-bottom: 1px solid #E5E1DE;
+}
+
+.specimen-id {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 11px;
+  color: #53433E !important;
+}
+
+.specimen-category {
+  font-weight: 700;
+  color: var(--snapcards-accent);
+}
+
+.specimen-card-photo-box {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background-color: #FFFFFF !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border: var(--border-size-1) solid #E5E1DE;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.specimen-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #FFFFFF !important;
+}
+
+.specimen-photo[hidden] {
+  display: none !important;
+}
+
+.specimen-back-word-box {
+  min-height: 120px;
+  background: #FFFFFF !important;
+  border: var(--border-size-1) solid #E5E1DE;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-sm);
+  text-align: center;
+}
+
+.specimen-name {
+  font-family: var(--font-serif, "Newsreader", "Georgia", serif);
+  font-size: clamp(16px, 1.5vw, 22px);
+  font-weight: 800;
+  color: #1C1B1C !important;
+  margin: 0;
+  padding: 0 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+}
+
+.preview-footer-note {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  padding: var(--sp-sm) var(--sp-md);
+  background: var(--snapcards-surface-muted);
+  border: var(--border-size-1) solid var(--snapcards-border);
+  border-radius: var(--r-sm);
+  font-size: var(--type-label);
+  color: var(--snapcards-secondary);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--snapcards-primary);
+  color: var(--snapcards-surface);
+  border-color: var(--snapcards-primary);
+  box-shadow: var(--shadow-1);
+}
+
+.btn-primary:hover {
+  border-color: var(--snapcards-accent);
+  box-shadow: var(--shadow-2);
+}
+
+.btn-outline {
+  background: var(--snapcards-surface-muted);
+  color: var(--snapcards-primary);
+  border-color: var(--snapcards-border);
+}
+
+.btn-outline:hover {
+  background: var(--snapcards-surface);
+  border-color: var(--snapcards-accent);
+  color: var(--snapcards-accent);
+}
+
+/* RTL Layout Support for Hebrew */
+[dir="rtl"] .screen,
+:lang(he) .screen {
+  direction: rtl;
+  text-align: right;
+}
+
+/* ============================================================================
+   Compact Press Ledger & Pre-Press Visual-Filter Fold-Sheet Proof
+   ============================================================================ */
+
+.press-ledger-slot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+}
+
+.press-ledger-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.generation-jobs-list.press-ledger-table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+ .gen-job-card.gen-job-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 28px 28px;
+  grid-template-rows: 36px 22px 12px;
+  gap: 6px 8px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid var(--snapcards-border);
+  border-radius: 10px;
+  background: var(--snapcards-surface);
+  color: var(--snapcards-primary);
+  font-size: 13px;
+  align-items: center;
+}
+.gen-job-permalink { display: contents; color: inherit; text-decoration: none; }
+.gen-job-num { grid-column: 1; grid-row: 1; font-size: 11px; color: var(--snapcards-secondary); }
+/* The deck's number among its owner's decks (card_set.number), which the database assigns. */
+.gen-job-num::before { content: "#"; }
+/* No number yet: the database assigns it, and the deck has not reached it. */
+.gen-job-num[data-number="0"] { visibility: hidden; }
+.gen-job-topic { grid-column: 2; grid-row: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.gen-job-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+.gen-job-count { font-size: 11px; color: var(--snapcards-secondary); white-space: nowrap; }
+.gen-job-open-arrow, .btn-delete-job {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  box-sizing: border-box;
+  border: 1px solid var(--snapcards-border);
+  border-radius: 7px;
+  background: var(--snapcards-surface-muted);
+  color: var(--snapcards-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  grid-row: 1;
+}
+.gen-job-open-arrow { grid-column: 3; }
+.btn-delete-job { grid-column: 4; }
+.btn-delete-job:hover { color: #B91C1C; border-color: #FCA5A5; background: #FEF2F2; }
+/* The bar carries the progress; the badge is its words for screen readers only, chosen by
+   deck_level: generating until level 3 has rows and no level runs, then ready or incomplete. */
+.gen-job-badge {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.gen-job-badge-ready, .gen-job-badge-incomplete { display: none; }
+.gen-job-row:has(.deck-level-state[data-level="3"]):not(:has(.deck-level-state[data-state="running"])) .gen-job-badge-ai { display: none; }
+.gen-job-row:has(.deck-level-state[data-level="3"]):not(:has(.deck-level-state[data-state="running"])):not(:has(.deck-level-state:is([data-state="partial"], [data-state="failed"]))) .gen-job-badge-ready { display: inline; }
+.gen-job-row:has(.deck-level-state[data-level="3"]):not(:has(.deck-level-state[data-state="running"])):has(.deck-level-state:is([data-state="partial"], [data-state="failed"])) .gen-job-badge-incomplete { display: inline; }
+.gen-phase-sub-ready { visibility: hidden; }
+
+/* Right-Hand Printable Fold-Sheet Proof (1. Front -> 2. Back -> 3. List) */
+.preview-card-container {
+  position: relative;
+  top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+  padding: var(--sp-md);
+  border-radius: 16px;
+  border: 2px solid var(--snapcards-border);
+  background: var(--snapcards-surface);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+  transition: filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.studio-container:not([data-status="done"]):not([data-status="partial"]) .preview-card-container,
+.studio-container:not([data-status="done"]):not([data-status="partial"]) ~ .generator-preview-panel .preview-card-container {
+
+  border-style: dashed;
+  border-color: #94A3B8;
+
+  background-image:
+    linear-gradient(to right, rgba(100, 116, 139, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100, 116, 139, 0.08) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* Clean "Prévia da Ficha" immediately when typing in "Tema da Coleção" (data-status="idle") or before a deck is bound */
+.studio-container[data-status="idle"] ~ .generator-preview-panel .card-illustration-img,
+.studio-container[data-status="idle"] ~ .generator-preview-panel .preview-deck-strip .preview-strip-chip,
+.studio-container:not([data-status="done"]):not([data-status="generating"]):not([data-status="partial"]) ~ .generator-preview-panel .card-illustration-img,
+.studio-container:not([data-status="done"]):not([data-status="generating"]):not([data-status="partial"]) ~ .generator-preview-panel .preview-deck-strip .preview-strip-chip,
+.generator-preview-panel .preview-card-container:is(:not([data-set-id]), [data-set-id=""]) .card-illustration-img,
+.generator-preview-panel .preview-card-container:is(:not([data-set-id]), [data-set-id=""]) .preview-deck-strip .preview-strip-chip {
+  display: none !important;
+}
+
+.studio-container[data-status="idle"] ~ .generator-preview-panel #preview-specimen-name,
+.studio-container[data-status="idle"] ~ .generator-preview-panel #preview-status-pill,
+.studio-container:not([data-status="done"]):not([data-status="generating"]):not([data-status="partial"]) ~ .generator-preview-panel #preview-specimen-name,
+.studio-container:not([data-status="done"]):not([data-status="generating"]):not([data-status="partial"]) ~ .generator-preview-panel #preview-status-pill,
+.generator-preview-panel .preview-card-container:is(:not([data-set-id]), [data-set-id=""]) #preview-specimen-name,
+.generator-preview-panel .preview-card-container:is(:not([data-set-id]), [data-set-id=""]) #preview-status-pill,
+.studio-container[data-status="generating"] ~ .generator-preview-panel .preview-card-container:has(.preview-selection [data-tier-emoji="⏳"]) #preview-specimen-name {
+  visibility: hidden;
+}
+
+.studio-container[data-status="idle"] ~ .generator-preview-panel .specimen-back-word-box::after,
+.studio-container:not([data-status="done"]):not([data-status="generating"]):not([data-status="partial"]) ~ .generator-preview-panel .specimen-back-word-box::after,
+.generator-preview-panel .preview-card-container:is(:not([data-set-id]), [data-set-id=""]) .specimen-back-word-box::after {
+  content: "—";
+  position: absolute;
+  font-family: var(--font-serif, "Newsreader", "Georgia", serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: #94A3B8;
+  pointer-events: none;
+}
+
+.studio-container[data-status="generating"] ~ .generator-preview-panel .preview-card-container:has(.preview-selection [data-tier-emoji="⏳"]) .specimen-back-word-box::after {
+  content: "✦ …";
+  position: absolute;
+  font-family: var(--font-serif, "Newsreader", "Georgia", serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: #C85A32;
+  pointer-events: none;
+  animation: aiProgressPulse 1.2s ease-in-out infinite;
+}
+
+.studio-container:not([data-status="done"]):not([data-status="partial"]) .specimen-preview-card,
+.studio-container:not([data-status="done"]):not([data-status="partial"]) ~ .generator-preview-panel .specimen-preview-card {
+  border: 2px dashed var(--snapcards-accent) !important;
+}
+
+.studio-container[data-status="done"] .preview-card-container,
+.studio-container[data-status="done"] ~ .generator-preview-panel .preview-card-container {
+  filter: none;
+  border-style: solid;
+  border-color: #15803D;
+  animation: none;
+}
+
+/* Settled with some card short of a level's art: playable, but not shown as success. */
+.studio-container[data-status="partial"] .preview-card-container,
+.studio-container[data-status="partial"] ~ .generator-preview-panel .preview-card-container {
+  filter: none;
+  border-style: solid;
+  border-color: var(--danger);
+  animation: none;
+}
+
+.preview-fold-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.dual-sides-showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  align-items: stretch;
+  color-scheme: light !important;
+}
+
+.preview-fold-spine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 4px 0;
+}
+
+.preview-fold-spine::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 50%;
+  border-top: 1.5px dashed #94A3B8;
+}
+
+.preview-fold-spine .fold-pill {
+  position: relative;
+  z-index: 1;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: var(--snapcards-surface);
+  border: 1px dashed #94A3B8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--snapcards-secondary);
+}
+
+@media (min-width: 981px) {
+  .dual-sides-showcase {
+    grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .preview-fold-spine {
+    padding: 0;
+  }
+
+  .preview-fold-spine::before {
+    left: 50%;
+    right: auto;
+    top: 8px;
+    bottom: 8px;
+    border-top: none;
+    border-left: 1.5px dashed #94A3B8;
+  }
+
+  .preview-fold-spine .fold-pill {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    padding: 8px 2px;
+  }
+}
+
+.specimen-preview-card {
+  position: relative;
+  color-scheme: light !important;
+  background: #FFFFFF !important;
+  color: #1C1B1C !important;
+  border: 2px solid var(--snapcards-accent);
+  border-radius: var(--r-md);
+  padding: 10px 12px !important;
+  box-shadow: var(--shadow-2);
+  display: flex;
+  flex-direction: column;
+  gap: 6px !important;
+  box-sizing: border-box;
+}
+
+.specimen-card-photo-box,
+.specimen-back-word-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto !important;
+  min-height: 240px !important;
+  background-color: #FFFFFF !important;
+  border: none !important;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.preview-card-illustration {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  background-image: none !important;
+}
+
+/* Deck navigation inside the fold-sheet preview. */
+.preview-deck-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  padding-top: var(--sp-sm);
+  border-top: 1px dashed var(--snapcards-border);
+  counter-reset: preview-chip;
+}
+
+@media (max-width: 640px) {
+  .preview-deck-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.preview-strip-chip {
+  counter-increment: preview-chip;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 6px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--snapcards-border);
+  background: #FFFFFF;
+  color: #1C1917;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 0;
+  overflow: hidden;
+  transition: all 0.15s ease;
+}
+
+/* One card of the preview's deck: the session's position on it, else the first. */
+.preview-card-container:not(:has(.preview-selection [data-index])) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:first-child) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="0"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(1)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="1"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(2)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="2"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(3)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="3"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(4)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="4"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(5)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="5"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(6)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="6"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(7)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="7"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(8)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="8"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(9)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="9"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(10)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="10"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(11)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="11"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(12)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="12"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(13)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="13"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(14)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="14"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(15)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="15"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(16)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="16"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(17)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="17"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(18)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="18"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(19)) { display: none; }
+.preview-card-container:has(.preview-selection [data-index="19"]) :is(#preview-status-pill, .preview-card-illustration, #preview-specimen-name) > *:not(:nth-child(20)) { display: none; }
+
+.details-section { margin-top: 12px; }
+
+.preview-strip-chip::before {
+  content: counter(preview-chip, decimal-leading-zero);
+  font-family: ui-monospace, "JetBrains Mono", monospace;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #C85A32;
+  flex-shrink: 0;
+}
+
+.preview-strip-chip:hover {
+  border-color: var(--snapcards-accent);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-1);
+}
+
+.preview-chip-emoji {
+  display: none;
+}
+
+.preview-chip-word {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Live AI Illustration Image inside Preview Fold-Sheet Proof */
+.card-illustration-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: none;
+}
+
+.card-illustration-img[src^="data:image/svg+xml"],
+.card-illustration-img[src^="data:image/png"],
+.card-illustration-img[src^="data:image/jpeg"],
+.card-illustration-img[src^="data:image/webp"],
+.card-illustration-img[src^="/img/"] {
+  display: block;
+  background-color: #FFFFFF;
+}
+
+/* Which sibling shows is the preview-deck selection rule above (nth-child by
+   session index, else the first); an unconditional :not(:first-of-type) here
+   would always beat it with !important once the session is past card 0. */
+.card-illustration-img[src=""] {
+  display: none !important;
+}
+
+@keyframes aiProgressPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+.studio-container[data-status="generating"] ~ .generator-preview-panel .preview-card-container:has(.preview-selection [data-tier-emoji="⏳"]) .specimen-card-photo-box::before {
+  content: "✦";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: var(--snapcards-accent);
+  animation: aiProgressPulse 1.1s ease-in-out infinite;
+  pointer-events: none;
+}
+.preview-tier-badges,
+.preview-tier-pill {
+  display: none !important;
+}
+
+/* Ink-Saving Print Guarantee */
+@media print {
+  :root,
+  body,
+  .screen,
+  .studio-container,
+  .specimen-preview-card {
+    color-scheme: light !important;
+    background: #FFFFFF !important;
+    color: #1C1B1C !important;
+  }
+}
+
+.gen-job-row:not(:has(.owned-generation)) {
+  display: none !important;
+}
+/* A form generating is this reader's, which the deck's rows only prove half a second later. */
+.generator-shell:not(:has(.studio-container[data-status="generating"])) .preview-card-container:not(:has(.owned-preview)) {
+  visibility: hidden;
+}
+
+.generator-shell:not(:has(.studio-container[data-status="generating"])) .generated-deck-banner:not(:has(.owned-generation)) {
+  display: none !important;
+}
+
+.gen-job-progress { display: block; grid-column: 1 / -1; grid-row: 3; height: 12px; min-width: 0; }
+
+.ai-tier-pipeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 4px 0;
+}
+.ai-tier-step {
+  height: 4px;
+  border-radius: 4px;
+  background: var(--snapcards-border);
+  position: relative;
+}
+/* Every level's bar is there from submit, the track while it waits. Level 1 is the form's
+   words; levels 2 and 3 are deck_level's counts: green drawn, danger failed or unknown, the
+   track for cards still waiting. */
+.ai-tier-step::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: absolute;
+  top: -2px;
+  left: calc(50% - 4px);
+  background: var(--snapcards-border);
+}
+.ai-tier-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(to right,
+    #15803D 0 calc(var(--drawn) / var(--total) * 100%),
+    var(--danger) 0 calc((var(--drawn) + var(--failed) + var(--unknown)) / var(--total) * 100%),
+    var(--snapcards-border) 0);
+}
+/* The words run from submit until level 2 counts, whose fill appears with the
+   first art rows: the form's own word state lags the placeholders, which are
+   not the words. Each later level pulses on its own count, never ahead of it. */
+.ai-tier-pipeline:where(:not(:has(> .ai-tier-step:nth-child(2) > .ai-tier-fill))) > .ai-tier-step:nth-child(1) { background: var(--snapcards-accent); }
+.ai-tier-pipeline:has(> .ai-tier-step:nth-child(2) > .ai-tier-fill) > .ai-tier-step:nth-child(1),
+.ai-tier-pipeline:has(> .ai-tier-step:nth-child(2) > .ai-tier-fill) > .ai-tier-step:nth-child(1)::after,
+.ai-tier-step[data-state="complete"],
+.ai-tier-step[data-state="complete"]::after,
+.ai-tier-step:has(> .ai-tier-fill[data-state="complete"])::after { background: #15803D; }
+.ai-tier-step:has(> .ai-tier-fill:is([data-state="partial"], [data-state="failed"]))::after { background: var(--danger); }
+.ai-tier-pipeline:where(:not(:has(> .ai-tier-step:nth-child(2) > .ai-tier-fill))) > .ai-tier-step:nth-child(1):not([data-state="complete"])::after,
+.ai-tier-step:has(> .ai-tier-fill[data-state="running"])::after {
+  background: var(--snapcards-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--snapcards-accent) 20%, transparent);
+  animation: aiProgressPulse 1.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ai-tier-step::after { animation: none !important; }
+}
+
+.tray-library-slot {
+  display: contents;
+}
+
+/* The deck's own bar stands in until its row, which arrives after its cards' writes. */
+.gen-job-skeleton { display: none; }
+.generator-shell:has(.studio-container[data-status="generating"]) .generated-deck-banner:not(:has(#generation-jobs-list .ai-tier-pipeline)) .gen-job-skeleton { display: block; }

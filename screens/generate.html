@@ -1,0 +1,376 @@
+<section class="screen" data-screen="generate">
+  <button type="button" class="btn-more" popovertarget="more-sheet-generate" aria-label="{msg.nav_more}"><span aria-hidden="true">⋯</span></button>
+  <nav id="more-sheet-generate" class="more-sheet" popover aria-label="{msg.nav_more}">
+    <a data-route="cards" data-param-shelf="mine" class="more-link"><span class="more-icon" aria-hidden="true">🗂️</span><span data-text="{msg.nav_my_cards}"></span></a>
+    <a data-route="cards" data-param-shelf="gallery" class="more-link"><span class="more-icon" aria-hidden="true">🌐</span><span data-text="{msg.nav_gallery}"></span></a>
+    <a data-route="about" class="more-link"><span class="more-icon" aria-hidden="true">📖</span><span data-text="{msg.nav_about}"></span></a>
+  </nav>
+  <!-- The device's key scopes every read of its draft slots: a server render has no device, so it reads none. -->
+  <div class="device-scope" data-live="device" data-filter="id=eq.device" data-empty-row='{"id":"device","key":"","theme":"auto"}' data-theme="{theme}" data-cortex="generateRows" data-machine-ref="theme">
+  <!-- A finished translation names its deck in details, and only then are that deck's cards read. -->
+  <div hidden data-live="generation_draft" data-filter="id=eq.{device.key}:draft-cheap&amp;status=eq.done" data-empty=""><template data-item><div>
+    <div id="translation-settles" data-empty="" data-live="flashcard" data-filter="set_id=eq.{details}" data-reads="play_session,card_set,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{details}" data-read-card_translation="card_translation?set_id=eq.{details}" data-on-mutation="create_set"><template data-item><span></span></template></div>
+  </div></template></div>
+  <!-- Labels for the cards this screen can show. -->
+  <div hidden data-live="generation_form" data-filter="id=eq.draft" data-empty-row='{"id":"draft","set_id":""}'><template data-item><div>
+    <div data-empty="" data-live="card_set" data-reads="card_set,deck_translation,localized_card,localized_deck" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="localize_content"><template data-item><span></span></template></div>
+    <div data-empty="" data-live="flashcard" data-filter="set_id=eq.{set_id}" data-reads="card_set,deck_translation,localized_card,localized_deck" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="localize_content"><template data-item><span></span></template></div>
+  </div></template></div>
+
+  <!-- Translation replies share the device's text slots with generation. -->
+  <div hidden data-live="generation_form" data-filter="id=eq.draft" data-empty-row='{"id":"draft","set_id":""}'><template data-item><div>
+    <div class="generated-drafts-sync" data-empty="" data-live="generation_draft" data-filter="id=eq.{device.key}:draft-cheap" data-order="id.asc" data-reads="deck_level,card_set,play_session,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="create_set">
+    <template data-item><span></span></template>
+  </div>
+    <div class="generated-drafts-sync" data-empty="" data-live="generation_draft" data-filter="id=eq.{device.key}:draft-heavy" data-order="id.asc" data-reads="deck_level,card_set,play_session,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="create_set">
+    <template data-item><span></span></template>
+  </div>
+    <div class="generated-drafts-sync" data-empty="" data-live="deck_level" data-reads="deck_level,deck_progress,card_set,play_session,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="create_set">
+    <template data-item><span></span></template>
+  </div>
+    <div class="generated-drafts-sync" data-empty="" data-live="flashcard" data-filter="set_id=eq.{set_id}" data-reads="deck_level,card_set,play_session,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-on-mutation="create_set">
+    <template data-item><span></span></template>
+  </div>
+  <!-- This tab's pending Create has one serialized materialization seat. -->
+  <div id="generation-asks" data-on-mutation="create_set" hidden data-live="generation_ask" data-reads="deck_level,card_set,play_session,print_config,generation_form,device,me,deck_translation,generation_ask" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}">
+    <template data-item><span></span></template>
+  </div>
+  </div></template></div>
+  <div class="generated-sets-sync" hidden data-live="card_set" data-order="name.asc">
+    <template data-item><span data-text="{name}"></span></template>
+  </div>
+
+  <div class="generator-shell">
+    <div class="generator-auth-header" data-live="play_session" data-filter="id=eq.session" data-empty-row='{"id":"session","set_id":"69618be6-9206-f9c7-59eb-b5e4b072cf3d","card_index":0,"flipped":"no","mastered":0,"total":20,"status":"playing","finished":"","front":"capybara","back":"","hint":"","emoji":"🦫"}' data-reads="play_session,card_set,localized_card" data-cortex="generateRows" data-machine-ref="account" data-status="{status}">
+      <!-- Top Studio Header -->
+      <header class="generator-header">
+        <div class="generator-header-top">
+          <div class="header-breadcrumb">
+            <span class="crumb-brand" data-text="{msg.app_title}"></span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <span class="crumb-section" data-text="{msg.generator_breadcrumb}"></span>
+          </div>
+          <div class="header-utility-actions">
+            <div class="lang-switch">
+              <a data-route="generate" data-locale="pt" data-locale-current="page" class="lang-link" data-text="{msg.lang_pt}"></a>
+              <a data-route="generate" data-locale="es" data-locale-current="page" class="lang-link" data-text="{msg.lang_es}"></a>
+              <a data-route="generate" data-locale="en" data-locale-current="page" class="lang-link" data-text="{msg.lang_en}"></a>
+              <a data-route="generate" data-locale="he" data-locale-current="page" class="lang-link" data-text="{msg.lang_he}"></a>
+              <a data-route="generate" data-locale="zh" data-locale-current="page" class="lang-link" data-text="{msg.lang_zh}"></a>
+            </div>
+            <div class="theme-switch" role="group">
+              <button type="button" id="theme-auto" class="theme-btn" data-theme-val="auto" data-text="{msg.theme_auto}">Auto</button>
+              <button type="button" id="theme-light" class="theme-btn" data-theme-val="light" >☀️</button>
+              <button type="button" id="theme-dark" class="theme-btn" data-theme-val="dark" >🌙</button>
+            </div>
+          </div>
+        </div>
+        <h1 class="generator-title" data-text="{msg.create_title}"></h1>
+        <p class="generator-subtitle" data-text="{msg.create_subtitle}"></p>
+      </header>
+    </div>
+
+    <!-- Two-Column Workbench Layout on Desktop, Fluid Stack on Mobile -->
+    <div class="generator-workbench">
+      <!-- Top Full-Width Stage (Desktop 100%) / Block #1 (Mobile): The Creation Atelier Form (Level 1 data-live="generation_draft") -->
+      <div id="generation-form" class="generator-form-panel studio-container" data-live="generation_form" data-filter="id=eq.draft" data-empty-row='{"id":"draft","topic":"","details":"","category":"","locale":"","region":"","card_count":5,"status":"idle","set_id":"","words":"","next":0,"audience_key":"diff_kids","audience":"","run":""}' data-reads="deck_progress,deck_level,browser_draft,card_set,play_session,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}" data-cortex="generateRows" data-machine-ref="generation" data-status="{status}" data-topic="{topic}" data-category="{category}" data-ugc-locale="{locale}" data-region="{region}" data-count="{card_count}">
+        <div hidden data-hatch="ai-browser" data-prop-topic="{topic}" data-prop-locale="{locale}" data-prop-status="{status}" data-prop-run="{run}" data-prop-set_id="{set_id}" data-on-draft="create_set"></div>
+
+        <!-- Form Left Half (55% on Desktop): Quick Subject Picks, Country/Origin Quick Picks, and Topic Input -->
+        <div class="form-col-left">
+          <!-- Quick Picks Suggestions -->
+          <div class="form-section quick-picks-section">
+            <span class="section-micro-label" data-text="{msg.quick_picks_title}"></span>
+            <div class="quick-picks-strip">
+              <button type="button" id="quick-animals" class="quick-pick-pill" data-on-click="create_set" data-topic="Animais Brasileiros" data-category="Fauna" data-text="{msg.quick_animals}"></button>
+              <button type="button" id="quick-planets" class="quick-pick-pill" data-on-click="create_set" data-topic="Planetas e Estrelas" data-category="Espaço" data-text="{msg.quick_planets}"></button>
+              <button type="button" id="quick-fruits" class="quick-pick-pill" data-on-click="create_set" data-topic="Frutas Tropicais" data-category="Frutas" data-text="{msg.quick_fruits}"></button>
+              <button type="button" id="quick-home" class="quick-pick-pill" data-on-click="create_set" data-topic="Palavras do Cotidiano" data-category="Cotidiano" data-text="{msg.quick_home}"></button>
+              <button type="button" id="quick-letters" class="quick-pick-pill" data-on-click="create_set" data-topic="Alfabeto Divertido" data-category="Alfabeto" data-text="{msg.quick_letters}"></button>
+            </div>
+          </div>
+
+          <!-- Country & City-Geo Origin Quick Picks (derives both Region & Language) -->
+          <div class="form-section quick-picks-section">
+            <span class="section-micro-label" data-text="{msg.ugc_lang_label}"></span>
+            <div class="quick-picks-strip ugc-lang-picks">
+              <button type="button" id="draft-geo-city" class="quick-pick-pill quick-pick-geo" data-on-click="create_set" data-text="{msg.ugc_lang_all}"></button>
+              <button type="button" id="draft-loc-pt" class="quick-pick-pill" data-on-click="create_set" data-text="{msg.ugc_lang_pt}"></button>
+              <button type="button" id="draft-loc-es" class="quick-pick-pill" data-on-click="create_set" data-text="{msg.ugc_lang_es}"></button>
+              <button type="button" id="draft-loc-en" class="quick-pick-pill" data-on-click="create_set" data-text="{msg.ugc_lang_en}"></button>
+              <button type="button" id="draft-loc-more" class="quick-pick-pill quick-pick-more" popovertarget="draft-loc-menu">
+                <span class="quick-pick-more-label" data-text="{msg.ugc_lang_more}"></span>
+                <span class="quick-pick-more-picked" data-locale-name="עברית" data-text="{msg.ugc_lang_he}"></span>
+                <span class="quick-pick-more-picked" data-locale-name="中文" data-text="{msg.ugc_lang_zh}"></span>
+                <span class="quick-pick-more-picked" data-locale-name="Français" data-text="{msg.ugc_lang_fr}"></span>
+                <span class="quick-pick-more-picked" data-locale-name="Deutsch" data-text="{msg.ugc_lang_de}"></span>
+                <span class="quick-pick-more-picked" data-locale-name="Italiano" data-text="{msg.ugc_lang_it}"></span>
+                <span class="quick-pick-more-picked" data-locale-name="日本語" data-text="{msg.ugc_lang_ja}"></span>
+              </button>
+              <div id="draft-loc-menu" class="quick-pick-menu" popover>
+                <button type="button" id="draft-loc-he" class="quick-pick-option" popovertarget="draft-loc-menu" popovertargetaction="hide" data-on-click="create_set" data-text="{msg.ugc_lang_he}"></button>
+                <button type="button" id="draft-loc-zh" class="quick-pick-option" popovertarget="draft-loc-menu" popovertargetaction="hide" data-on-click="create_set" data-text="{msg.ugc_lang_zh}"></button>
+                <button type="button" id="draft-loc-fr" class="quick-pick-option" popovertarget="draft-loc-menu" popovertargetaction="hide" data-on-click="create_set" data-text="{msg.ugc_lang_fr}"></button>
+                <button type="button" id="draft-loc-de" class="quick-pick-option" popovertarget="draft-loc-menu" popovertargetaction="hide" data-on-click="create_set" data-text="{msg.ugc_lang_de}"></button>
+                <button type="button" id="draft-loc-it" class="quick-pick-option" popovertarget="draft-loc-menu" popovertargetaction="hide" data-on-click="create_set" data-text="{msg.ugc_lang_it}"></button>
+                <button type="button" id="draft-loc-ja" class="quick-pick-option" popovertarget="draft-loc-menu" popovertargetaction="hide" data-on-click="create_set" data-text="{msg.ugc_lang_ja}"></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- The deck's title, with the browser model's grayed default completed on Tab, and what refines every card. -->
+          <div class="form-section topic-section">
+            <label for="topic-input" class="field-label" data-text="{msg.prompt_label}"></label>
+            <div class="field-autocomplete-wrap">
+              <input id="topic-input" type="text" name="topic" maxlength="80" autocomplete="off" class="field-input" data-value="{topic}" data-on-keydown="create_set" placeholder=" " aria-description="{msg.prompt_placeholder}" />
+              <div class="field-ghost-hint" aria-hidden="true" data-live="browser_draft" data-filter="topic=eq.{topic}&amp;locale=eq.{locale}&amp;status=eq.idle&amp;set_id=eq.{set_id}&amp;run=eq.{run}" data-empty-row='{"id":"default","topic":"{msg.ghost_topic}","locale":"{msg.ghost_locale}","status":"idle","w0":"{msg.ghost_category}","w1":"{msg.diff_kids}","w2":"{msg.ghost_locale}","w3":"{msg.ghost_region}","w4":"{msg.ghost_topic}"}'>
+                <span class="field-ghost-value" data-text="{w4}"></span>
+                <kbd class="field-ghost-tab">⇥</kbd>
+              </div>
+            </div>
+          </div>
+          <div class="form-section details-section">
+            <label for="details-input" class="field-label" data-text="{msg.details_label}"></label>
+            <textarea id="details-input" name="details" rows="3" class="field-textarea" data-value="{details}"></textarea>
+          </div>
+        </div>
+
+        <!-- Form Right Half (45% on Desktop): Editable Parameters Grid + Primary CTA Button -->
+        <div class="form-col-right">
+          <div class="form-section config-grid">
+            <div class="field-group">
+              <label for="category-input" class="field-label" data-text="{msg.category_label}"></label>
+              <div class="field-autocomplete-wrap">
+                <input id="category-input" type="text" name="category" value="{category}" data-value="{category}" data-on-keydown="create_set" placeholder=" " class="field-input" />
+                <div class="field-ghost-hint" aria-hidden="true" data-live="browser_draft" data-filter="topic=eq.{topic}&amp;locale=eq.{locale}&amp;status=eq.idle&amp;set_id=eq.{set_id}&amp;run=eq.{run}" data-empty-row='{"id":"default","topic":"{msg.ghost_topic}","locale":"{msg.ghost_locale}","status":"idle","w0":"{msg.ghost_category}","w1":"{msg.diff_kids}","w2":"{msg.ghost_locale}","w3":"{msg.ghost_region}","w4":"{msg.ghost_topic}"}'>
+                  <span class="field-ghost-value" data-text="{w0}"></span>
+                  <kbd class="field-ghost-tab">⇥</kbd>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="locale-input" class="field-label" data-text="{msg.locale_label}"></label>
+              <div class="field-autocomplete-wrap studio-combobox-wrap" id="locale-combo-wrap">
+                <input id="locale-input" type="text" name="locale" autocomplete="off" value="{locale}" data-value="{locale}" data-on-keydown="create_set" placeholder=" " class="field-input" />
+                <div class="field-ghost-hint" aria-hidden="true" data-live="browser_draft" data-filter="topic=eq.{topic}&amp;locale=eq.{locale}&amp;status=eq.idle&amp;set_id=eq.{set_id}&amp;run=eq.{run}" data-empty-row='{"id":"default","topic":"{msg.ghost_topic}","locale":"{msg.ghost_locale}","status":"idle","w0":"{msg.ghost_category}","w1":"{msg.diff_kids}","w2":"{msg.ghost_locale}","w3":"{msg.ghost_region}","w4":"{msg.ghost_topic}"}'>
+                  <span class="field-ghost-value" data-text="{w2}"></span>
+                  <kbd class="field-ghost-tab">⇥</kbd>
+                </div>
+                <button type="button" id="locale-combo-toggle" class="combobox-chevron-btn" popovertarget="locale-combo-menu" aria-label="{msg.locale_label}">▾</button>
+                <div class="quick-pick-menu" id="locale-combo-menu" popover>
+                  <button type="button" id="locale-opt-pt" class="quick-pick-option" popovertarget="locale-combo-menu" popovertargetaction="hide" data-text="{msg.lang_opt_pt}"></button>
+                  <button type="button" id="locale-opt-es" class="quick-pick-option" popovertarget="locale-combo-menu" popovertargetaction="hide" data-text="{msg.lang_opt_es}"></button>
+                  <button type="button" id="locale-opt-en" class="quick-pick-option" popovertarget="locale-combo-menu" popovertargetaction="hide" data-text="{msg.lang_opt_en}"></button>
+                  <button type="button" id="locale-opt-he" class="quick-pick-option" popovertarget="locale-combo-menu" popovertargetaction="hide" data-text="{msg.lang_opt_he}"></button>
+                  <button type="button" id="locale-opt-zh" class="quick-pick-option" popovertarget="locale-combo-menu" popovertargetaction="hide" data-text="{msg.lang_opt_zh}"></button>
+                  <button type="button" id="locale-opt-fr" class="quick-pick-option" popovertarget="locale-combo-menu" popovertargetaction="hide" data-text="{msg.lang_opt_fr}"></button>
+                  <button type="button" id="locale-opt-de" class="quick-pick-option" popovertarget="locale-combo-menu" popovertargetaction="hide" data-text="{msg.lang_opt_de}"></button>
+                  <button type="button" id="locale-opt-it" class="quick-pick-option" popovertarget="locale-combo-menu" popovertargetaction="hide" data-text="{msg.lang_opt_it}"></button>
+                  <button type="button" id="locale-opt-ja" class="quick-pick-option" popovertarget="locale-combo-menu" popovertargetaction="hide" data-text="{msg.lang_opt_ja}"></button>
+                  <button type="button" id="locale-opt-klingon" class="quick-pick-option" popovertarget="locale-combo-menu" popovertargetaction="hide" data-text="{msg.lang_opt_klingon}"></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="region-input" class="field-label" data-text="{msg.region_label}"></label>
+              <div class="field-autocomplete-wrap">
+                <input id="region-input" type="text" name="region" value="{region}" data-value="{region}" data-on-keydown="create_set" placeholder=" " class="field-input" />
+                <div class="field-ghost-hint" aria-hidden="true" data-live="browser_draft" data-filter="topic=eq.{topic}&amp;locale=eq.{locale}&amp;status=eq.idle&amp;set_id=eq.{set_id}&amp;run=eq.{run}" data-empty-row='{"id":"default","topic":"{msg.ghost_topic}","locale":"{msg.ghost_locale}","status":"idle","w0":"{msg.ghost_category}","w1":"{msg.diff_kids}","w2":"{msg.ghost_locale}","w3":"{msg.ghost_region}","w4":"{msg.ghost_topic}"}'>
+                  <span class="field-ghost-value" data-text="{w3}"></span>
+                  <kbd class="field-ghost-tab">⇥</kbd>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group field-group-count">
+              <label for="card-count-input" class="field-label" data-text="{msg.card_count_label}"></label>
+              <div class="card-count-stepper">
+                <button type="button" id="count-pill-5" class="count-step-pill" data-count="5">5</button>
+                <button type="button" id="count-pill-10" class="count-step-pill" data-count="10">10</button>
+                <button type="button" id="count-pill-15" class="count-step-pill" data-count="15">15</button>
+                <button type="button" id="count-pill-20" class="count-step-pill" data-count="20">20</button>
+                <div class="count-step-custom">
+                  <button type="button" id="count-minus" class="count-step-arrow" aria-label="{msg.card_count_fewer}">−</button>
+                  <input id="card-count-input" class="count-step-input" type="number" inputmode="numeric" min="1" max="20" step="1" data-value="{card_count}" />
+                  <button type="button" id="count-plus" class="count-step-arrow" aria-label="{msg.card_count_more}">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group field-group-audience">
+              <label for="difficulty-select" class="field-label" data-text="{msg.difficulty_label}"></label>
+              <div class="field-autocomplete-wrap studio-combobox-wrap" id="difficulty-combo-wrap">
+                <input id="difficulty-select" type="text" name="audience" autocomplete="off" value="{msg[audience_key]}{audience}" data-value="{msg[audience_key]}{audience}" data-on-keydown="create_set" placeholder=" " class="field-input" />
+                <div class="field-ghost-hint" aria-hidden="true" data-live="browser_draft" data-filter="topic=eq.{topic}&amp;locale=eq.{locale}&amp;status=eq.idle&amp;set_id=eq.{set_id}&amp;run=eq.{run}" data-empty-row='{"id":"default","topic":"{msg.ghost_topic}","locale":"{msg.ghost_locale}","status":"idle","w0":"{msg.ghost_category}","w1":"{msg.diff_kids}","w2":"{msg.ghost_locale}","w3":"{msg.ghost_region}","w4":"{msg.ghost_topic}"}'>
+                  <span class="field-ghost-value" data-text="{msg.diff_kids}"></span>
+                  <kbd class="field-ghost-tab">⇥</kbd>
+                </div>
+                <button type="button" id="difficulty-combo-toggle" class="combobox-chevron-btn" popovertarget="difficulty-combo-menu" aria-label="{msg.difficulty_label}">▾</button>
+                <div class="quick-pick-menu" id="difficulty-combo-menu" popover>
+                  <button type="button" id="audience-kids" class="quick-pick-option" popovertarget="difficulty-combo-menu" popovertargetaction="hide" data-text="{msg.diff_kids}"></button>
+                  <button type="button" id="audience-toddler" class="quick-pick-option" popovertarget="difficulty-combo-menu" popovertargetaction="hide" data-text="{msg.diff_toddler}"></button>
+                  <button type="button" id="audience-teens" class="quick-pick-option" popovertarget="difficulty-combo-menu" popovertargetaction="hide" data-text="{msg.diff_teens}"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Study Mode Switch -->
+          <div class="form-section study-mode-section">
+            <label class="study-mode-control">
+              <input type="checkbox" id="study-mode-toggle" class="study-mode-chk" />
+              <div class="study-mode-details">
+                <span class="study-mode-title" data-text="{msg.study_mode_label}"></span>
+                <span class="study-mode-caption" data-text="{msg.study_mode_tip}"></span>
+              </div>
+            </label>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary btn-generate" id="btn-create" commandfor="create_set" command="create" data-text="{msg.create_button}"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom-Left (Desktop 58%) / Block #2 (Mobile): Visual-Filter Printable Fold-Sheet Proof (1. Front -> 2. Back -> 3. List) -->
+      <!-- The deck the draft generates; the session's card when the session is on it, else its first. -->
+      <aside class="generator-preview-panel" data-live="generation_form" data-filter="id=eq.draft" data-empty-row='{"id":"draft","topic":"","details":"","category":"","locale":"","region":"","card_count":5,"status":"idle","set_id":"","run":""}' data-reads="deck_level,play_session,card_set,localized_card,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}">
+        <div class="preview-card-container" id="preview-card-container" data-set-id="{set_id}">
+          <!-- The session's card when the session is on this deck: generate.css shows that position, else the first. -->
+          <span hidden class="preview-selection" data-live="play_session" data-filter="id=eq.session&amp;set_id=eq.{set_id}"><template data-item><span data-index="{card_index}" data-tier-emoji="{emoji}"></span></template></span>
+          <span hidden data-live="card_set" data-filter="id=eq.{set_id}"><template data-item><span><span data-live="me" data-filter="id=eq.{owner}"><template data-item><span class="owned-preview"></span></template></span></span></template></span>
+          <div class="preview-header">
+            <span class="preview-kicker" data-text="{msg.preview_badge}"></span>
+            <span class="preview-status" id="preview-status-pill" data-live="flashcard" data-filter="set_id=eq.{set_id}" data-order="id.asc" data-project='{"position":"index","size":"count"}'>
+              <template data-item><span class="preview-card-position" data-text="{msg.preview_print_ready}"></span></template>
+            </span>
+          </div>
+
+          <div class="preview-fold-sheet">
+            <!-- 1. Front -> Fold Spine -> 2. Back -->
+            <div class="dual-sides-showcase">
+              <!-- 1. Side A: Front (Illustration Only on Ink-Saving White Cardstock) -->
+              <div class="specimen-preview-card side-front-card">
+                <div class="specimen-card-header">
+                  <span class="specimen-id" data-text="{msg.preview_front_side}"></span>
+                </div>
+
+                <div class="specimen-card-photo-box" id="preview-front-box">
+                  <div class="crop-mark crop-tl" aria-hidden="true"></div>
+                  <div class="crop-mark crop-tr" aria-hidden="true"></div>
+                  <div class="crop-mark crop-bl" aria-hidden="true"></div>
+                  <div class="crop-mark crop-br" aria-hidden="true"></div>
+                  <div class="card-illustration preview-card-illustration" data-live="flashcard" data-filter="set_id=eq.{set_id}" data-order="id.asc">
+                    <template data-item>
+                      <img class="card-illustration-img" src="{back}" alt="" />
+                    </template>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Perforated Fold Spine (Print Studio Fold Mode) -->
+              <div class="preview-fold-spine" aria-hidden="true">
+                <span class="fold-pill" data-text="{msg.fold_label}"></span>
+              </div>
+
+              <!-- 2. Side B: Back (Target Card Word Only — Zero Extra Text) -->
+              <div class="specimen-preview-card side-back-card">
+                <div class="specimen-card-header">
+                  <span class="specimen-id" data-text="{msg.preview_back_side}"></span>
+                </div>
+
+                <div class="specimen-back-word-box">
+                  <div class="crop-mark crop-tl" aria-hidden="true"></div>
+                  <div class="crop-mark crop-tr" aria-hidden="true"></div>
+                  <div class="crop-mark crop-bl" aria-hidden="true"></div>
+                  <div class="crop-mark crop-br" aria-hidden="true"></div>
+                  <h3 class="specimen-name" id="preview-specimen-name" data-live="localized_card" data-filter="set_id=eq.{set_id}" data-order="id.asc">
+                    <template data-item><span class="preview-specimen-word" data-text="{front}"></span></template>
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <!-- Deck navigation follows the same order as the preview count. -->
+            <div class="preview-deck-strip" id="preview-deck-strip" aria-label="{msg.deck_rail_label}" data-live="localized_card" data-filter="set_id=eq.{set_id}" data-reads="play_session,card_set" data-order="id.asc">
+              <template data-item>
+                <button type="button" class="preview-strip-chip" data-on-click="play_select" data-id="{id}" data-card="{id}" data-name="{front}" data-front="{front}">
+                  <span class="preview-chip-emoji" data-text="{emoji}"></span>
+                  <span class="preview-chip-word" data-text="{front}"></span>
+                </button>
+              </template>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column Bottom (Desktop 38%) / Block #3 (Mobile): Compact Press Ledger (Coleções Geradas) -->
+      <div class="generated-deck-banner" id="generated-deck-banner" role="status" aria-live="polite">
+        <div class="gen-progress-header">
+          <span class="generated-check" id="gen-banner-icon" aria-hidden="true">✦</span>
+          <div class="generated-banner-info">
+            <span class="generated-banner-title" id="gen-banner-title" data-text="{msg.deck_generated_title}"></span>
+            <span class="gen-phase-sub gen-phase-sub-ready" id="gen-phase-sub" data-text="{msg.gen_phase_ready}"></span>
+          </div>
+          <!-- A data-on-click binds only inside a region. -->
+          <span class="tray-library-slot" data-live="play_session" data-filter="id=eq.session" data-empty-row='{"id":"session","set_id":"69618be6-9206-f9c7-59eb-b5e4b072cf3d","card_index":0,"flipped":"no","mastered":0,"total":20,"status":"playing","finished":"","front":"capybara","back":"","hint":"","emoji":"🦫"}' data-cortex="generateRows" data-machine-ref="collectionSelection">
+            <a data-route="cards" data-param-shelf="mine" id="link-library-mine" class="tray-library-link" data-text="{msg.view_all_library_mine}"></a>
+          </span>
+        </div>
+        <div class="keep-decks-offer">
+          <span class="keep-decks-copy" data-text="{msg.keep_decks_offer}"></span>
+          <button type="button" id="btn-keep-decks" class="btn btn-outline btn-keep-decks" data-auth-action="passkey-register" data-text="{msg.keep_decks_action}"></button>
+        </div>
+
+        <div class="gen-job-skeleton" aria-hidden="true">
+          <div class="ai-tier-pipeline" data-next="1"><span class="ai-tier-step"></span><span class="ai-tier-step"></span><span class="ai-tier-step"></span></div>
+        </div>
+        <div class="press-ledger-slot" data-live="play_session" data-filter="id=eq.session" data-empty-row='{"id":"session","set_id":"69618be6-9206-f9c7-59eb-b5e4b072cf3d","card_index":0,"flipped":"no","mastered":0,"total":20,"status":"playing","finished":"","front":"capybara","back":"","hint":"","emoji":"🦫"}' data-reads="deck_level,card_set,play_session,print_config,localized_card,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" data-read-flashcard="flashcard?set_id=eq.{set_id}" data-read-card_translation="card_translation?set_id=eq.{set_id}">
+          <template data-item>
+            <div class="press-ledger-item" data-jobs="{mastered}" data-tier-emoji="{emoji}">
+              <div id="generation-jobs-list" class="generation-jobs-list press-ledger-table" data-live="localized_deck" data-filter="cover_emoji=eq.🎨" data-order="number.desc" data-reads="deck_level,card_set,play_session,print_config,generation_form,device,me,deck_translation" data-read-draft_cheap="generation_draft?id=eq.{device.key}:draft-cheap" data-read-draft_heavy="generation_draft?id=eq.{device.key}:draft-heavy" aria-live="polite">
+                <template data-item>
+                  <div class="gen-job-card gen-job-row" data-set-id="{id}">
+                    <span hidden data-live="me" data-filter="id=eq.{owner}"><template data-item><span class="owned-generation"></span></template></span>
+                    <span hidden data-live="deck_level" data-filter="set_id=eq.{id}"><template data-item><span class="deck-level-state" data-level="{level}" data-state="{status}"></span></template></span>
+                    <a data-route="deck" data-param-deck="{id}" class="gen-job-permalink" data-set-id="{id}">
+                      <span class="gen-job-num" data-number="{number}" data-text="{number}"></span>
+                      <span class="gen-job-topic">
+                        <strong class="gen-job-name" data-text="{name}"></strong>
+                        <span class="gen-job-count">(<span data-text="{count}">5</span> <span data-text="{msg.cards_count}"></span>)</span>
+                      </span>
+                      <span class="gen-job-badge gen-job-badge-ready" data-text="{msg.gen_phase_ready}"></span>
+                      <span class="gen-job-badge gen-job-badge-ai" data-text="{msg.gen_phase_ai}"></span>
+                      <span class="gen-job-badge gen-job-badge-incomplete" data-text="{msg.gen_phase_incomplete}"></span>
+                      <span class="gen-job-open-arrow" aria-hidden="true">↗</span>
+                    </a>
+                    <button type="button" class="btn-delete-job" commandfor="create_set" command="delete" data-on-click="create_set" data-action="delete" data-set-id="{id}" aria-label="{msg.delete_deck}">🗑️</button>
+                    <div class="gen-job-progress" data-live="generation_form" data-filter="id=eq.draft&amp;set_id=eq.{id}">
+                      <template data-item>
+                        <div class="ai-tier-pipeline" data-next="{next}" aria-hidden="true">
+                          <span class="ai-tier-step" data-state="{words}"></span>
+                          <span class="ai-tier-step" data-live="deck_level" data-filter="id=eq.{set_id}:2"><template data-item><span class="ai-tier-fill" data-state="{status}" style="--drawn: {drawn}; --failed: {failed}; --unknown: {unknown}; --total: {total}"></span></template></span>
+                          <span class="ai-tier-step" data-live="deck_level" data-filter="id=eq.{set_id}:3"><template data-item><span class="ai-tier-fill" data-state="{status}" style="--drawn: {drawn}; --failed: {failed}; --unknown: {unknown}; --total: {total}"></span></template></span>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                </template>
+              </div>
+
+              <div class="generated-banner-actions" data-live="generation_form" data-filter="id=eq.draft" data-empty-row='{"id":"draft","topic":"","details":"","category":"","locale":"","region":"","card_count":5,"status":"idle","set_id":"","words":"","next":0,"audience_key":"diff_kids","audience":"","run":""}' data-cortex="generateRows" data-machine-ref="preview">
+                <a data-route="deck" data-param-deck="{set_id}" class="btn btn-primary btn-open-explore" id="btn-open-explore" data-text="{msg.play_action}"></a>
+                <a data-route="print" class="btn btn-outline btn-open-print" data-text="{msg.print_action}"></a>
+                <button type="button" id="btn-create-more" class="btn btn-outline btn-create-more" commandfor="create_set" command="reset" data-text="{msg.gen_create_more}"></button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>

@@ -1,0 +1,9 @@
+<section class="screen" data-screen="deck">
+  <div id="deck-entry" data-live="play_session" data-filter="id=eq.session" data-empty-row='{"id":"session","set_id":"69618be6-9206-f9c7-59eb-b5e4b072cf3d","card_index":0,"flipped":"no","mastered":0,"total":20,"status":"playing","finished":"","front":"","back":"","hint":"","emoji":""}' data-reads="play_session,card_set" data-read-route_deck="card_set?id=eq.{param.deck}" data-read-route_cards="flashcard?set_id=eq.{param.deck}&amp;order=id.asc" data-on-mutation="play_select">
+    <p class="deck-loading" role="status" data-text="{msg.deck_loading}">Loading deck…</p>
+    <div class="deck-entry" data-live="flashcard" data-filter="set_id=eq.{param.deck}" data-order="id.asc" data-empty="{msg.deck_empty}">
+      <template data-item><span hidden data-text="{front}"></span></template>
+    </div>
+    <a class="deck-empty-back" data-route="cards" data-text="{msg.back_to_cards}"></a>
+  </div>
+</section>

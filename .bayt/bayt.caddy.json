@@ -1,0 +1,1184 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": false,
+    "manual": false,
+    "build": {
+      "additional_contexts": {
+        "root": ".."
+      },
+      "secrets": [],
+      "args": {}
+    },
+    "environment": {
+      "ORIGIN": "${ORIGIN:-https://localhost:${CADDY_TLS_HOST_PORT}}",
+      "PRONTO_UPSTREAM_RENDER": "render:8090",
+      "ELECTRIC_SECRET": "${ELECTRIC_SECRET:-dev-electric-secret}",
+      "PRONTO_UPSTREAM_CRUD": "crud:3000",
+      "PRONTO_UPSTREAM_ELECTRIC": "electric:3000",
+      "PRONTO_UPSTREAM_AUTH": "auth:9999",
+      "PRONTO_UPSTREAM_TICKER": "ticker:9998",
+      "PRONTO_UPSTREAM_RCLONE_S3": "rclone-s3:3900",
+      "PRONTO_UPSTREAM_IMGPROXY": "imgproxy:8081"
+    },
+    "ports": [],
+    "volumes": [],
+    "depends_on": {
+      "snapcards-crud": {
+        "condition": "service_healthy"
+      }
+    },
+    "networks": {
+      "default": {
+        "aliases": [
+          "caddy"
+        ]
+      }
+    },
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "/usr/local/lib/bayt/http200/busybox",
+        "sh",
+        "-ec",
+        "export CURL_CA_BUNDLE=\"$${SSL_CERT_FILE:-/usr/local/lib/bayt/http200/ca.pem}\"; status=$$(\"$$@\"); [ \"$$status\" = 200 ] || { printf 'HTTP status %s, expected 200\\n' \"$$status\" >&2; exit 1; }",
+        "http200",
+        "/usr/local/lib/bayt/http200/curl",
+        "--disable",
+        "--silent",
+        "--show-error",
+        "--head",
+        "--request",
+        "GET",
+        "--location",
+        "--max-redirs",
+        "9",
+        "--max-time",
+        "5",
+        "--proto",
+        "=http,https",
+        "--proto-redir",
+        "=http,https",
+        "--output",
+        "/dev/null",
+        "--write-out",
+        "%{http_code}",
+        "http://127.0.0.1:8080/health"
+      ],
+      "interval": "5s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "10s",
+      "start_interval": "500ms"
+    },
+    "develop": {
+      "watch": [
+        {
+          "action": "sync+restart",
+          "path": "../docker/Caddyfile",
+          "target": "/etc/caddy/Caddyfile"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../.certs",
+          "target": "/certs"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/index.html",
+          "target": "/srv/shell/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shell.css",
+          "target": "/srv/shell/shell.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/boot.js",
+          "target": "/srv/shell/boot.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../offline-first-sw.js",
+          "target": "/srv/offline-first-sw.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shell.yaml",
+          "target": "/srv/shell/shell.yaml"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shell.json",
+          "target": "/srv/shell/shell.json"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/design.css",
+          "target": "/srv/shell/design.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../screens/cards.html",
+          "target": "/srv/screens/cards.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/cards.css",
+          "target": "/srv/shell/screens/cards.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../screens/generate.html",
+          "target": "/srv/screens/generate.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/generate.css",
+          "target": "/srv/shell/screens/generate.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../screens/explore.html",
+          "target": "/srv/screens/explore.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/explore.css",
+          "target": "/srv/shell/screens/explore.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/deck.html",
+          "target": "/srv/shell/screens/deck.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/deck.css",
+          "target": "/srv/shell/screens/deck.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../screens/card.html",
+          "target": "/srv/screens/card.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/card.css",
+          "target": "/srv/shell/screens/card.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../screens/print.html",
+          "target": "/srv/screens/print.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/print.css",
+          "target": "/srv/shell/screens/print.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/about.html",
+          "target": "/srv/shell/screens/about.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/about.css",
+          "target": "/srv/shell/screens/about.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/count-step.js",
+          "target": "/srv/shell/handlers/count-step.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/create_set.js",
+          "target": "/srv/shell/handlers/create_set.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/delivery_accept.js",
+          "target": "/srv/shell/handlers/delivery_accept.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/delivery_address_q.js",
+          "target": "/srv/shell/handlers/delivery_address_q.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/delivery_found.js",
+          "target": "/srv/shell/handlers/delivery_found.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/delivery_offers.js",
+          "target": "/srv/shell/handlers/delivery_offers.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/delivery_pin.js",
+          "target": "/srv/shell/handlers/delivery_pin.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/delivery_submitted.js",
+          "target": "/srv/shell/handlers/delivery_submitted.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/generation-input.js",
+          "target": "/srv/shell/handlers/generation-input.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/is_key.js",
+          "target": "/srv/shell/handlers/is_key.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/legacy-generation-run.js",
+          "target": "/srv/shell/handlers/legacy-generation-run.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/localize_content.js",
+          "target": "/srv/shell/handlers/localize_content.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/play_master.js",
+          "target": "/srv/shell/handlers/play_master.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/play_next.js",
+          "target": "/srv/shell/handlers/play_next.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/play_prev.js",
+          "target": "/srv/shell/handlers/play_prev.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/play_restart.js",
+          "target": "/srv/shell/handlers/play_restart.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/play_select.js",
+          "target": "/srv/shell/handlers/play_select.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/print_select.js",
+          "target": "/srv/shell/handlers/print_select.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/row-is.js",
+          "target": "/srv/shell/handlers/row-is.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/tab-fill.js",
+          "target": "/srv/shell/handlers/tab-fill.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/handlers/value-is.js",
+          "target": "/srv/shell/handlers/value-is.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/address-formats.css",
+          "target": "/srv/shell/shared/address-formats.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/card-art.css",
+          "target": "/srv/shell/shared/card-art.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/chrome-ready.css",
+          "target": "/srv/shell/shared/chrome-ready.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/chrome.css",
+          "target": "/srv/shell/shared/chrome.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/nav.css",
+          "target": "/srv/shell/shared/nav.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/translation-feedback.css",
+          "target": "/srv/shell/shared/translation-feedback.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../pipelines/favorite-recount.js",
+          "target": "/srv/pipelines/favorite-recount.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/hatches/print-checkout.js",
+          "target": "/srv/shell/hatches/print-checkout.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/hatches/window-print.js",
+          "target": "/srv/shell/hatches/window-print.js"
+        },
+        {
+          "action": "rebuild",
+          "path": "../messages/pt.json",
+          "target": "/srv/messages/pt.json"
+        },
+        {
+          "action": "rebuild",
+          "path": "../messages/es.json",
+          "target": "/srv/messages/es.json"
+        },
+        {
+          "action": "rebuild",
+          "path": "../messages/en.json",
+          "target": "/srv/messages/en.json"
+        },
+        {
+          "action": "rebuild",
+          "path": "../messages/he.json",
+          "target": "/srv/messages/he.json"
+        },
+        {
+          "action": "rebuild",
+          "path": "../messages/zh.json",
+          "target": "/srv/messages/zh.json"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/about/index.html",
+          "target": "/srv/about/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/en/about/index.html",
+          "target": "/srv/en/about/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/es/about/index.html",
+          "target": "/srv/es/about/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/he/about/index.html",
+          "target": "/srv/he/about/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/zh/about/index.html",
+          "target": "/srv/zh/about/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/fonts/nunito-latin-wght-normal.woff2",
+          "target": "/srv/shell/shared/fonts/nunito-latin-wght-normal.woff2"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/fonts/nunito-latin-wght-italic.woff2",
+          "target": "/srv/shell/shared/fonts/nunito-latin-wght-italic.woff2"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/fonts/nunito-latin-ext-wght-normal.woff2",
+          "target": "/srv/shell/shared/fonts/nunito-latin-ext-wght-normal.woff2"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/fonts/nunito-latin-ext-wght-italic.woff2",
+          "target": "/srv/shell/shared/fonts/nunito-latin-ext-wght-italic.woff2"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/fonts/dm-sans-latin-wght-normal.woff2",
+          "target": "/srv/shell/shared/fonts/dm-sans-latin-wght-normal.woff2"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/fonts/dm-sans-latin-wght-italic.woff2",
+          "target": "/srv/shell/shared/fonts/dm-sans-latin-wght-italic.woff2"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/fonts/dm-sans-latin-ext-wght-normal.woff2",
+          "target": "/srv/shell/shared/fonts/dm-sans-latin-ext-wght-normal.woff2"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2",
+          "target": "/srv/shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2"
+        },
+        {
+          "action": "rebuild",
+          "path": "../brief.md",
+          "target": "/srv/docs/brief.md"
+        },
+        {
+          "action": "rebuild",
+          "path": "../brief.html",
+          "target": "/srv/docs/brief.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal.html",
+          "target": "/srv/docs/journal.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir.html",
+          "target": "/srv/docs/ir.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/card.css",
+          "target": "/srv/docs/ir/card.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../acceptance.md",
+          "target": "/srv/docs/acceptance.md"
+        },
+        {
+          "action": "rebuild",
+          "path": "../DESIGN.md",
+          "target": "/srv/docs/DESIGN.md"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/neighbourhood-about.svg",
+          "target": "/srv/docs/ir/neighbourhood-about.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/neighbourhood-app.svg",
+          "target": "/srv/docs/ir/neighbourhood-app.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/neighbourhood-card.svg",
+          "target": "/srv/docs/ir/neighbourhood-card.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/neighbourhood-cards.svg",
+          "target": "/srv/docs/ir/neighbourhood-cards.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/neighbourhood-deck.svg",
+          "target": "/srv/docs/ir/neighbourhood-deck.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/neighbourhood-explore.svg",
+          "target": "/srv/docs/ir/neighbourhood-explore.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/neighbourhood-generate.svg",
+          "target": "/srv/docs/ir/neighbourhood-generate.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/neighbourhood-print.svg",
+          "target": "/srv/docs/ir/neighbourhood-print.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-audience-en.png",
+          "target": "/srv/docs/journal/2026-10-28-audience-en.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-card-navigation-en.png",
+          "target": "/srv/docs/journal/2026-10-28-card-navigation-en.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-cold-navigation-after.png",
+          "target": "/srv/docs/journal/2026-10-28-cold-navigation-after.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-cold-navigation-during.png",
+          "target": "/srv/docs/journal/2026-10-28-cold-navigation-during.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-deck-entry-en.png",
+          "target": "/srv/docs/journal/2026-10-28-deck-entry-en.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-language-switch-en.png",
+          "target": "/srv/docs/journal/2026-10-28-language-switch-en.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-library-search-after.png",
+          "target": "/srv/docs/journal/2026-10-28-library-search-after.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-library-search-before.png",
+          "target": "/srv/docs/journal/2026-10-28-library-search-before.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-north-pole-he.png",
+          "target": "/srv/docs/journal/2026-10-28-north-pole-he.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-rib-route-pt.png",
+          "target": "/srv/docs/journal/2026-10-28-rib-route-pt.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-study-layout-laptop.png",
+          "target": "/srv/docs/journal/2026-10-28-study-layout-laptop.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-translation-glow-first.png",
+          "target": "/srv/docs/journal/2026-10-28-translation-glow-first.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-translation-glow-peak.png",
+          "target": "/srv/docs/journal/2026-10-28-translation-glow-peak.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-28-translation-glow-reduced.png",
+          "target": "/srv/docs/journal/2026-10-28-translation-glow-reduced.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-29-mobile-hero-after.png",
+          "target": "/srv/docs/journal/2026-10-29-mobile-hero-after.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-29-mobile-hero-before.png",
+          "target": "/srv/docs/journal/2026-10-29-mobile-hero-before.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-30-delete-armed-pt.png",
+          "target": "/srv/docs/journal/2026-10-30-delete-armed-pt.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-30-edit-sheet-drawn-pt.png",
+          "target": "/srv/docs/journal/2026-10-30-edit-sheet-drawn-pt.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-30-edit-sheet-pt.png",
+          "target": "/srv/docs/journal/2026-10-30-edit-sheet-pt.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-30-edit-sheet-refused-pt.png",
+          "target": "/srv/docs/journal/2026-10-30-edit-sheet-refused-pt.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-30-title-details-pt.png",
+          "target": "/srv/docs/journal/2026-10-30-title-details-pt.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-31-edit-after-reload-pt.png",
+          "target": "/srv/docs/journal/2026-10-31-edit-after-reload-pt.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-31-favorite-count-pt.png",
+          "target": "/srv/docs/journal/2026-10-31-favorite-count-pt.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-31-progress-settled-pt.png",
+          "target": "/srv/docs/journal/2026-10-31-progress-settled-pt.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-10-31-progress-start-pt.png",
+          "target": "/srv/docs/journal/2026-10-31-progress-start-pt.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-05-cortex-generation.png",
+          "target": "/srv/docs/journal/2026-11-05-cortex-generation.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-05-cortex-phone-recovery.png",
+          "target": "/srv/docs/journal/2026-11-05-cortex-phone-recovery.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-05-cortex-print.png",
+          "target": "/srv/docs/journal/2026-11-05-cortex-print.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-07-presentation-watch.html",
+          "target": "/srv/docs/journal/2026-11-07-presentation-watch.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-07-presentation-watch.json",
+          "target": "/srv/docs/journal/2026-11-07-presentation-watch.json"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-07-presentation-watch.png",
+          "target": "/srv/docs/journal/2026-11-07-presentation-watch.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-18-cancelled-checkout-new-order.png",
+          "target": "/srv/docs/journal/2026-11-18-cancelled-checkout-new-order.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-18-mobile-nav-home.png",
+          "target": "/srv/docs/journal/2026-11-18-mobile-nav-home.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-18-mobile-nav-sheet.png",
+          "target": "/srv/docs/journal/2026-11-18-mobile-nav-sheet.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-18-tablet-rail.png",
+          "target": "/srv/docs/journal/2026-11-18-tablet-rail.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-22-consent-bar-en-dark.png",
+          "target": "/srv/docs/journal/2026-11-22-consent-bar-en-dark.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-22-consent-bar-en-light.png",
+          "target": "/srv/docs/journal/2026-11-22-consent-bar-en-light.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-22-consent-bar-gpc-shield.png",
+          "target": "/srv/docs/journal/2026-11-22-consent-bar-gpc-shield.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-22-consent-bar-pt-dark.png",
+          "target": "/srv/docs/journal/2026-11-22-consent-bar-pt-dark.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-22-consent-bar-pt-light.png",
+          "target": "/srv/docs/journal/2026-11-22-consent-bar-pt-light.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-22-consent-bar-pt-phone.png",
+          "target": "/srv/docs/journal/2026-11-22-consent-bar-pt-phone.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-22-consent-bar-reopened-en.png",
+          "target": "/srv/docs/journal/2026-11-22-consent-bar-reopened-en.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../robots.txt",
+          "target": "/srv/robots.txt"
+        },
+        {
+          "action": "rebuild",
+          "path": "../sitemap.xml",
+          "target": "/srv/sitemap.xml"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/favicon.svg",
+          "target": "/srv/shell/favicon.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/tag.html",
+          "target": "/srv/shell/tag.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../.well-known/assetlinks.json",
+          "target": "/srv/.well-known/assetlinks.json"
+        },
+        {
+          "action": "rebuild",
+          "path": "../.well-known/apple-app-site-association",
+          "target": "/srv/.well-known/apple-app-site-association"
+        }
+      ]
+    }
+  },
+  "dockerfile": {
+    "preamble": [],
+    "preambleCopyContexts": [],
+    "from": {
+      "name": "caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f"
+    },
+    "add": [],
+    "mounts": [],
+    "secrets": {},
+    "extra_hosts": [],
+    "epilogue": [],
+    "copy": [
+      {
+        "from": {
+          "name": "bonitao/lazybox:0.8.6@sha256:0f30c48513fac757f844f02c864802991dec045f9c4189e3db2ae4ac297544df"
+        },
+        "srcs": [
+          "/lazybox/share/ca-certificates/ca-certificates.crt"
+        ],
+        "dst": "/usr/local/lib/bayt/http200/ca.pem",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "bonitao/lazybox:0.8.6@sha256:0f30c48513fac757f844f02c864802991dec045f9c4189e3db2ae4ac297544df"
+        },
+        "srcs": [
+          "/lazybox/libexec/static-curl"
+        ],
+        "dst": "/usr/local/lib/bayt/http200/curl",
+        "chmod": "755",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223"
+        },
+        "srcs": [
+          "/bin/busybox"
+        ],
+        "dst": "/usr/local/lib/bayt/http200/busybox",
+        "chmod": "755",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "docker/Caddyfile"
+        ],
+        "dst": "/etc/caddy/Caddyfile",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          ".cert[s]"
+        ],
+        "dst": "/certs/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "ref": ":served",
+          "name": "snapcards-served"
+        },
+        "srcs": [
+          "/served/omnishell/"
+        ],
+        "dst": "/omnishell/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "ref": ":served",
+          "name": "snapcards-served"
+        },
+        "srcs": [
+          "/served/"
+        ],
+        "dst": "/srv/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "ref": ":served",
+          "name": "snapcards-served"
+        },
+        "srcs": [
+          "/served.scripts"
+        ],
+        "dst": "/etc/caddy/release-scripts",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      }
+    ],
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "/usr/local/lib/bayt/http200/busybox",
+        "sh",
+        "-ec",
+        "export CURL_CA_BUNDLE=\"${SSL_CERT_FILE:-/usr/local/lib/bayt/http200/ca.pem}\"; status=$(\"$@\"); [ \"$status\" = 200 ] || { printf 'HTTP status %s, expected 200\\n' \"$status\" >&2; exit 1; }",
+        "http200",
+        "/usr/local/lib/bayt/http200/curl",
+        "--disable",
+        "--silent",
+        "--show-error",
+        "--head",
+        "--request",
+        "GET",
+        "--location",
+        "--max-redirs",
+        "9",
+        "--max-time",
+        "5",
+        "--proto",
+        "=http,https",
+        "--proto-redir",
+        "=http,https",
+        "--output",
+        "/dev/null",
+        "--write-out",
+        "%{http_code}",
+        "http://127.0.0.1:8080/health"
+      ],
+      "interval": "5s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "10s"
+    },
+    "expose": [],
+    "entrypoint": null,
+    "incremental": false,
+    "cmd": null
+  },
+  "entrypoint": {
+    "do": "let origin = ($env.ORIGIN? | default \"\"); let h = ($origin | str replace -r '^https?://' ''); if ($h == $origin) or ($h | is-empty) or ($h !~ '^[A-Za-z0-9.:-]+$') { print -e $\"ORIGIN '($origin)' is no origin: set it to the scheme and host readers reach the door at, as https://app.example\"; exit 1 }; let p = (if ($h | str contains \":\") { $h | split row \":\" | last } else { \"8443\" }); let tls_port = (if (($env.CADDY_TLS_HOST_PORT? | default \"\") != \"\") { $env.CADDY_TLS_HOST_PORT } else { $p }); let work = ($env.BAYT_LOCAL_WORK_DIR? | default $nu.temp-dir); let cdir = ($work | path join $\"caddy-($nu.pid)-(random int 1000..9999)\"); mkdir ($cdir | path join \"data\") ($cdir | path join \"config\"); let env_file = ($cdir | path join \"env\"); let certs = (($env.CADDY_CERT_DIR? | default \".certs\") | path expand | str replace -a (char -u 5c) '/'); let served_dir = ($env.BAYT_LOCAL_SERVED_DIR? | default \"\"); let is_local = (($served_dir != \"\") and (($served_dir | path join \"srv\") | path exists)); let cfg_src = (if $is_local { 'docker/Caddyfile' } else { ($env.CADDY_CONFIG_FILE? | default (if ('docker/Caddyfile' | path exists) { 'docker/Caddyfile' } else { \"/etc/caddy/Caddyfile\" })) }); mut env_lines = [$\"CADDY_TLS_HOST_PORT=($tls_port)\"]; mut extra_env = { XDG_DATA_HOME: ($env.CADDY_DATA_HOME? | default ($cdir | path join \"data\")), XDG_CONFIG_HOME: ($cdir | path join \"config\"), CADDY_TLS_HOST_PORT: $tls_port }; if $is_local { let served_fwd = ($served_dir | path expand | str replace -a (char -u 5c) '/'); let srv_root = $\"($served_fwd)/srv\"; let omni_root = $\"($served_fwd)/omnishell\"; $env_lines = ($env_lines | append [$\"CADDY_DOOR_PORT=($tls_port)\" $\"PRONTO_SRV_ROOT=($srv_root)\" $\"PRONTO_OMNISHELL_ROOT=($omni_root)\"]); $extra_env = ($extra_env | merge { CADDY_DOOR_PORT: $tls_port, PRONTO_SRV_ROOT: $srv_root, PRONTO_OMNISHELL_ROOT: $omni_root }) }; if (($certs | path join \"localhost.pem\") | path exists) { let tv = $\"($certs)/localhost.pem ($certs)/localhost-key.pem\"; $env_lines = ($env_lines | append $\"CADDY_TLS=($tv)\"); $extra_env = ($extra_env | merge { CADDY_TLS: $tv }) }; let sfile = ($env.CADDY_SCRIPTS_FILE? | default (if (($env.BAYT_LOCAL_SERVED_DIR? | default \"\") != \"\") { ($env.BAYT_LOCAL_SERVED_DIR | path join \"caddy/release-scripts\") } else { \"/etc/caddy/release-scripts\" })); let rel = (if ($sfile | path exists) { open --raw $sfile | str trim } else { \"\" }); $env_lines = ($env_lines | append $\"PRONTO_RELEASE_SCRIPTS=($rel)\"); $extra_env = ($extra_env | merge { PRONTO_RELEASE_SCRIPTS: $rel }); ($env_lines | str join (char nl)) + (char nl) | save -f $env_file; with-env $extra_env { let adapted = (^caddy adapt --envfile $env_file --config $cfg_src --adapter caddyfile); let roots = ($adapted | split row \",\" | parse -r '\"root\":\"(?<r>[^\"]+)\"' | get -o r | default [] | uniq); for r in $roots { if ($r | path exists) { glob ($r | path join \"**/*\" | str replace -a (char -u 5c) '/') | where ($it | path type) == \"file\" and (not ($it | str ends-with \".etag\")) | each {|f| let etag = $\"($f).etag\"; if (not ($etag | path exists)) { let d = (open --raw $f | hash sha256); ((char dquote) + $d + (char dquote)) | save --raw -f $etag } } | ignore } }; exec caddy run --envfile $env_file --config $cfg_src --adapter caddyfile }",
+    "dockerfile": {
+      "do": "case \"${ORIGIN#http://}\" in \"$ORIGIN\") h=${ORIGIN#https://};; *) h=${ORIGIN#http://};; esac; case \"$h\" in \"$ORIGIN\"|\"\"|*[!A-Za-z0-9.:-]*) echo \"ORIGIN '$ORIGIN' is no origin: set it to the scheme and host readers reach the door at, as https://app.example\" >&2; exit 1;; esac; : > /etc/caddy/env; case \"$h\" in *:*) _p=${h##*:};; *) _p=8443;; esac; export CADDY_TLS_HOST_PORT=\"${CADDY_TLS_HOST_PORT:-$_p}\"; printf 'CADDY_TLS_HOST_PORT=%s\\n' \"$CADDY_TLS_HOST_PORT\" >> /etc/caddy/env; if [ -f /certs/localhost.pem ]; then export CADDY_TLS='/certs/localhost.pem /certs/localhost-key.pem'; printf 'CADDY_TLS=%s\\n' \"$CADDY_TLS\" >> /etc/caddy/env; fi; PRONTO_RELEASE_SCRIPTS=$(cat /etc/caddy/release-scripts); export PRONTO_RELEASE_SCRIPTS; printf 'PRONTO_RELEASE_SCRIPTS=%s\\n' \"$PRONTO_RELEASE_SCRIPTS\" >> /etc/caddy/env; set -e -o pipefail; roots=$(caddy adapt --envfile /etc/caddy/env --config /etc/caddy/Caddyfile --adapter caddyfile | awk '{ while (match($0, /\"root\":\"[^\"]*\"/)) { print substr($0, RSTART + 8, RLENGTH - 9); $0 = substr($0, RSTART + RLENGTH) } }' | sort -u); if [ -n \"$roots\" ]; then find $roots -type f ! -name '*.etag' -exec sh -c 'set -e; q=$1; shift; for f do h=$(sha256sum < \"$f\"); printf \"$q%s$q\" \"${h%% *}\" > \"$f.etag\"; done' sh '\"' {} +; fi; exec caddy run --envfile /etc/caddy/env --config /etc/caddy/Caddyfile --adapter caddyfile",
+      "shell": "sh"
+    },
+    "shell": "nu",
+    "env": {
+      "ELECTRIC_SECRET": "${ELECTRIC_SECRET:-dev-electric-secret}",
+      "ORIGIN": [
+        "${ORIGIN:-https://",
+        {
+          "port": "door",
+          "part": "addr",
+          "host": "localhost",
+          "prefix": "",
+          "suffix": ""
+        },
+        "}"
+      ],
+      "PRONTO_UPSTREAM_AUTH": {
+        "peer": "auth",
+        "port": "http",
+        "part": "addr",
+        "prefix": "",
+        "suffix": ""
+      },
+      "PRONTO_UPSTREAM_CRUD": {
+        "peer": "crud",
+        "port": "http",
+        "part": "addr",
+        "prefix": "",
+        "suffix": ""
+      },
+      "PRONTO_UPSTREAM_ELECTRIC": {
+        "peer": "electric",
+        "port": "http",
+        "part": "addr",
+        "prefix": "",
+        "suffix": ""
+      },
+      "PRONTO_UPSTREAM_RCLONE_S3": {
+        "peer": "rclone-s3",
+        "port": "http",
+        "part": "addr",
+        "prefix": "",
+        "suffix": ""
+      },
+      "PRONTO_UPSTREAM_IMGPROXY": {
+        "peer": "imgproxy",
+        "port": "http",
+        "part": "addr",
+        "prefix": "",
+        "suffix": ""
+      },
+      "PRONTO_UPSTREAM_RENDER": {
+        "peer": "render",
+        "port": "http",
+        "part": "addr",
+        "prefix": "",
+        "suffix": ""
+      },
+      "PRONTO_UPSTREAM_TICKER": {
+        "peer": "ticker",
+        "port": "http",
+        "part": "addr",
+        "prefix": "",
+        "suffix": ""
+      }
+    },
+    "after": {
+      "crud": "healthy"
+    },
+    "host": true
+  },
+  "expose": {
+    "http": {
+      "port": 8080,
+      "env": "PORT"
+    },
+    "door": {
+      "port": 8443,
+      "udp": true,
+      "publish": {
+        "environment": "CADDY_TLS_HOST_PORT"
+      }
+    }
+  },
+  "healthcheck": {
+    "template": "http200",
+    "scheme": "http",
+    "host": "127.0.0.1",
+    "port": 8080,
+    "path": "/health",
+    "url": "http://127.0.0.1:8080/health",
+    "headers": {},
+    "interval": "5s",
+    "start_interval": "500ms",
+    "timeout": "5s",
+    "retries": 30,
+    "start_period": "10s"
+  },
+  "name": "caddy",
+  "process-compose": {
+    "activate": "mise x --"
+  },
+  "project": "snapcards",
+  "dir": ".",
+  "activate": "",
+  "srcs": {
+    "globs": [
+      "docker/Caddyfile"
+    ],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {},
+  "synthetics": {
+    "bayt": {
+      "name": "caddy_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.caddy.yaml",
+          ".bayt/Dockerfile.caddy",
+          ".bayt/bayt.caddy.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.timer-check.yaml"
+      ]
+    },
+    "outs": {
+      "name": "caddy_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.timer-check.yaml"
+      ]
+    },
+    "srcs": {
+      "name": "caddy_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          "docker/Caddyfile"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.timer-check.yaml"
+      ]
+    }
+  },
+  "visibility": "internal",
+  "emitsSrcs": true,
+  "deps": [
+    "crud_outs",
+    "served_outs"
+  ],
+  "sameProjectDeps": [
+    "crud_outs",
+    "served_outs"
+  ],
+  "transitiveDeps": [
+    "crud_outs",
+    "served_outs"
+  ],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "./.bayt/compose.caddy.yaml",
+    "./.bayt/compose.crud.yaml",
+    "./.bayt/compose.served.yaml",
+    "./.bayt/compose.airlock-upgrade.yaml",
+    "./.bayt/compose.database.yaml",
+    "./.bayt/compose.migrate.yaml",
+    "./.bayt/compose.timer-check.yaml"
+  ],
+  "chainedDeps": [
+    {
+      "name": "crud_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "served_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    }
+  ],
+  "cmds": [],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

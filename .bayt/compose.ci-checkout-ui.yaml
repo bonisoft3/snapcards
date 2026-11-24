@@ -1,0 +1,194 @@
+# generated from bayt.cue — do not edit
+secrets:
+  docker_host:
+    environment: DOCKER_HOST_TCP
+  buildx_builder:
+    environment: BUILDX_BUILDER
+  buildx_instance:
+    environment: BUILDX_INSTANCE
+  docker_config:
+    environment: DOCKER_AUTH_CONFIG
+  testcontainers_host:
+    environment: TESTCONTAINERS_HOST_OVERRIDE
+  cache_scope:
+    environment: CACHE_SCOPE
+  cache_scope_fallback:
+    environment: CACHE_SCOPE_FALLBACK
+  sayt_buildkit_syntax:
+    environment: BUILDKIT_SYNTAX
+  sayt_no_cache:
+    environment: SAYT_NO_CACHE
+  bayt_image_tag:
+    environment: BAYT_IMAGE_TAG
+  bayt_pull_policy:
+    environment: BAYT_PULL_POLICY
+  sayt_no_cache_from:
+    environment: SAYT_NO_CACHE_FROM
+  sayt_no_cache_to:
+    environment: SAYT_NO_CACHE_TO
+  depot_token:
+    environment: DEPOT_TOKEN
+  depot_project_id:
+    environment: DEPOT_PROJECT_ID
+  depot_org_id:
+    environment: DEPOT_ORG_ID
+  depot_disable_otel:
+    environment: DEPOT_DISABLE_OTEL
+  actions_results_url:
+    environment: ACTIONS_RESULTS_URL
+  actions_runtime_token:
+    environment: ACTIONS_RUNTIME_TOKEN
+  bkid_project:
+    environment: BKID_PROJECT
+services:
+  snapcards-ci-checkout-ui:
+    build:
+      additional_contexts:
+        snapcards-check-checkout-ui_srcs: service:snapcards-check-checkout-ui_srcs
+        snapcards-check-checkout-ui_bayt: service:snapcards-check-checkout-ui_bayt
+        snapcards-checkout-simulator_srcs: service:snapcards-checkout-simulator_srcs
+        snapcards-prodigi-simulator_srcs: service:snapcards-prodigi-simulator_srcs
+        snapcards-cloudprinter-simulator_srcs: service:snapcards-cloudprinter-simulator_srcs
+        snapcards-mail-simulator_srcs: service:snapcards-mail-simulator_srcs
+        snapcards-caddy_srcs: service:snapcards-caddy_srcs
+        snapcards-served_srcs: service:snapcards-served_srcs
+        snapcards-seed-blobs_srcs: service:snapcards-seed-blobs_srcs
+        snapcards-render_srcs: service:snapcards-render_srcs
+        snapcards-database_srcs: service:snapcards-database_srcs
+        snapcards-migrate_srcs: service:snapcards-migrate_srcs
+        snapcards-conduit_srcs: service:snapcards-conduit_srcs
+        snapcards-transform_srcs: service:snapcards-transform_srcs
+        snapcards-airlock_srcs: service:snapcards-airlock_srcs
+        snapcards-airlock-mesh_srcs: service:snapcards-airlock-mesh_srcs
+        snapcards-browser_srcs: service:snapcards-browser_srcs
+        bayt: >-
+          ${BAYT_RUNTIME:-docker-image://bonitao/bayt-runtime:1.5.3@sha256:9560b4a6d6e40fe15a951ef14b5d10dcd613c3efa73ef1847072add962d60760}
+        workspaceroot-pronto-sources_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:workspaceroot-pronto-sources_srcs}
+        libraries_mecha-database-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-database-image_bayt}
+        libraries_mecha-extensions-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-extensions-image_bayt}
+        libraries_mecha-mesh-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-mesh-image_bayt}
+        libraries_mecha-conduit-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-conduit-image_bayt}
+        libraries_mecha-auth-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-auth-image_bayt}
+        libraries_mecha-ticker-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-ticker-image_bayt}
+        libraries_mecha-clock-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-clock-image_bayt}
+        libraries_mecha-compute-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-compute-image_bayt}
+        libraries_mecha-airlock-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-airlock-image_bayt}
+        libraries_mecha-activepieces-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-activepieces-image_bayt}
+        libraries_mecha-database-image_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-database-image_srcs}
+        libraries_mecha-extensions-image_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-extensions-image_srcs}
+        libraries_mecha-mesh-image_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-mesh-image_srcs}
+        libraries_mecha-auth-image_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-auth-image_srcs}
+        libraries_mecha-ticker-image_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-ticker-image_srcs}
+        libraries_mecha-clock-image_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-clock-image_srcs}
+        libraries_mecha-compute-image_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-compute-image_srcs}
+        libraries_mecha-airlock-image_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-airlock-image_srcs}
+        libraries_mecha-activepieces-image_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-activepieces-image_srcs}
+        plugins_omnishell-runtime-image_srcs: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:plugins_omnishell-runtime-image_srcs}
+        plugins_omnishell-runtime-image_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:plugins_omnishell-runtime-image_bayt}
+        workspaceroot-pronto-sources_bayt: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:workspaceroot-pronto-sources_bayt}
+      context: ..
+      dockerfile: .bayt/Dockerfile.ci-checkout-ui
+      secrets:
+      - docker_host
+      - buildx_builder
+      - buildx_instance
+      - docker_config
+      - testcontainers_host
+      - cache_scope
+      - cache_scope_fallback
+      - sayt_buildkit_syntax
+      - sayt_no_cache
+      - bayt_image_tag
+      - bayt_pull_policy
+      - sayt_no_cache_from
+      - sayt_no_cache_to
+      - depot_token
+      - depot_project_id
+      - depot_org_id
+      - depot_disable_otel
+      - actions_results_url
+      - actions_runtime_token
+      - bkid_project
+      target: ci-checkout-ui
+      tags:
+      - bayt-snapcards-ci-checkout-ui:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-ci-checkout-ui:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+        MONOREPO_COMPOSE_MODE: ${MONOREPO_COMPOSE_MODE:-}
+        BAYT_RUNTIME: ${BAYT_RUNTIME:-}
+    image: bayt-snapcards-ci-checkout-ui:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    secrets:
+    - docker_host
+    - buildx_builder
+    - buildx_instance
+    - docker_config
+    - testcontainers_host
+    - cache_scope
+    - cache_scope_fallback
+    - sayt_buildkit_syntax
+    - sayt_no_cache
+    - bayt_image_tag
+    - bayt_pull_policy
+    - sayt_no_cache_from
+    - sayt_no_cache_to
+    - depot_token
+    - depot_project_id
+    - depot_org_id
+    - depot_disable_otel
+    - actions_results_url
+    - actions_runtime_token
+    - bkid_project
+  snapcards-ci-checkout-ui_bayt:
+    build:
+      additional_contexts:
+        snapcards-check-checkout-ui_bayt: service:snapcards-check-checkout-ui_bayt
+        snapcards-checkout-simulator_bayt: service:snapcards-checkout-simulator_bayt
+        snapcards-prodigi-simulator_bayt: service:snapcards-prodigi-simulator_bayt
+        snapcards-cloudprinter-simulator_bayt: service:snapcards-cloudprinter-simulator_bayt
+        snapcards-mail-simulator_bayt: service:snapcards-mail-simulator_bayt
+        snapcards-caddy_bayt: service:snapcards-caddy_bayt
+        snapcards-served_bayt: service:snapcards-served_bayt
+        snapcards-seed-blobs_bayt: service:snapcards-seed-blobs_bayt
+        snapcards-render_bayt: service:snapcards-render_bayt
+        snapcards-database_bayt: service:snapcards-database_bayt
+        snapcards-migrate_bayt: service:snapcards-migrate_bayt
+        snapcards-conduit_bayt: service:snapcards-conduit_bayt
+        snapcards-transform_bayt: service:snapcards-transform_bayt
+        snapcards-airlock_bayt: service:snapcards-airlock_bayt
+        snapcards-airlock-mesh_bayt: service:snapcards-airlock-mesh_bayt
+        snapcards-browser_bayt: service:snapcards-browser_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.ci-checkout-ui
+      target: ci-checkout-ui_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-ci-checkout-ui_bayt:latest
+    scale: 0

@@ -1,0 +1,474 @@
+{
+  "effects": {
+    "print-quote": {
+      "bridge": {
+        "name": "prodigi",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "credential": {
+        "header": "X-API-Key",
+        "secret": "PRODIGI_API_KEY"
+      },
+      "edgeOrigin": {
+        "secret": "PRODIGI_ORIGIN"
+      },
+      "table": "print_order",
+      "field": "status",
+      "state": "quoting",
+      "onDone": "converting",
+      "onError": "quote_failed",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/print-quote.js"
+    },
+    "print-quote-br": {
+      "bridge": {
+        "name": "cloudprinter",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "edgeOrigin": "https://api.cloudprinter.com",
+      "secrets": [
+        "CLOUDPRINTER_API_KEY"
+      ],
+      "table": "print_order",
+      "field": "status",
+      "state": "quoting_br",
+      "onDone": "converting",
+      "onError": "quote_failed",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/print-quote-br.js"
+    },
+    "print-fx": {
+      "bridge": {
+        "name": "stripe",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "contentType": "application/x-www-form-urlencoded",
+      "credential": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "secret": "STRIPE_SECRET_KEY"
+      },
+      "edgeOrigin": "https://api.stripe.com",
+      "table": "print_order",
+      "field": "status",
+      "state": "converting",
+      "onDone": "quoted",
+      "onError": "quote_failed",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/print-fx.js"
+    },
+    "print-session": {
+      "bridge": {
+        "name": "stripe",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "contentType": "application/x-www-form-urlencoded",
+      "credential": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "secret": "STRIPE_SECRET_KEY"
+      },
+      "edgeOrigin": "https://api.stripe.com",
+      "endowments": [
+        "Pdf"
+      ],
+      "secrets": [
+        "STRIPE_PUBLISHABLE_KEY"
+      ],
+      "table": "print_order",
+      "field": "status",
+      "state": "opening",
+      "onDone": "awaiting_payment",
+      "onError": "open_failed",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/print-session.js"
+    },
+    "print-check": {
+      "bridge": {
+        "name": "stripe",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "credential": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "secret": "STRIPE_SECRET_KEY"
+      },
+      "edgeOrigin": "https://api.stripe.com",
+      "table": "print_order",
+      "field": "status",
+      "state": "checking",
+      "onDone": "confirming",
+      "onError": "awaiting_payment",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id",
+        "checks"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/print-check.js"
+    },
+    "print-confirm": {
+      "bridge": {
+        "name": "mail",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "credential": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "secret": "MAIL_API_TOKEN"
+      },
+      "edgeOrigin": "https://api.cloudflare.com",
+      "reentry": "repeat",
+      "secrets": [
+        "MAIL_ACCOUNT_ID"
+      ],
+      "table": "print_order",
+      "field": "status",
+      "state": "confirming",
+      "onDone": "placing",
+      "onError": "placing",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id"
+      ],
+      "idempotent": false,
+      "attempts": 5,
+      "handler": "effects/print-confirm.js"
+    },
+    "print-place": {
+      "bridge": {
+        "name": "prodigi",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "credential": {
+        "header": "X-API-Key",
+        "secret": "PRODIGI_API_KEY"
+      },
+      "edgeOrigin": {
+        "secret": "PRODIGI_ORIGIN"
+      },
+      "table": "print_order",
+      "field": "status",
+      "state": "placing",
+      "onDone": "recording",
+      "onError": "alerting",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/print-place.js"
+    },
+    "print-place-br": {
+      "bridge": {
+        "name": "cloudprinter",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "edgeOrigin": "https://api.cloudprinter.com",
+      "secrets": [
+        "CLOUDPRINTER_API_KEY"
+      ],
+      "table": "print_order",
+      "field": "status",
+      "state": "placing_br",
+      "onDone": "recording",
+      "onError": "alerting",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/print-place-br.js"
+    },
+    "print-record": {
+      "bridge": {
+        "name": "mail",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "credential": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "secret": "MAIL_API_TOKEN"
+      },
+      "edgeOrigin": "https://api.cloudflare.com",
+      "reentry": "repeat",
+      "secrets": [
+        "MAIL_ACCOUNT_ID"
+      ],
+      "table": "print_order",
+      "field": "status",
+      "state": "recording",
+      "onDone": "placed",
+      "onError": "placed",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id"
+      ],
+      "idempotent": false,
+      "attempts": 5,
+      "handler": "effects/print-record.js"
+    },
+    "print-status": {
+      "bridge": {
+        "name": "prodigi",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "credential": {
+        "header": "X-API-Key",
+        "secret": "PRODIGI_API_KEY"
+      },
+      "edgeOrigin": {
+        "secret": "PRODIGI_ORIGIN"
+      },
+      "table": "print_order",
+      "field": "status",
+      "state": "vendor_checking",
+      "onDone": "placed",
+      "onError": "alerting",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id",
+        "vendor_checks"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/print-status.js"
+    },
+    "print-status-br": {
+      "bridge": {
+        "name": "cloudprinter",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "edgeOrigin": "https://api.cloudprinter.com",
+      "secrets": [
+        "CLOUDPRINTER_API_KEY"
+      ],
+      "table": "print_order",
+      "field": "status",
+      "state": "vendor_checking_br",
+      "onDone": "placed_br",
+      "onError": "alerting",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id",
+        "vendor_checks"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/print-status-br.js"
+    },
+    "print-shipped": {
+      "bridge": {
+        "name": "mail",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "credential": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "secret": "MAIL_API_TOKEN"
+      },
+      "edgeOrigin": "https://api.cloudflare.com",
+      "reentry": "repeat",
+      "secrets": [
+        "MAIL_ACCOUNT_ID"
+      ],
+      "table": "print_order",
+      "field": "status",
+      "state": "notifying_shipped",
+      "onDone": "placed",
+      "onError": "placed",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id"
+      ],
+      "idempotent": false,
+      "attempts": 5,
+      "handler": "effects/print-shipped.js"
+    },
+    "print-alert": {
+      "bridge": {
+        "name": "mail",
+        "targets": [
+          "cloudflare",
+          "k8s"
+        ],
+        "simulated": true
+      },
+      "credential": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "secret": "MAIL_API_TOKEN"
+      },
+      "edgeOrigin": "https://api.cloudflare.com",
+      "reentry": "repeat",
+      "secrets": [
+        "MAIL_ACCOUNT_ID"
+      ],
+      "table": "print_order",
+      "field": "status",
+      "state": "alerting",
+      "onDone": "attention",
+      "onError": "attention",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id"
+      ],
+      "idempotent": false,
+      "attempts": 20,
+      "handler": "effects/print-alert.js"
+    },
+    "smollm3-draft": {
+      "table": "generation_draft",
+      "field": "status",
+      "state": "drafting",
+      "onDone": "done",
+      "onError": "failed",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id",
+        "topic",
+        "locale",
+        "region"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/smollm3-draft.js"
+    },
+    "heavy-draft": {
+      "table": "generation_draft",
+      "field": "status",
+      "state": "illustrating",
+      "onDone": "done",
+      "onError": "failed",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id",
+        "topic",
+        "locale",
+        "region"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/heavy-draft.js"
+    },
+    "illustrate-card": {
+      "table": "card_art",
+      "field": "status",
+      "state": "pending",
+      "onDone": "drawn",
+      "onError": "failed",
+      "row": [
+        "id"
+      ],
+      "key": [
+        "id",
+        "run",
+        "redraws"
+      ],
+      "idempotent": true,
+      "attempts": 5,
+      "handler": "effects/illustrate-card.js"
+    }
+  }
+}

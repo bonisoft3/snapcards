@@ -1,0 +1,18 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-caddy:
+    ports:
+    - ${CADDY_TLS_HOST_PORT:-24469}:8443
+    - ${CADDY_TLS_HOST_PORT:-24469}:8443/udp
+  snapcards-checkout-simulator:
+    ports:
+    - ${SNAPCARDS_CHECKOUT_HOST_PORT:-30826}:8080
+  snapcards-prodigi-simulator:
+    ports:
+    - ${SNAPCARDS_PRODIGI_HOST_PORT:-30827}:8080
+  snapcards-cloudprinter-simulator:
+    ports:
+    - ${SNAPCARDS_CLOUDPRINTER_HOST_PORT:-30828}:8080
+  snapcards-mailpit:
+    ports:
+    - ${SNAPCARDS_MAILPIT_HOST_PORT:-30825}:8025

@@ -1,0 +1,31 @@
+# favorite-recount: the absolute count of `favorite` for the event's own deck,
+# emitted as one deck_stats upsert row {deck_id, favorite_count, counted_txid}.
+#
+# The harness must preserve the CDC event beside the fetched rows
+# (root.rows = this); a bare array means it discarded the event, so refuse.
+let rows = if this.type() == "array" { throw("favorite-recount: harness discarded the CDC event (result_map: root = this); #rpkPipeline must preserve it as root.rows") } else { this.rows }
+let event_row = if this.exists("data") && this.data.type() == "string" && this.data.length() > 0 { this.data.parse_json() } else { null }
+
+# The bus carries every table: a foreign message is dropped, never reasserted,
+# since merge-duplicates restamps txid on every row it touches. A row with the
+# stamp and no key would emit a null-keyed sink row and wedge the stream.
+let from_favorite = $event_row.type() == "object" && $event_row.__table == "favorite" && $event_row.exists("deck_id")
+
+let id = $event_row.deck_id
+# Every row of the deck, active or retracted: the count takes the active ones,
+# the watermark the newest txid of all, so a just-retracted row is not read by
+# the browser as a change the sink has not seen and subtracted twice.
+let mine = $rows.filter(r -> r.deck_id == $id)
+let live = $mine.filter(r -> r.deleted_at == null)
+
+# counted_txid is the read watermark, not the sink row's txid, which is stamped
+# after the read. The txids sort as integers; as strings "9" outranks "10".
+root = if $from_favorite {
+  [{
+    "deck_id":        $id,
+    "favorite_count": $live.length(),
+    "counted_txid":   if $mine.length() == 0 { "0" } else { $mine.map_each(r -> r.txid.or(0).int64()).sort().index(-1).string() },
+  }]
+} else {
+  deleted()
+}

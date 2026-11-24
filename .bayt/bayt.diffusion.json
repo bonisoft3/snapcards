@@ -1,0 +1,210 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": false,
+    "manual": false,
+    "environment": {},
+    "ports": [],
+    "volumes": [],
+    "depends_on": {},
+    "networks": {
+      "default": {
+        "aliases": [
+          "diffusion"
+        ]
+      },
+      "airlock-egress": {
+        "aliases": [
+          "diffusion"
+        ]
+      }
+    },
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "httpcheck",
+        "http://127.0.0.1:8000/v1/models"
+      ],
+      "interval": "1s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "60s",
+      "start_interval": "200ms"
+    }
+  },
+  "dockerfile": {
+    "preamble": [
+      "COPY <<'EOF' /srv/diffusion.ts\nconst CRC_TABLE = new Uint32Array(256);\nfor (let n = 0; n < 256; n++) {\n  let c = n;\n  for (let k = 0; k < 8; k++) c = (c & 1) ? (0xedb88320 ^ (c >>> 1)) : (c >>> 1);\n  CRC_TABLE[n] = c >>> 0;\n}\nconst crc32 = (buf: Uint8Array): number => {\n  let c = 0xffffffff;\n  for (let i = 0; i < buf.length; i++) c = CRC_TABLE[(c ^ buf[i]) & 0xff] ^ (c >>> 8);\n  return (c ^ 0xffffffff) >>> 0;\n};\nconst u32be = (v: number): Uint8Array => new Uint8Array([(v >>> 24) & 0xff, (v >>> 16) & 0xff, (v >>> 8) & 0xff, v & 0xff]);\nconst chunk = (type: string, data: Uint8Array): Uint8Array => {\n  const out = new Uint8Array(12 + data.length);\n  out.set(u32be(data.length), 0);\n  for (let i = 0; i < 4; i++) out[4 + i] = type.charCodeAt(i);\n  out.set(data, 8);\n  out.set(u32be(crc32(out.subarray(4, 8 + data.length))), 8 + data.length);\n  return out;\n};\nconst renderSubjectPng = async (prompt: string): Promise<string> => {\n  const W = 96, H = 96;\n  const raw = new Uint8Array(H * (1 + W * 3));\n  let h = 2166136261 >>> 0;\n  for (let i = 0; i < prompt.length; i++) h = Math.imul(h ^ prompt.charCodeAt(i), 16777619) >>> 0;\n  const p = prompt.toLowerCase();\n  const pal: [number, number, number, number, number, number] =\n    p.includes(\"cow\") || p.includes(\"vaca\") ? [45, 55, 72, 226, 232, 240] :\n    p.includes(\"horse\") || p.includes(\"cavalo\") ? [146, 64, 14, 217, 119, 6] :\n    p.includes(\"pig\") || p.includes(\"porco\") ? [219, 39, 119, 244, 114, 182] :\n    p.includes(\"hen\") || p.includes(\"chicken\") || p.includes(\"galinha\") ? [185, 28, 28, 245, 158, 11] :\n    p.includes(\"sheep\") || p.includes(\"ovelha\") ? [71, 85, 105, 203, 213, 225] :\n    p.includes(\"rocket\") || p.includes(\"foguete\") ? [220, 38, 38, 59, 130, 246] :\n    p.includes(\"satellite\") || p.includes(\"satélite\") ? [37, 99, 235, 147, 197, 253] :\n    p.includes(\"guitar\") || p.includes(\"violão\") || p.includes(\"violin\") ? [180, 83, 9, 251, 191, 36] :\n    p.includes(\"piano\") ? [30, 41, 59, 148, 163, 184] :\n    [40 + (h % 160), 50 + ((h >>> 8) % 150), 60 + ((h >>> 16) % 150), 120 + ((h >>> 4) % 110), 130 + ((h >>> 12) % 100), 140 + ((h >>> 20) % 100)];\n  const [r1, g1, b1, r2, g2, b2] = pal;\n  const mode = h % 4;\n  for (let y = 0; y < H; y++) {\n    const rowOff = y * (1 + W * 3);\n    raw[rowOff] = 0;\n    for (let x = 0; x < W; x++) {\n      const px = rowOff + 1 + x * 3;\n      const dx = (x - W / 2) / (W / 2);\n      const dy = (y - H / 2) / (H / 2);\n      const d2 = dx * dx + dy * dy;\n      let r = 255, g = 255, b = 255;\n      if (d2 < 0.72) {\n        const ring = Math.sin(Math.sqrt(d2) * (8 + (h % 5)) + (mode * 1.1));\n        const angle = Math.atan2(dy, dx);\n        const petal = Math.cos(angle * (3 + (h % 4))) * 0.25;\n        if (d2 < 0.28 + petal * 0.2) {\n          r = r1; g = g1; b = b1;\n        } else if (ring > 0) {\n          r = r2; g = g2; b = b2;\n        } else {\n          r = Math.round((r1 + 255 * 2) / 3);\n          g = Math.round((g1 + 255 * 2) / 3);\n          b = Math.round((b1 + 255 * 2) / 3);\n        }\n      }\n      raw[px] = r; raw[px + 1] = g; raw[px + 2] = b;\n    }\n  }\n  const cs = new CompressionStream(\"deflate\");\n  const writer = cs.writable.getWriter();\n  writer.write(raw);\n  writer.close();\n  const idatData = new Uint8Array(await new Response(cs.readable).arrayBuffer());\n  const sig = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);\n  const ihdr = new Uint8Array(13);\n  ihdr.set(u32be(W), 0);\n  ihdr.set(u32be(H), 4);\n  ihdr[8] = 8; ihdr[9] = 2;\n  const c1 = chunk(\"IHDR\", ihdr);\n  const c2 = chunk(\"IDAT\", idatData);\n  const c3 = chunk(\"IEND\", new Uint8Array(0));\n  const png = new Uint8Array(sig.length + c1.length + c2.length + c3.length);\n  png.set(sig, 0);\n  png.set(c1, sig.length);\n  png.set(c2, sig.length + c1.length);\n  png.set(c3, sig.length + c1.length + c2.length);\n  let bin = \"\";\n  for (let i = 0; i < png.length; i++) bin += String.fromCharCode(png[i]);\n  return btoa(bin);\n};\nDeno.serve({ hostname: Deno.env.get(\"HOST\") ?? \"0.0.0.0\", port: Number(Deno.env.get(\"PORT\") ?? \"8000\") }, async (req) => {\n  const url = new URL(req.url);\n  if (url.pathname === \"/v1/models\" || url.pathname === \"/health\") {\n    return Response.json({ data: [{ id: \"sd-turbo-q4_0\" }, { id: \"sd-turbo-q8_0\" }] });\n  }\n  const raw = await req.text();\n  await new Promise((r) => setTimeout(r, 80));\n  if (raw.includes(\"NSFW\")) {\n    return new Response(\"8007: Input prompt contains NSFW content.\", { status: 400 });\n  }\n  const b64 = await renderSubjectPng(raw);\n  return Response.json({ data: [{ b64_json: b64 }] });\n});\nEOF"
+    ],
+    "preambleCopyContexts": [],
+    "from": {
+      "name": "denoland/deno:debian-2.9.7@sha256:fa335acdf6b72106eda2cb6a8cb5f4187e7630e357467489db4b2e7352d5e432"
+    },
+    "add": [],
+    "mounts": [],
+    "secrets": {},
+    "extra_hosts": [],
+    "epilogue": [],
+    "copy": [
+      {
+        "from": {
+          "name": "tarampampam/microcheck:1@sha256:79c187c05bfa67518078bf4db117771942fa8fe107dc79a905861c75ddf28dfa"
+        },
+        "srcs": [
+          "/bin/httpcheck"
+        ],
+        "dst": "/usr/local/bin/httpcheck",
+        "chmod": "755",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      }
+    ],
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "httpcheck",
+        "http://127.0.0.1:8000/v1/models"
+      ],
+      "interval": "1s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "60s"
+    },
+    "expose": [],
+    "entrypoint": null,
+    "incremental": false,
+    "cmd": null
+  },
+  "entrypoint": {
+    "do": "if (($env.BAYT_LOCAL_MOCK_AI? | default '1') == '0') { if (which sd-server | is-empty) { error make { msg: 'sd-server not found on PATH' } }; ^sd-server --listen-ip 127.0.0.1 --listen-port ($env.PORT? | default '8000') -m models/sd-turbo-q8_0.gguf --cfg-scale 1.0 --steps 2 -W 256 -H 256 } else { let f = (($env.BAYT_LOCAL_WORK_DIR? | default $nu.temp-dir) | path join 'diffusion-mock.ts'); open --raw .bayt/Dockerfile.diffusion | lines | skip until {|l| $l =~ '^COPY <<.EOF. /srv/diffusion.ts$' } | skip 1 | take until {|l| $l == 'EOF' } | str join (char nl) | save -f $f; with-env { HOST: '127.0.0.1' } { ^deno run --allow-net --allow-env $f } }",
+    "dockerfile": {
+      "do": "deno run --allow-net --allow-env /srv/diffusion.ts",
+      "shell": "sh"
+    },
+    "shell": "nu",
+    "env": {},
+    "after": {},
+    "host": true
+  },
+  "expose": {
+    "api": {
+      "port": 8000,
+      "env": "PORT"
+    }
+  },
+  "healthcheck": {
+    "template": "http",
+    "scheme": "http",
+    "host": "127.0.0.1",
+    "port": 8000,
+    "path": "/v1/models",
+    "url": "http://127.0.0.1:8000/v1/models",
+    "authorization": null,
+    "headers": [],
+    "start_interval": "200ms",
+    "interval": "1s",
+    "timeout": "5s",
+    "retries": 30,
+    "start_period": "60s"
+  },
+  "name": "diffusion",
+  "process-compose": {
+    "activate": "mise x --"
+  },
+  "project": "snapcards",
+  "dir": ".",
+  "activate": "",
+  "srcs": {
+    "globs": [],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {},
+  "synthetics": {
+    "bayt": {
+      "name": "diffusion_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.diffusion.yaml",
+          ".bayt/Dockerfile.diffusion",
+          ".bayt/bayt.diffusion.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.diffusion.yaml"
+      ]
+    },
+    "outs": {
+      "name": "diffusion_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.diffusion.yaml"
+      ]
+    }
+  },
+  "visibility": "internal",
+  "emitsSrcs": false,
+  "deps": [],
+  "sameProjectDeps": [],
+  "transitiveDeps": [],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "./.bayt/compose.diffusion.yaml"
+  ],
+  "chainedDeps": [],
+  "cmds": [],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

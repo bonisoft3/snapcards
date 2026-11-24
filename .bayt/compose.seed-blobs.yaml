@@ -1,0 +1,52 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-seed-blobs:
+    build:
+      additional_contexts:
+        snapcards-rclone-s3: service:snapcards-rclone-s3
+      context: ..
+      dockerfile: .bayt/Dockerfile.seed-blobs
+      target: seed-blobs
+      tags:
+      - bayt-snapcards-seed-blobs:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-seed-blobs:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    depends_on:
+      snapcards-rclone-s3:
+        condition: service_healthy
+        restart: true
+    environment:
+      SEED_BLOBS_URL: http://rclone-s3:3900
+    image: bayt-snapcards-seed-blobs:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    networks:
+      default:
+        aliases:
+        - seed-blobs
+    restart: no
+  snapcards-seed-blobs_bayt:
+    build:
+      additional_contexts:
+        snapcards-rclone-s3_bayt: service:snapcards-rclone-s3_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.seed-blobs
+      target: seed-blobs_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-seed-blobs_bayt:latest
+    scale: 0
+  snapcards-seed-blobs_srcs:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.seed-blobs
+      target: seed-blobs_srcs
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-seed-blobs_srcs:latest
+    scale: 0

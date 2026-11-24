@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Address Collector Mockup</title>
+<style>
+/* Page chrome for the mockup only. */
+:root { --font-serif: "Newsreader", Georgia, serif; --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font: 1rem/1.5 var(--font-sans); background: #2c2823; color: #24211e; }
+.sheet-head { max-width: 960px; margin: 0 auto; padding: 40px 20px 8px; color: #e9deca; }
+.sheet-head h1 { margin: 0 0 6px; font: 500 28px/1.15 var(--font-serif); letter-spacing: -.02em; }
+.sheet-head p { margin: 0; max-width: 680px; color: #c9b99f; font-size: 14px; }
+.frame { max-width: 960px; margin: 0 auto; padding: 36px 20px 28px; }
+.frame-label { display: flex; gap: 12px; align-items: baseline; margin: 0 0 14px; color: #e9deca; font: 700 11px/1.4 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; }
+.frame-label b { color: #e2a35c; }
+.frame-label span { color: #a89a85; font-weight: 500; letter-spacing: .04em; text-transform: none; font-size: 13px; }
+.stage { position: relative; }
+.fold { position: absolute; left: 0; right: 0; top: 760px; border-top: 1px dashed #e2a35c; pointer-events: none; z-index: 3; }
+.fold::after { content: "fold of a 1280×800 window (dialog max-height 760px; below scrolls inside the dialog)"; position: absolute; left: 16px; top: 4px; max-width: 330px; padding: 2px 6px; background: #e2a35c; color: #2c2823; font: 600 10px/1.4 var(--font-sans); letter-spacing: .04em; }
+
+/* ---- Approved checkout dialog (copied from shell/screens/print.css) ---- */
+.print-checkout-panel {
+  position: relative;
+  width: min(920px, calc(100vw - 40px)); max-width: none;
+  padding: 0; border: 1px solid #d8cdbd; border-radius: 4px; overflow: hidden;
+  color: #24211e; background: #faf7f2; box-shadow: 0 28px 90px #1d17124d;
+  display: grid; grid-template-columns: 43% 57%;
+}
+.checkout-close { position: absolute; z-index: 2; top: 20px; right: 24px; border: 0; background: transparent; color: #51473d; font: 300 30px/1 sans-serif; cursor: pointer; }
+.print-checkout-panel button:focus-visible, .print-checkout-panel input:focus-visible, .print-checkout-panel select:focus-visible, .print-checkout-panel textarea:focus-visible { outline: 3px solid #b45309; outline-offset: 3px; }
+.checkout-art { position: relative; min-height: 540px; overflow: hidden; background: #e9deca; }
+.checkout-art::before { content: ''; position: absolute; inset: 13px; border: 1px solid #c9b99f; pointer-events: none; }
+/* Proposed: the art pins to the dialog's scrollport so a scrolling form keeps it in view. */
+.checkout-art-inner { position: sticky; top: 0; height: min(760px, 100%); min-height: 540px; padding: 34px; display: flex; flex-direction: column; justify-content: space-between; }
+.checkout-art-label, .checkout-art-footer, .checkout-label, .checkout-eyebrow { font: 700 10px/1.4 var(--font-sans, sans-serif); letter-spacing: .16em; text-transform: uppercase; }
+.checkout-art-label, .checkout-art-footer { color: #796850; z-index: 1; }
+.checkout-fan { position: absolute; inset: 90px 20px 80px; display: flex; align-items: center; justify-content: center; }
+.checkout-fan .card { position: absolute; width: 53%; aspect-ratio: 3 / 4; background: #fff; border: 8px solid #fffdf8; box-shadow: 0 10px 25px #40332335; }
+.checkout-fan .card svg { width: 100%; height: 100%; display: block; }
+.checkout-fan .card:nth-child(1) { transform: translate(-30%, 5%) rotate(-12deg); }
+.checkout-fan .card:nth-child(2) { transform: translate(25%, 1%) rotate(10deg); }
+.checkout-fan .card:nth-child(3) { transform: translate(0, 12%) rotate(-2deg); }
+.checkout-content { padding: 52px 52px 46px; min-width: 0; }
+.checkout-eyebrow { display: flex; align-items: center; gap: 12px; color: #a45117; }
+.checkout-title { margin: 15px 0 30px; max-width: 360px; font: 500 clamp(32px, 3.5vw, 46px)/1.04 var(--font-serif, Georgia, serif); letter-spacing: -.035em; }
+.checkout-collection, .checkout-details { display: grid; gap: 6px; padding: 18px 0; border-top: 1px solid #ded6ca; }
+.checkout-label { color: #8b7965; }
+.checkout-collection strong { font: 500 24px/1.2 var(--font-serif, Georgia, serif); }
+.checkout-layout { margin: 0; color: #675e54; font-size: 14px; line-height: 1.5; }
+.checkout-status { margin: 12px 0 20px; padding: 12px 14px; border-left: 2px solid #c39855; background: #f1eadf; color: #5d5142; font-size: 13px; line-height: 1.45; }
+.print-checkout-actions { display: grid; gap: 10px; }
+.print-checkout-actions .btn-primary { display: flex; align-items: center; width: 100%; justify-content: center; min-height: 48px; border: 1px solid #28231e; border-radius: 3px; background: #28231e; color: #fffaf2; font: 700 15px/1 var(--font-sans); cursor: pointer; }
+.print-checkout-actions .btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+.checkout-secondary { border: 0; padding: 9px; background: transparent; color: #7e451e; font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+/* ---- New: delivery address section ---- */
+.checkout-delivery { display: grid; gap: 14px; padding: 18px 0 4px; border-top: 1px solid #ded6ca; }
+.delivery-ask { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.delivery-ask label { font: 500 21px/1.2 var(--font-serif); letter-spacing: -.015em; color: #24211e; }
+.locate { display: inline-flex; align-items: center; gap: 6px; padding: 4px 0; font-size: 13px; white-space: nowrap; }
+.locate svg { width: 14px; height: 14px; flex: none; }
+.search { position: relative; }
+.search > svg { position: absolute; left: 13px; top: 15px; width: 15px; height: 15px; color: #8b7965; }
+.field input, .field select, .field textarea, .search input {
+  width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #cfc3b1; border-radius: 3px;
+  background: #fffdf9; color: #24211e; font: 15px/1.35 var(--font-sans);
+}
+.search input { padding-left: 36px; }
+.search input[aria-expanded="true"] { border-color: #8b7965; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.field textarea { min-height: 72px; resize: vertical; }
+.field select { appearance: none; padding-right: 30px; background-image: linear-gradient(45deg, transparent 50%, #6b5e50 50%), linear-gradient(-45deg, transparent 50%, #6b5e50 50%); background-position: right 15px top 19px, right 10px top 19px; background-size: 5px 5px; background-repeat: no-repeat; }
+.hint { margin: 0; color: #7a6d5f; font-size: 12.5px; line-height: 1.45; }
+.manual { justify-self: start; padding: 0; font-size: 13px; }
+
+.suggest { margin: -1px 0 0; padding: 0; list-style: none; border: 1px solid #8b7965; border-top-color: #e3dacd; border-radius: 0 0 3px 3px; background: #fffdf9; box-shadow: 0 10px 24px #40332318; }
+.suggest li + li { border-top: 1px solid #efe8dd; }
+.suggest button { display: grid; grid-template-columns: 18px 1fr auto; gap: 2px 10px; width: 100%; padding: 10px 12px; border: 0; background: transparent; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.suggest button svg { grid-row: span 2; width: 14px; height: 14px; margin-top: 3px; color: #8b7965; }
+.suggest .s1 { font-size: 14px; font-weight: 600; }
+.suggest .s1 mark { background: none; color: inherit; font-weight: 700; text-decoration: underline; text-decoration-color: #c39855; text-underline-offset: 3px; }
+.suggest .s2 { grid-column: 2; color: #7a6d5f; font-size: 12.5px; }
+.suggest .act { grid-row: 1 / span 2; grid-column: 3; align-self: center; color: #7e451e; font-size: 12px; font-weight: 600; opacity: 0; }
+.suggest [aria-selected="true"] button { background: #f1eadf; box-shadow: inset 2px 0 #c39855; }
+.suggest [aria-selected="true"] .act { opacity: 1; }
+.credit { display: flex; justify-content: flex-end; padding: 6px 12px 7px; border-top: 1px solid #efe8dd; color: #9a8b78; font-size: 10.5px; letter-spacing: .02em; }
+
+.map { position: relative; height: 188px; border: 1px solid #cfc3b1; border-radius: 3px; overflow: hidden; background: #ece3d3; }
+.map > svg.tiles { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map .pin { position: absolute; left: 50%; top: 50%; width: 28px; height: 40px; transform: translate(-50%, -100%); filter: drop-shadow(0 3px 3px #2b211833); }
+.map .pin-dot { position: absolute; left: 50%; top: 50%; width: 8px; height: 4px; margin: -2px 0 0 -4px; border-radius: 50%; background: #28231e66; }
+.map .addr { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border: 2px solid #7e451e; border-radius: 50%; background: #faf7f2cc; }
+.map .addr-tag { position: absolute; margin: -9px 0 0 0; transform: translateX(calc(-100% - 12px)); padding: 1px 5px; border-radius: 2px; background: #faf7f2e6; color: #7e451e; font-size: 10.5px; font-weight: 600; white-space: nowrap; }
+.map .attr { position: absolute; right: 0; bottom: 0; padding: 2px 6px; background: #faf7f2d9; color: #6b5e50; font-size: 10px; border-top-left-radius: 3px; }
+.map .zoom { position: absolute; right: 8px; top: 8px; display: grid; border: 1px solid #cfc3b1; border-radius: 3px; background: #fffdf9; overflow: hidden; }
+.map .zoom button { width: 28px; height: 28px; border: 0; background: transparent; color: #51473d; font: 400 17px/1 var(--font-sans); cursor: pointer; }
+.map .zoom button + button { border-top: 1px solid #e3dacd; }
+.map-cap { margin: -6px 0 0; color: #7a6d5f; font-size: 12px; }
+
+.reconcile { display: grid; gap: 8px; padding: 12px 14px; border: 1px solid #e3dacd; border-radius: 3px; background: #fffdf9; }
+.reconcile p { margin: 0; color: #5d5142; font-size: 13px; line-height: 1.45; }
+.reconcile .near { display: grid; gap: 1px; }
+.reconcile .near small { color: #8b7965; font: 700 10px/1.4 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; }
+.reconcile .near strong { font-size: 14px; font-weight: 600; }
+.reconcile .near span { color: #7a6d5f; font-size: 12.5px; }
+.reconcile .acts { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center; }
+.reconcile .acts .checkout-secondary { padding: 4px 0; font-size: 13px; }
+.reconcile .acts .credit { margin-left: auto; padding: 0; border: 0; }
+.reconcile .lead { padding-bottom: 9px; border-bottom: 1px solid #efe8dd; }
+
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 12px; }
+.field { display: grid; gap: 5px; min-width: 0; }
+.field.wide { grid-column: 1 / -1; }
+.field label { color: #5d5142; font-size: 12.5px; font-weight: 600; }
+.field label i { color: #9a8b78; font-style: normal; font-weight: 500; }
+
+.denied { margin: 0; padding: 12px 14px; border-left: 2px solid #c39855; background: #f1eadf; color: #5d5142; font-size: 13px; line-height: 1.45; }
+.denied b { display: block; margin-bottom: 2px; }
+
+/* Mobile rules: the approved breakpoint, plus a scoped copy so frame (f) renders at any window width. */
+@media (max-width: 680px) {
+  .frame, .sheet-head { padding-left: 12px; padding-right: 12px; }
+  .print-checkout-panel { width: calc(100vw - 24px); grid-template-columns: 1fr; }
+  .checkout-art { min-height: 195px; }
+  .checkout-art-inner { position: relative; min-height: 195px; height: auto; padding: 24px; }
+  .checkout-art-footer { display: none; }
+  .checkout-fan { inset: 12px 30px; }
+  .checkout-fan .card { width: 105px; border-width: 5px; }
+  .checkout-content { padding: 28px 26px 30px; }
+  .checkout-title { margin: 12px 0 20px; }
+  .fold { display: none; }
+}
+.is-mobile { max-width: 390px; padding-left: 12px; padding-right: 12px; }
+.is-mobile .print-checkout-panel { width: 366px; grid-template-columns: 1fr; }
+.is-mobile .checkout-art { min-height: 195px; }
+.is-mobile .checkout-art-inner { position: relative; min-height: 195px; height: auto; padding: 24px; }
+.is-mobile .checkout-art-footer { display: none; }
+.is-mobile .checkout-fan { inset: 12px 30px; }
+.is-mobile .checkout-fan .card { width: 105px; border-width: 5px; }
+.is-mobile .checkout-content { padding: 28px 26px 30px; }
+.is-mobile .checkout-title { margin: 12px 0 20px; font-size: 32px; }
+.is-mobile .map { height: 168px; }
+.is-mobile .fold { display: block; top: 820px; }
+.is-mobile .fold::after { content: "fold of a 390×844 phone"; }
+</style>
+</head>
+<body>
+
+<!-- Shared drawings: map base and card faces. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="map-base">
+      <rect x="-400" y="-300" width="1400" height="900" fill="#ece3d3"/>
+      <!-- blocks -->
+      <g fill="#e2d7c4">
+        <rect x="-300" y="-250" width="1200" height="800"/>
+      </g>
+      <!-- park (Trianon) -->
+      <path d="M470 150 l120 -60 l60 110 l-120 60z" fill="#d5dcc0"/>
+      <!-- minor streets grid, rotated like Bela Vista -->
+      <g stroke="#f6f1e8" stroke-width="7" fill="none">
+        <path d="M-300 -60 L900 -260"/><path d="M-300 40 L900 -160"/><path d="M-300 260 L900 60"/><path d="M-300 360 L900 160"/><path d="M-300 460 L900 260"/>
+        <path d="M-40 -250 L120 550"/><path d="M110 -250 L270 550"/><path d="M380 -250 L540 550"/><path d="M520 -250 L680 550"/><path d="M660 -250 L820 550"/>
+      </g>
+      <!-- Av. Paulista -->
+      <path d="M-300 150 L900 -50" stroke="#fbf8f2" stroke-width="16" fill="none"/>
+      <path d="M-300 150 L900 -50" stroke="#e6cfa8" stroke-width="16" stroke-opacity=".55" fill="none"/>
+      <!-- Rua Augusta -->
+      <path d="M245 -250 L405 550" stroke="#fbf8f2" stroke-width="11" fill="none"/>
+      <g fill="#8b7965" font-family="system-ui, sans-serif" font-size="10" font-weight="600" letter-spacing=".04em">
+        <text transform="translate(140 112) rotate(-9.5)">AV. PAULISTA</text>
+        <text transform="translate(600 20) rotate(-9.5)">AV. PAULISTA</text>
+        <text transform="translate(306 2) rotate(78.7)">RUA AUGUSTA</text>
+        <text transform="translate(370 300) rotate(78.7)">RUA AUGUSTA</text>
+        <text transform="translate(120 330) rotate(-9.5)" font-weight="500" fill="#a0907b">AL. SANTOS</text>
+        <text transform="translate(500 175) rotate(-27)" font-weight="500" fill="#8a9672">TRIANON</text>
+        <text transform="translate(588 380) rotate(78.7)" font-weight="500" fill="#a0907b">R. HADDOCK LOBO</text>
+      </g>
+    </g>
+    <symbol id="card-a" viewBox="0 0 120 160"><rect width="120" height="160" fill="#fff"/><circle cx="60" cy="66" r="30" fill="#2f7fbf"/><path d="M60 36 q22 8 20 34 q-10 -8 -20 -6z" fill="#f2c230"/><circle cx="52" cy="58" r="4" fill="#fff"/><circle cx="52" cy="58" r="2" fill="#222"/><rect x="28" y="118" width="64" height="5" rx="2" fill="#d9cfbf"/><rect x="38" y="128" width="44" height="4" rx="2" fill="#e7dfd2"/></symbol>
+    <symbol id="card-b" viewBox="0 0 120 160"><rect width="120" height="160" fill="#fff"/><ellipse cx="60" cy="72" rx="34" ry="24" fill="#b07a45"/><circle cx="34" cy="58" r="12" fill="#9a6a3b"/><rect x="28" y="118" width="64" height="5" rx="2" fill="#d9cfbf"/><rect x="38" y="128" width="44" height="4" rx="2" fill="#e7dfd2"/></symbol>
+    <symbol id="card-c" viewBox="0 0 120 160"><rect width="120" height="160" fill="#fff"/><path d="M60 30 C90 50 88 96 60 108 C32 96 30 50 60 30z" fill="#5f8f5a"/><path d="M60 34 V106" stroke="#3f6a3b" stroke-width="2"/><rect x="28" y="118" width="64" height="5" rx="2" fill="#d9cfbf"/><rect x="38" y="128" width="44" height="4" rx="2" fill="#e7dfd2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-locate" viewBox="0 0 16 16"><circle cx="8" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/><path d="M8 0.5v3M8 12.5v3M0.5 8h3M12.5 8h3" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-place" viewBox="0 0 16 16"><path d="M8 15 C8 15 2.5 9.5 2.5 6 a5.5 5.5 0 0 1 11 0 C13.5 9.5 8 15 8 15z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6" r="1.8" fill="currentColor"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 28 40"><path d="M14 39 C14 39 2 23 2 14 a12 12 0 0 1 24 0 C26 23 14 39 14 39z" fill="#28231e"/><circle cx="14" cy="14" r="4.5" fill="#faf7f2"/></symbol>
+  </defs>
+</svg>
+
+<header class="sheet-head">
+  <h1>Delivery address in the print checkout</h1>
+  <p>Static oracle for sign-off. Search text, map pin and postal fields are three independent statements; nothing syncs unless the customer presses an action that says so. Art cards are placeholders for the real fanned card images.</p>
+</header>
+
+<!-- ============ (a) initial ============ -->
+<section class="frame" id="frame-a">
+  <h2 class="frame-label"><b>(a)</b> Initial <span>Search first, location only on request, nothing else yet</span></h2>
+  <div class="stage">
+    <div class="print-checkout-panel" role="dialog" aria-labelledby="t-a">
+      <button type="button" class="checkout-close" aria-label="Close">&times;</button>
+      <div class="checkout-art" aria-hidden="true"><div class="checkout-art-inner">
+        <span class="checkout-art-label">The print edition</span>
+        <div class="checkout-fan"><span class="card"><svg><use href="#card-b"/></svg></span><span class="card"><svg><use href="#card-c"/></svg></span><span class="card"><svg><use href="#card-a"/></svg></span></div>
+        <span class="checkout-art-footer">Snapcards &nbsp; / &nbsp; Print</span>
+      </div></div>
+      <div class="checkout-content">
+        <div class="checkout-eyebrow">Order review</div>
+        <h2 class="checkout-title" id="t-a">Your printed card order</h2>
+        <div class="checkout-collection">
+          <span class="checkout-label">Collection</span>
+          <strong>South American Giants</strong>
+          <p class="checkout-layout">4 cards · A4 · Portrait · Standard (4/A4) · Front &amp; back · Mirror horizontal</p>
+        </div>
+        <div class="checkout-delivery">
+          <span class="checkout-label">Delivery</span>
+          <div class="delivery-ask">
+            <label for="q-a">Where should we send it?</label>
+            <button type="button" class="checkout-secondary locate"><svg aria-hidden="true"><use href="#i-locate"/></svg>Use my location</button>
+          </div>
+          <div class="search">
+            <svg aria-hidden="true"><use href="#i-search"/></svg>
+            <input id="q-a" type="search" role="combobox" aria-expanded="false" aria-autocomplete="list" placeholder="Street and number, or a place" autocomplete="off">
+          </div>
+          <p class="hint">We ask your browser for your location only when you press “Use my location”. Whatever you start from, you can adjust the pin and every field afterwards.</p>
+          <button type="button" class="checkout-secondary manual">Enter the address by hand</button>
+        </div>
+        <p class="checkout-status" role="status">Your current print layout will be saved with this order.</p>
+        <div class="print-checkout-actions">
+          <button type="button" class="btn btn-primary" disabled>Prepare PDF and continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ (b) typing ============ -->
+<section class="frame" id="frame-b">
+  <h2 class="frame-label"><b>(b)</b> Typing <span>Three suggestions; one is highlighted by keyboard, none applied yet</span></h2>
+  <div class="stage">
+    <div class="print-checkout-panel" role="dialog" aria-labelledby="t-b">
+      <button type="button" class="checkout-close" aria-label="Close">&times;</button>
+      <div class="checkout-art" aria-hidden="true"><div class="checkout-art-inner">
+        <span class="checkout-art-label">The print edition</span>
+        <div class="checkout-fan"><span class="card"><svg><use href="#card-b"/></svg></span><span class="card"><svg><use href="#card-c"/></svg></span><span class="card"><svg><use href="#card-a"/></svg></span></div>
+        <span class="checkout-art-footer">Snapcards &nbsp; / &nbsp; Print</span>
+      </div></div>
+      <div class="checkout-content">
+        <div class="checkout-eyebrow">Order review</div>
+        <h2 class="checkout-title" id="t-b">Your printed card order</h2>
+        <div class="checkout-collection">
+          <span class="checkout-label">Collection</span>
+          <strong>South American Giants</strong>
+          <p class="checkout-layout">4 cards · A4 · Portrait · Standard (4/A4) · Front &amp; back · Mirror horizontal</p>
+        </div>
+        <div class="checkout-delivery">
+          <span class="checkout-label">Delivery</span>
+          <div class="delivery-ask">
+            <label for="q-b">Where should we send it?</label>
+            <button type="button" class="checkout-secondary locate"><svg aria-hidden="true"><use href="#i-locate"/></svg>Use my location</button>
+          </div>
+          <div class="search">
+            <svg aria-hidden="true"><use href="#i-search"/></svg>
+            <input id="q-b" type="search" role="combobox" aria-expanded="true" aria-controls="lb-b" aria-activedescendant="o-b1" aria-autocomplete="list" value="rua augusta 150" autocomplete="off">
+            <ul class="suggest" id="lb-b" role="listbox" aria-label="Suggested addresses">
+              <li role="option" id="o-b1" aria-selected="true"><button type="button" tabindex="-1"><svg aria-hidden="true"><use href="#i-place"/></svg><span class="s1"><mark>Rua Augusta, 150</mark>8</span><span class="s2">Consolação, São Paulo – SP, 01305-000</span><span class="act">Use this address</span></button></li>
+              <li role="option" id="o-b2" aria-selected="false"><button type="button" tabindex="-1"><svg aria-hidden="true"><use href="#i-place"/></svg><span class="s1"><mark>Rua Augusta, 150</mark></span><span class="s2">Consolação, São Paulo – SP, 01304-000</span><span class="act">Use this address</span></button></li>
+              <li role="option" id="o-b3" aria-selected="false"><button type="button" tabindex="-1"><svg aria-hidden="true"><use href="#i-place"/></svg><span class="s1"><mark>Rua Augusta, 150</mark>0</span><span class="s2">Centro, Rio Claro – SP, 13500-090</span><span class="act">Use this address</span></button></li>
+              <li class="credit" role="presentation">Powered by Geoapify</li>
+            </ul>
+          </div>
+        </div>
+        <p class="checkout-status" role="status">Your current print layout will be saved with this order.</p>
+        <div class="print-checkout-actions">
+          <button type="button" class="btn btn-primary" disabled>Prepare PDF and continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ (c) accepted ============ -->
+<section class="frame" id="frame-c">
+  <h2 class="frame-label"><b>(c)</b> Suggestion accepted <span>"Use this address" placed the pin and filled the fields once; from here each is edited on its own</span></h2>
+  <div class="stage">
+    <div class="fold" aria-hidden="true"></div>
+    <div class="print-checkout-panel" role="dialog" aria-labelledby="t-c">
+      <button type="button" class="checkout-close" aria-label="Close">&times;</button>
+      <div class="checkout-art" aria-hidden="true"><div class="checkout-art-inner">
+        <span class="checkout-art-label">The print edition</span>
+        <div class="checkout-fan"><span class="card"><svg><use href="#card-b"/></svg></span><span class="card"><svg><use href="#card-c"/></svg></span><span class="card"><svg><use href="#card-a"/></svg></span></div>
+        <span class="checkout-art-footer">Snapcards &nbsp; / &nbsp; Print</span>
+      </div></div>
+      <div class="checkout-content">
+        <div class="checkout-eyebrow">Order review</div>
+        <h2 class="checkout-title" id="t-c">Your printed card order</h2>
+        <div class="checkout-collection">
+          <span class="checkout-label">Collection</span>
+          <strong>South American Giants</strong>
+          <p class="checkout-layout">4 cards · A4 · Portrait · Standard (4/A4) · Front &amp; back · Mirror horizontal</p>
+        </div>
+        <div class="checkout-delivery">
+          <span class="checkout-label">Delivery</span>
+          <div class="delivery-ask">
+            <label for="q-c">Where should we send it?</label>
+            <button type="button" class="checkout-secondary locate"><svg aria-hidden="true"><use href="#i-locate"/></svg>Use my location</button>
+          </div>
+          <div class="search">
+            <svg aria-hidden="true"><use href="#i-search"/></svg>
+            <input id="q-c" type="search" role="combobox" aria-expanded="false" aria-autocomplete="list" value="Rua Augusta, 1508, São Paulo" autocomplete="off">
+          </div>
+          <div class="map" role="application" aria-label="Map. Drag to move the map under the pin.">
+            <svg class="tiles" viewBox="0 0 420 188" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#map-base" transform="translate(-112 -10)"/></svg>
+            <span class="pin-dot"></span>
+            <svg class="pin" aria-hidden="true"><use href="#i-pin"/></svg>
+            <div class="zoom"><button type="button" aria-label="Zoom in">+</button><button type="button" aria-label="Zoom out">−</button></div>
+            <span class="attr">© OpenFreeMap © OpenStreetMap</span>
+          </div>
+          <p class="map-cap">Drag the map to put the pin on the door. The pin is a hint for the courier.</p>
+          <div class="fields">
+            <div class="field wide"><label for="n-c">Recipient</label><input id="n-c" autocomplete="shipping name" value="Marina Albuquerque"></div>
+            <div class="field wide"><label for="l1-c">Street and number</label><input id="l1-c" autocomplete="shipping address-line1" value="Rua Augusta, 1508"></div>
+            <div class="field wide"><label for="l2-c">Apartment, floor, complement <i>(optional)</i></label><input id="l2-c" autocomplete="shipping address-line2" value="Apto 72, Bloco B"></div>
+            <div class="field"><label for="c-c">City</label><input id="c-c" autocomplete="shipping address-level2" value="São Paulo"></div>
+            <div class="field"><label for="r-c">State</label><input id="r-c" autocomplete="shipping address-level1" value="SP"></div>
+            <div class="field"><label for="p-c">Postal code</label><input id="p-c" autocomplete="shipping postal-code" inputmode="numeric" value="01305-000"></div>
+            <div class="field"><label for="k-c">Country</label><select id="k-c" autocomplete="shipping country"><option value="BR" selected>Brazil</option><option value="PT">Portugal</option><option value="US">United States</option></select></div>
+            <div class="field wide"><label for="i-c">Delivery instructions <i>(optional)</i></label><textarea id="i-c" placeholder="Doorman hours, gate code, a landmark">Leave with the doorman (portaria), open 7h to 22h.</textarea></div>
+          </div>
+        </div>
+        <p class="checkout-status" role="status">Your current print layout will be saved with this order.</p>
+        <div class="print-checkout-actions">
+          <button type="button" class="btn btn-primary">Prepare PDF and continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ (d) pin moved ============ -->
+<section class="frame" id="frame-d">
+  <h2 class="frame-label"><b>(d)</b> Pin moved away <span>Fields untouched; a quiet offer, not a warning; checkout stays enabled</span></h2>
+  <div class="stage">
+    <div class="fold" aria-hidden="true"></div>
+    <div class="print-checkout-panel" role="dialog" aria-labelledby="t-d">
+      <button type="button" class="checkout-close" aria-label="Close">&times;</button>
+      <div class="checkout-art" aria-hidden="true"><div class="checkout-art-inner">
+        <span class="checkout-art-label">The print edition</span>
+        <div class="checkout-fan"><span class="card"><svg><use href="#card-b"/></svg></span><span class="card"><svg><use href="#card-c"/></svg></span><span class="card"><svg><use href="#card-a"/></svg></span></div>
+        <span class="checkout-art-footer">Snapcards &nbsp; / &nbsp; Print</span>
+      </div></div>
+      <div class="checkout-content">
+        <div class="checkout-eyebrow">Order review</div>
+        <h2 class="checkout-title" id="t-d">Your printed card order</h2>
+        <div class="checkout-collection">
+          <span class="checkout-label">Collection</span>
+          <strong>South American Giants</strong>
+          <p class="checkout-layout">4 cards · A4 · Portrait · Standard (4/A4) · Front &amp; back · Mirror horizontal</p>
+        </div>
+        <div class="checkout-delivery">
+          <span class="checkout-label">Delivery</span>
+          <div class="delivery-ask">
+            <label for="q-d">Where should we send it?</label>
+            <button type="button" class="checkout-secondary locate"><svg aria-hidden="true"><use href="#i-locate"/></svg>Use my location</button>
+          </div>
+          <div class="search">
+            <svg aria-hidden="true"><use href="#i-search"/></svg>
+            <input id="q-d" type="search" role="combobox" aria-expanded="false" aria-autocomplete="list" value="Rua Augusta, 1508, São Paulo" autocomplete="off">
+          </div>
+          <div class="map" role="application" aria-label="Map. Drag to move the map under the pin.">
+            <svg class="tiles" viewBox="0 0 420 188" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#map-base" transform="translate(-338 -140)"/></svg>
+            <span class="addr" style="left:24%;top:36%"></span><span class="addr-tag" style="left:24%;top:36%">Street address</span>
+            <span class="pin-dot"></span>
+            <svg class="pin" aria-hidden="true"><use href="#i-pin"/></svg>
+            <div class="zoom"><button type="button" aria-label="Zoom in">+</button><button type="button" aria-label="Zoom out">−</button></div>
+            <span class="attr">© OpenFreeMap © OpenStreetMap</span>
+          </div>
+          <div class="reconcile" role="status">
+            <p class="lead">The pin and the street address are about 450 m apart. That's fine — we keep both and will confirm with you by email if the courier needs to.</p>
+            <div class="near">
+              <small>Near the pin</small>
+              <strong>Rua Haddock Lobo, 595</strong>
+              <span>Cerqueira César, São Paulo – SP, 01414-001</span>
+            </div>
+            <div class="acts">
+              <button type="button" class="checkout-secondary">Fill fields from pin</button>
+              <button type="button" class="checkout-secondary">Move pin to street address</button>
+              <span class="credit">Powered by Geoapify</span>
+            </div>
+          </div>
+          <div class="fields">
+            <div class="field wide"><label for="n-d">Recipient</label><input id="n-d" autocomplete="shipping name" value="Marina Albuquerque"></div>
+            <div class="field wide"><label for="l1-d">Street and number</label><input id="l1-d" autocomplete="shipping address-line1" value="Rua Augusta, 1508"></div>
+            <div class="field wide"><label for="l2-d">Apartment, floor, complement <i>(optional)</i></label><input id="l2-d" autocomplete="shipping address-line2" value="Apto 72, Bloco B"></div>
+            <div class="field"><label for="c-d">City</label><input id="c-d" autocomplete="shipping address-level2" value="São Paulo"></div>
+            <div class="field"><label for="r-d">State</label><input id="r-d" autocomplete="shipping address-level1" value="SP"></div>
+            <div class="field"><label for="p-d">Postal code</label><input id="p-d" autocomplete="shipping postal-code" inputmode="numeric" value="01305-000"></div>
+            <div class="field"><label for="k-d">Country</label><select id="k-d" autocomplete="shipping country"><option value="BR" selected>Brazil</option><option value="PT">Portugal</option><option value="US">United States</option></select></div>
+            <div class="field wide"><label for="i-d">Delivery instructions <i>(optional)</i></label><textarea id="i-d" placeholder="Doorman hours, gate code, a landmark">Leave with the doorman (portaria), open 7h to 22h.</textarea></div>
+          </div>
+        </div>
+        <p class="checkout-status" role="status">Your current print layout will be saved with this order.</p>
+        <div class="print-checkout-actions">
+          <button type="button" class="btn btn-primary">Prepare PDF and continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ (e) permission denied ============ -->
+<section class="frame" id="frame-e">
+  <h2 class="frame-label"><b>(e)</b> Location denied <span>After pressing "Use my location"; search stays the way forward</span></h2>
+  <div class="stage">
+    <div class="print-checkout-panel" role="dialog" aria-labelledby="t-e">
+      <button type="button" class="checkout-close" aria-label="Close">&times;</button>
+      <div class="checkout-art" aria-hidden="true"><div class="checkout-art-inner">
+        <span class="checkout-art-label">The print edition</span>
+        <div class="checkout-fan"><span class="card"><svg><use href="#card-b"/></svg></span><span class="card"><svg><use href="#card-c"/></svg></span><span class="card"><svg><use href="#card-a"/></svg></span></div>
+        <span class="checkout-art-footer">Snapcards &nbsp; / &nbsp; Print</span>
+      </div></div>
+      <div class="checkout-content">
+        <div class="checkout-eyebrow">Order review</div>
+        <h2 class="checkout-title" id="t-e">Your printed card order</h2>
+        <div class="checkout-collection">
+          <span class="checkout-label">Collection</span>
+          <strong>South American Giants</strong>
+          <p class="checkout-layout">4 cards · A4 · Portrait · Standard (4/A4) · Front &amp; back · Mirror horizontal</p>
+        </div>
+        <div class="checkout-delivery">
+          <span class="checkout-label">Delivery</span>
+          <div class="delivery-ask">
+            <label for="q-e">Where should we send it?</label>
+            <button type="button" class="checkout-secondary locate" aria-describedby="den-e"><svg aria-hidden="true"><use href="#i-locate"/></svg>Use my location</button>
+          </div>
+          <div class="search">
+            <svg aria-hidden="true"><use href="#i-search"/></svg>
+            <input id="q-e" type="search" role="combobox" aria-expanded="false" aria-autocomplete="list" placeholder="Street and number, or a place" autocomplete="off" aria-describedby="den-e">
+          </div>
+          <p class="denied" id="den-e" role="status"><b>Your browser didn't share your location.</b>No problem — search for the address above. To use your location later, allow it for this site in your browser settings.</p>
+          <button type="button" class="checkout-secondary manual">Enter the address by hand</button>
+        </div>
+        <p class="checkout-status" role="status">Your current print layout will be saved with this order.</p>
+        <div class="print-checkout-actions">
+          <button type="button" class="btn btn-primary" disabled>Prepare PDF and continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ (f) mobile ============ -->
+<section class="frame is-mobile" id="frame-f">
+  <h2 class="frame-label"><b>(f)</b> 390 px <span>State (c) on a phone</span></h2>
+  <div class="stage">
+    <div class="fold" aria-hidden="true"></div>
+    <div class="print-checkout-panel" role="dialog" aria-labelledby="t-f">
+      <button type="button" class="checkout-close" aria-label="Close">&times;</button>
+      <div class="checkout-art" aria-hidden="true"><div class="checkout-art-inner">
+        <span class="checkout-art-label">The print edition</span>
+        <div class="checkout-fan"><span class="card"><svg><use href="#card-b"/></svg></span><span class="card"><svg><use href="#card-c"/></svg></span><span class="card"><svg><use href="#card-a"/></svg></span></div>
+        <span class="checkout-art-footer">Snapcards &nbsp; / &nbsp; Print</span>
+      </div></div>
+      <div class="checkout-content">
+        <div class="checkout-eyebrow">Order review</div>
+        <h2 class="checkout-title" id="t-f">Your printed card order</h2>
+        <div class="checkout-collection">
+          <span class="checkout-label">Collection</span>
+          <strong>South American Giants</strong>
+          <p class="checkout-layout">4 cards · A4 · Portrait · Standard (4/A4) · Front &amp; back · Mirror horizontal</p>
+        </div>
+        <div class="checkout-delivery">
+          <span class="checkout-label">Delivery</span>
+          <div class="delivery-ask">
+            <label for="q-f">Where should we send it?</label>
+            <button type="button" class="checkout-secondary locate"><svg aria-hidden="true"><use href="#i-locate"/></svg>Use my location</button>
+          </div>
+          <div class="search">
+            <svg aria-hidden="true"><use href="#i-search"/></svg>
+            <input id="q-f" type="search" role="combobox" aria-expanded="false" aria-autocomplete="list" value="Rua Augusta, 1508, São Paulo" autocomplete="off">
+          </div>
+          <div class="map" role="application" aria-label="Map. Drag to move the map under the pin.">
+            <svg class="tiles" viewBox="0 0 314 168" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#map-base" transform="translate(-160 -20)"/></svg>
+            <span class="pin-dot"></span>
+            <svg class="pin" aria-hidden="true"><use href="#i-pin"/></svg>
+            <div class="zoom"><button type="button" aria-label="Zoom in">+</button><button type="button" aria-label="Zoom out">−</button></div>
+            <span class="attr">© OpenFreeMap © OpenStreetMap</span>
+          </div>
+          <p class="map-cap">Drag the map to put the pin on the door. The pin is a hint for the courier.</p>
+          <div class="fields">
+            <div class="field wide"><label for="n-f">Recipient</label><input id="n-f" autocomplete="shipping name" value="Marina Albuquerque"></div>
+            <div class="field wide"><label for="l1-f">Street and number</label><input id="l1-f" autocomplete="shipping address-line1" value="Rua Augusta, 1508"></div>
+            <div class="field wide"><label for="l2-f">Apartment, floor, complement <i>(optional)</i></label><input id="l2-f" autocomplete="shipping address-line2" value="Apto 72, Bloco B"></div>
+            <div class="field"><label for="c-f">City</label><input id="c-f" autocomplete="shipping address-level2" value="São Paulo"></div>
+            <div class="field"><label for="r-f">State</label><input id="r-f" autocomplete="shipping address-level1" value="SP"></div>
+            <div class="field"><label for="p-f">Postal code</label><input id="p-f" autocomplete="shipping postal-code" inputmode="numeric" value="01305-000"></div>
+            <div class="field"><label for="k-f">Country</label><select id="k-f" autocomplete="shipping country"><option value="BR" selected>Brazil</option><option value="PT">Portugal</option><option value="US">United States</option></select></div>
+            <div class="field wide"><label for="i-f">Delivery instructions <i>(optional)</i></label><textarea id="i-f" placeholder="Doorman hours, gate code, a landmark">Leave with the doorman (portaria), open 7h to 22h.</textarea></div>
+          </div>
+        </div>
+        <p class="checkout-status" role="status">Your current print layout will be saved with this order.</p>
+        <div class="print-checkout-actions">
+          <button type="button" class="btn btn-primary">Prepare PDF and continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

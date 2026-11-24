@@ -1,0 +1,148 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-airlock-mesh:
+    build:
+      additional_contexts:
+        snapcards-tsbifrost: service:snapcards-tsbifrost
+        snapcards-checkout-simulator: service:snapcards-checkout-simulator
+        snapcards-prodigi-simulator: service:snapcards-prodigi-simulator
+        snapcards-cloudprinter-simulator: service:snapcards-cloudprinter-simulator
+        snapcards-mail-simulator: service:snapcards-mail-simulator
+        libraries_mecha-mesh-image: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/mecha-mesh:0.34.0@sha256:8d39aa3543560232c52330152ba70a4d2c973b76d0ac97899d677704bc0e09a4}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-mesh-image}
+        libraries_mecha-airlock-image: >-
+          ${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/mecha-airlock:0.34.0@sha256:eba02ec833bdd24995d73019af5735a6353b60e21529762814126f4799e0d095}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-airlock-image}
+      context: ..
+      dockerfile: .bayt/Dockerfile.airlock-mesh
+      target: airlock-mesh
+      tags:
+      - bayt-snapcards-airlock-mesh:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-airlock-mesh:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    depends_on:
+      snapcards-tsbifrost:
+        condition: service_started
+      snapcards-checkout-simulator:
+        condition: service_started
+      snapcards-prodigi-simulator:
+        condition: service_started
+      snapcards-cloudprinter-simulator:
+        condition: service_started
+      snapcards-mail-simulator:
+        condition: service_started
+    develop:
+      watch:
+      - action: sync+restart
+        path: ../services/airlock/dapr/illustrate-card.yaml
+        target: /dapr/airlock/illustrate-card.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/smollm3-draft.yaml
+        target: /dapr/airlock/smollm3-draft.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/heavy-draft.yaml
+        target: /dapr/airlock/heavy-draft.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-quote.yaml
+        target: /dapr/airlock/print-quote.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-quote-br.yaml
+        target: /dapr/airlock/print-quote-br.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-fx.yaml
+        target: /dapr/airlock/print-fx.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-session.yaml
+        target: /dapr/airlock/print-session.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-check.yaml
+        target: /dapr/airlock/print-check.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-place.yaml
+        target: /dapr/airlock/print-place.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-place-br.yaml
+        target: /dapr/airlock/print-place-br.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-status.yaml
+        target: /dapr/airlock/print-status.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-status-br.yaml
+        target: /dapr/airlock/print-status-br.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-confirm.yaml
+        target: /dapr/airlock/print-confirm.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-record.yaml
+        target: /dapr/airlock/print-record.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-shipped.yaml
+        target: /dapr/airlock/print-shipped.yaml
+      - action: sync+restart
+        path: ../services/airlock/dapr/print-alert.yaml
+        target: /dapr/airlock/print-alert.yaml
+    environment:
+      DAPR_HTTP_PORT: "3500"
+      DAPR_GRPC_PORT: "50001"
+      DAPR_INTERNAL_GRPC_PORT: "50002"
+      AIRLOCK_ORIGINS: ""
+      AIRLOCK_BRIDGES: stripe prodigi cloudprinter mail tsbifrost
+      TSBIFROST_URL: http://tsbifrost:8090
+      BLOBS_S3_URL: http://rclone-s3:3900
+      BRIDGE_STRIPE_URL: http://checkout-simulator:8080
+      BRIDGE_PRODIGI_URL: http://prodigi-simulator:8080
+      BRIDGE_CLOUDPRINTER_URL: http://cloudprinter-simulator:8080
+      BRIDGE_MAIL_URL: http://mail-simulator:8080
+    healthcheck:
+      test:
+      - CMD
+      - portcheck
+      - --port
+      - "3500"
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+      start_interval: 500ms
+    image: bayt-snapcards-airlock-mesh:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    networks:
+      airlock:
+        aliases:
+        - airlock-mesh
+      airlock-out:
+        aliases:
+        - airlock-mesh
+      airlock-egress:
+        aliases:
+        - airlock-mesh
+    restart: on-failure
+  snapcards-airlock-mesh_bayt:
+    build:
+      additional_contexts:
+        snapcards-tsbifrost_bayt: service:snapcards-tsbifrost_bayt
+        snapcards-checkout-simulator_bayt: service:snapcards-checkout-simulator_bayt
+        snapcards-prodigi-simulator_bayt: service:snapcards-prodigi-simulator_bayt
+        snapcards-cloudprinter-simulator_bayt: service:snapcards-cloudprinter-simulator_bayt
+        snapcards-mail-simulator_bayt: service:snapcards-mail-simulator_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.airlock-mesh
+      target: airlock-mesh_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-airlock-mesh_bayt:latest
+    scale: 0
+  snapcards-airlock-mesh_srcs:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.airlock-mesh
+      target: airlock-mesh_srcs
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-airlock-mesh_srcs:latest
+    scale: 0

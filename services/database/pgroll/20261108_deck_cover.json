@@ -1,0 +1,10 @@
+{
+  "operations": [
+    {
+      "sql": {
+        "up": "SET LOCAL lock_timeout = '5s';\nSET LOCAL statement_timeout = '30s';\n\n-- A deck's cover beside its count, so a library card reads one row: the\n-- deck's first card's art, as the card read with limit=1 showed it.\nALTER TABLE deck_stats ADD COLUMN IF NOT EXISTS \"cover\" text NOT NULL DEFAULT '';\n-- A cover arrives before any favourite: its row starts the count at zero.\n-- Setting a default twice sets the same default, so a rerun is harmless.\n-- squawk-ignore prefer-robust-stmts\nALTER TABLE deck_stats ALTER COLUMN \"favorite_count\" SET DEFAULT 0;\n-- squawk-ignore prefer-robust-stmts\nALTER TABLE deck_stats ALTER COLUMN \"counted_txid\" SET DEFAULT 0;\n\n-- The cover drain: on the edge, where no pipeline runs, it keeps what the\n-- deck-cover pipeline keeps in a container. It writes only where a cover moved.\nCREATE OR REPLACE FUNCTION refresh_deck_covers() RETURNS void\nLANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_catalog AS $$\nBEGIN\n  INSERT INTO deck_stats (deck_id, cover)\n  SELECT DISTINCT ON (f.set_id) f.set_id::text, coalesce(f.back, '')\n  FROM flashcard f\n  ORDER BY f.set_id, f.id\n  ON CONFLICT (deck_id) DO UPDATE SET cover = EXCLUDED.cover\n  WHERE deck_stats.cover IS DISTINCT FROM EXCLUDED.cover;\nEND $$;\n\nREVOKE ALL ON FUNCTION refresh_deck_covers() FROM PUBLIC;\nGRANT EXECUTE ON FUNCTION refresh_deck_covers() TO service;\n\nSELECT refresh_deck_covers();\n",
+        "onComplete": true
+      }
+    }
+  ]
+}

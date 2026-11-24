@@ -1,0 +1,19 @@
+# deck-cover: the event's own deck's cover, its first card's art by id, emitted
+# as one deck_stats upsert row {deck_id, cover}; the count's columns are the
+# recount's and keep their values.
+let rows = if this.type() == "array" { throw("deck-cover: harness discarded the CDC event (result_map: root = this); #rpkPipeline must preserve it as root.rows") } else { this.rows }
+let event_row = if this.exists("data") && this.data.type() == "string" && this.data.length() > 0 { this.data.parse_json() } else { null }
+
+let from_flashcard = $event_row.type() == "object" && $event_row.__table == "flashcard" && $event_row.exists("set_id")
+
+let id = $event_row.set_id
+let first = $rows.filter(r -> r.set_id == $id).sort_by(r -> r.id)
+
+root = if $from_flashcard && $first.length() > 0 {
+  [{
+    "deck_id": $id,
+    "cover":   $first.index(0).back.or(""),
+  }]
+} else {
+  deleted()
+}

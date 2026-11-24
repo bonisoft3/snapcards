@@ -1,0 +1,419 @@
+{
+  "architecture": "direct authored-file synchronization; no resident Pronto compiler",
+  "compose": {
+    "mode": "compose-grouped",
+    "results": [
+      {
+        "kind": "html",
+        "file": "screens/cards.html",
+        "ms": 775,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "html",
+        "file": "screens/cards.html",
+        "ms": 579,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "html",
+        "file": "screens/cards.html",
+        "ms": 589,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "css",
+        "file": "shell/screens/cards.css",
+        "ms": 579,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "css",
+        "file": "shell/screens/cards.css",
+        "ms": 585,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "css",
+        "file": "shell/screens/cards.css",
+        "ms": 594,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "ssr",
+        "file": "screens/cards.html",
+        "ms": 634,
+        "cache": "no-store",
+        "etag": "\"98e86bd977c73a017880f786\""
+      },
+      {
+        "kind": "ssr",
+        "file": "screens/cards.html",
+        "ms": 654,
+        "cache": "no-store",
+        "etag": "\"6d737c84ef191cdfce5bebb0\""
+      },
+      {
+        "kind": "ssr",
+        "file": "screens/cards.html",
+        "ms": 609,
+        "cache": "no-store",
+        "etag": "\"a0739e9db5092579fe4a0beb\""
+      }
+    ],
+    "metadataUnchanged": true
+  },
+  "host": {
+    "mode": "host",
+    "results": [
+      {
+        "kind": "html",
+        "file": "screens/cards.html",
+        "ms": 10,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "html",
+        "file": "screens/cards.html",
+        "ms": 6,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "html",
+        "file": "screens/cards.html",
+        "ms": 6,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "css",
+        "file": "shell/screens/cards.css",
+        "ms": 6,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "css",
+        "file": "shell/screens/cards.css",
+        "ms": 5,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "css",
+        "file": "shell/screens/cards.css",
+        "ms": 8,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "ssr",
+        "file": "screens/cards.html",
+        "ms": 68,
+        "cache": "no-store",
+        "etag": "\"bf8594db8238a5350f0f9650\""
+      },
+      {
+        "kind": "ssr",
+        "file": "screens/cards.html",
+        "ms": 46,
+        "cache": "no-store",
+        "etag": "\"963b76c4473c85d805e74132\""
+      },
+      {
+        "kind": "ssr",
+        "file": "screens/cards.html",
+        "ms": 36,
+        "cache": "no-store",
+        "etag": "\"cabe0226c64e79a9c2e3a88e\""
+      }
+    ],
+    "metadataUnchanged": true
+  },
+  "browserBindingCompose": {
+    "newBindingMs": 999,
+    "releaseHadTable": false,
+    "rendered": true,
+    "metadataUnchanged": true,
+    "errors": []
+  },
+  "browserBindingHost": {
+    "newBindingMs": 86,
+    "releaseHadTable": false,
+    "rendered": true,
+    "metadataUnchanged": true,
+    "errors": []
+  },
+  "composeContainersBefore": "/snapcards-snapcards-caddy-1 2026-11-07T19:56:59.816804006Z []\n/snapcards-snapcards-render-1 2026-11-07T19:57:01.44948059Z []\n",
+  "composeContainersAfter": "/snapcards-snapcards-caddy-1 2026-11-07T19:56:59.816804006Z []\n/snapcards-snapcards-render-1 2026-11-07T19:57:01.44948059Z []\n",
+  "bindMounts": [],
+  "gates": {
+    "generate": 0,
+    "lint": 0,
+    "build": 0,
+    "test": 0,
+    "acceptance": {
+      "passed": 23,
+      "total": 23
+    },
+    "caddyRegressionTests": 5,
+    "transportRegressionTests": 6,
+    "integrate@host": 0,
+    "commerceTests": 95,
+    "checkoutTests": 5,
+    "visual": {
+      "critical": 0,
+      "advisory": 1519
+    }
+  },
+  "experiments": {
+    "ungroupedRules": {
+      "mode": "compose",
+      "results": [
+        {
+          "kind": "html",
+          "file": "screens/cards.html",
+          "ms": 1381,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "html",
+          "file": "screens/cards.html",
+          "ms": 607,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "html",
+          "file": "screens/cards.html",
+          "ms": 592,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "css",
+          "file": "shell/screens/cards.css",
+          "ms": 596,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "css",
+          "file": "shell/screens/cards.css",
+          "ms": 593,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "css",
+          "file": "shell/screens/cards.css",
+          "ms": 542,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "ssr",
+          "file": "screens/cards.html",
+          "ms": 662,
+          "cache": "no-store",
+          "etag": "\"168978c1ef0dbf9c6bb22dfe\""
+        },
+        {
+          "kind": "ssr",
+          "file": "screens/cards.html",
+          "ms": 563,
+          "cache": "no-store",
+          "etag": "\"ab2fb76362f0bf934835c965\""
+        },
+        {
+          "kind": "ssr",
+          "file": "screens/cards.html",
+          "ms": 616,
+          "cache": "no-store",
+          "etag": "\"3cc16ccc869836ce5f84e3c4\""
+        }
+      ],
+      "metadataUnchanged": true
+    },
+    "ungroupedAfterReadinessChange": {
+      "mode": "compose-final",
+      "results": [
+        {
+          "kind": "html",
+          "file": "screens/cards.html",
+          "ms": 1445,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "html",
+          "file": "screens/cards.html",
+          "ms": 594,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "html",
+          "file": "screens/cards.html",
+          "ms": 543,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "css",
+          "file": "shell/screens/cards.css",
+          "ms": 589,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "css",
+          "file": "shell/screens/cards.css",
+          "ms": 583,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "css",
+          "file": "shell/screens/cards.css",
+          "ms": 542,
+          "cache": "no-store",
+          "etag": null
+        },
+        {
+          "kind": "ssr",
+          "file": "screens/cards.html",
+          "ms": 607,
+          "cache": "no-store",
+          "etag": "\"304d676db0d55d37bcc66f36\""
+        },
+        {
+          "kind": "ssr",
+          "file": "screens/cards.html",
+          "ms": 557,
+          "cache": "no-store",
+          "etag": "\"cfdb88aa8bf3294fbdb42118\""
+        },
+        {
+          "kind": "ssr",
+          "file": "screens/cards.html",
+          "ms": 619,
+          "cache": "no-store",
+          "etag": "\"65cdb50a44486a46b30a7df8\""
+        }
+      ],
+      "metadataUnchanged": true
+    }
+  },
+  "hostEnvironment": {
+    "LC_ALL": "C",
+    "LANG": "C"
+  },
+  "finalScope": {
+    "supportedWatch": "launch --watch (Docker)",
+    "nativeWatch": "disabled; previous native measurements are prototype evidence",
+    "baseCommit": "78378a2e45",
+    "validation": [
+      "generate",
+      "lint",
+      "build",
+      "test",
+      "7 transport regressions",
+      "5 Caddy regressions",
+      "native --watch and forwarded -w refusal",
+      "Docker live edit and browser binding smoke test"
+    ],
+    "integration": "earlier integrate@host passed; not repeated for native-watch removal"
+  },
+  "finalCompose": {
+    "mode": "compose-final",
+    "results": [
+      {
+        "kind": "html",
+        "file": "screens/cards.html",
+        "ms": 591,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "html",
+        "file": "screens/cards.html",
+        "ms": 532,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "html",
+        "file": "screens/cards.html",
+        "ms": 592,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "css",
+        "file": "shell/screens/cards.css",
+        "ms": 588,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "css",
+        "file": "shell/screens/cards.css",
+        "ms": 581,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "css",
+        "file": "shell/screens/cards.css",
+        "ms": 582,
+        "cache": "no-store",
+        "etag": null
+      },
+      {
+        "kind": "ssr",
+        "file": "screens/cards.html",
+        "ms": 645,
+        "cache": "no-store",
+        "etag": "\"24e3c55af631519621f036da\""
+      },
+      {
+        "kind": "ssr",
+        "file": "screens/cards.html",
+        "ms": 654,
+        "cache": "no-store",
+        "etag": "\"e9c72c9ffc5fd6a89158ef09\""
+      },
+      {
+        "kind": "ssr",
+        "file": "screens/cards.html",
+        "ms": 574,
+        "cache": "no-store",
+        "etag": "\"6509b4d414d8bf72240780e2\""
+      }
+    ],
+    "metadataUnchanged": true
+  },
+  "finalBinding": {
+    "newBindingMs": 605,
+    "releaseHadTable": false,
+    "rendered": true,
+    "metadataUnchanged": true,
+    "errors": []
+  },
+  "reviewFixes": [
+    "include unbound composed handlers in development configuration and static sync sources",
+    "preserve route adapter choices and ordinary module ordering",
+    "retain launch error when cleanup also fails",
+    "declare route paths in the ARIA CLI fixture"
+  ]
+}

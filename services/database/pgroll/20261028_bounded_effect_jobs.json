@@ -1,0 +1,9 @@
+{
+  "operations": [
+    {
+      "sql": {
+        "up": "CREATE FUNCTION airlock.snapcards_enqueue_job(identifier text, payload json, job_key text, max_attempts integer)\nRETURNS void LANGUAGE sql AS $fn$\n  SELECT graphile_worker.add_job(identifier, payload,\n    job_key => encode(sha256(convert_to(job_key, 'UTF8')), 'hex'),\n    max_attempts => max_attempts);\n$fn$;\nREVOKE ALL ON FUNCTION airlock.snapcards_enqueue_job(text, json, text, integer) FROM PUBLIC;\nDO $migration$\nDECLARE source text;\nBEGIN\n  source := pg_get_functiondef('public.trg_generation_draft_status_machine()'::regprocedure);\n  IF position('graphile_worker.add_job(' in source) = 0 THEN\n    RAISE EXCEPTION 'generation trigger has no effect enqueue call';\n  END IF;\n  EXECUTE replace(source, 'graphile_worker.add_job(', 'airlock.snapcards_enqueue_job(');\nEND\n$migration$;"
+      }
+    }
+  ]
+}

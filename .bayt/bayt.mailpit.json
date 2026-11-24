@@ -1,0 +1,188 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": false,
+    "manual": false,
+    "environment": {},
+    "ports": [],
+    "volumes": [],
+    "depends_on": {},
+    "networks": {
+      "default": {
+        "aliases": [
+          "mailpit"
+        ]
+      }
+    },
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "/mailpit",
+        "readyz"
+      ],
+      "interval": "2s",
+      "start_interval": "200ms",
+      "start_period": "10s",
+      "retries": 15
+    }
+  },
+  "dockerfile": {
+    "preamble": [],
+    "preambleCopyContexts": [],
+    "from": {
+      "name": "axllent/mailpit:v1.32.0@sha256:0790692be935ea4420d085694f7985b1f692ca6a8771ab0e0bd8ba75ac180498"
+    },
+    "add": [],
+    "mounts": [],
+    "secrets": {},
+    "extra_hosts": [],
+    "epilogue": [],
+    "copy": [],
+    "healthcheck": null,
+    "expose": [],
+    "entrypoint": [
+      "/mailpit"
+    ],
+    "incremental": false,
+    "cmd": null
+  },
+  "entrypoint": {
+    "do": "exec mailpit --listen $'127.0.0.1:($env.MAILPIT_INBOX_PORT)' --smtp $'127.0.0.1:($env.MAILPIT_SMTP_PORT)'",
+    "dockerfile": {
+      "do": "/mailpit",
+      "shell": "exec"
+    },
+    "shell": "nu",
+    "env": {},
+    "after": {},
+    "host": true
+  },
+  "expose": {
+    "inbox": {
+      "port": 8025,
+      "env": "MAILPIT_INBOX_PORT",
+      "host": 30825,
+      "publish": {
+        "environment": "SNAPCARDS_MAILPIT_HOST_PORT"
+      }
+    },
+    "smtp": {
+      "port": 1025,
+      "env": "MAILPIT_SMTP_PORT"
+    }
+  },
+  "healthcheck": {
+    "template": "http",
+    "scheme": "http",
+    "host": "127.0.0.1",
+    "port": 8025,
+    "path": "/livez",
+    "url": "http://127.0.0.1:8025/livez",
+    "authorization": null,
+    "headers": [],
+    "interval": "2s",
+    "start_interval": "200ms",
+    "timeout": "5s",
+    "retries": 15,
+    "start_period": "10s"
+  },
+  "name": "mailpit",
+  "process-compose": {
+    "activate": "mise x --"
+  },
+  "project": "snapcards",
+  "dir": ".",
+  "activate": "",
+  "srcs": {
+    "globs": [],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {},
+  "synthetics": {
+    "bayt": {
+      "name": "mailpit_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.mailpit.yaml",
+          ".bayt/Dockerfile.mailpit",
+          ".bayt/bayt.mailpit.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.mailpit.yaml"
+      ]
+    },
+    "outs": {
+      "name": "mailpit_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.mailpit.yaml"
+      ]
+    }
+  },
+  "visibility": "internal",
+  "emitsSrcs": false,
+  "deps": [],
+  "sameProjectDeps": [],
+  "transitiveDeps": [],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "./.bayt/compose.mailpit.yaml"
+  ],
+  "chainedDeps": [],
+  "cmds": [],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

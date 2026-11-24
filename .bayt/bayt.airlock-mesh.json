@@ -1,0 +1,729 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": false,
+    "manual": false,
+    "build": {
+      "additional_contexts": {
+        "libraries_mecha-mesh-image": "${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/mecha-mesh:0.34.0@sha256:8d39aa3543560232c52330152ba70a4d2c973b76d0ac97899d677704bc0e09a4}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-mesh-image}",
+        "libraries_mecha-airlock-image": "${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/mecha-airlock:0.34.0@sha256:eba02ec833bdd24995d73019af5735a6353b60e21529762814126f4799e0d095}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-airlock-image}"
+      },
+      "secrets": [],
+      "args": {}
+    },
+    "environment": {
+      "AIRLOCK_ORIGINS": "",
+      "AIRLOCK_BRIDGES": "stripe prodigi cloudprinter mail tsbifrost",
+      "TSBIFROST_URL": "http://tsbifrost:8090",
+      "BLOBS_S3_URL": "http://rclone-s3:3900",
+      "BRIDGE_STRIPE_URL": "http://checkout-simulator:8080",
+      "BRIDGE_PRODIGI_URL": "http://prodigi-simulator:8080",
+      "BRIDGE_CLOUDPRINTER_URL": "http://cloudprinter-simulator:8080",
+      "BRIDGE_MAIL_URL": "http://mail-simulator:8080"
+    },
+    "ports": [],
+    "volumes": [],
+    "depends_on": {
+      "snapcards-tsbifrost": {
+        "condition": "service_started"
+      },
+      "snapcards-checkout-simulator": {
+        "condition": "service_started"
+      },
+      "snapcards-prodigi-simulator": {
+        "condition": "service_started"
+      },
+      "snapcards-cloudprinter-simulator": {
+        "condition": "service_started"
+      },
+      "snapcards-mail-simulator": {
+        "condition": "service_started"
+      }
+    },
+    "networks": {
+      "airlock": {
+        "aliases": [
+          "airlock-mesh"
+        ]
+      },
+      "airlock-out": {
+        "aliases": [
+          "airlock-mesh"
+        ]
+      },
+      "airlock-egress": {
+        "aliases": [
+          "airlock-mesh"
+        ]
+      }
+    },
+    "restart": "on-failure",
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "portcheck",
+        "--port",
+        "3500"
+      ],
+      "interval": "5s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "30s",
+      "start_interval": "500ms"
+    },
+    "develop": {
+      "watch": [
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/illustrate-card.yaml",
+          "target": "/dapr/airlock/illustrate-card.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/smollm3-draft.yaml",
+          "target": "/dapr/airlock/smollm3-draft.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/heavy-draft.yaml",
+          "target": "/dapr/airlock/heavy-draft.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-quote.yaml",
+          "target": "/dapr/airlock/print-quote.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-quote-br.yaml",
+          "target": "/dapr/airlock/print-quote-br.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-fx.yaml",
+          "target": "/dapr/airlock/print-fx.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-session.yaml",
+          "target": "/dapr/airlock/print-session.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-check.yaml",
+          "target": "/dapr/airlock/print-check.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-place.yaml",
+          "target": "/dapr/airlock/print-place.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-place-br.yaml",
+          "target": "/dapr/airlock/print-place-br.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-status.yaml",
+          "target": "/dapr/airlock/print-status.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-status-br.yaml",
+          "target": "/dapr/airlock/print-status-br.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-confirm.yaml",
+          "target": "/dapr/airlock/print-confirm.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-record.yaml",
+          "target": "/dapr/airlock/print-record.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-shipped.yaml",
+          "target": "/dapr/airlock/print-shipped.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../services/airlock/dapr/print-alert.yaml",
+          "target": "/dapr/airlock/print-alert.yaml"
+        }
+      ]
+    }
+  },
+  "dockerfile": {
+    "preamble": [
+      "COPY <<'WALL' /dapr/airlock/wall.yaml\napiVersion: dapr.io/v1alpha1\nkind: Component\nmetadata:\n  name: wall\nspec:\n  type: middleware.http.routerchecker\n  version: v1\n  metadata:\n    - {name: rule, value: \"^/v1[.]0/(bindings/blobs|healthz(/outbound)?|invoke/(illustrate-card|smollm3-draft|heavy-draft|print-quote|print-quote-br|print-fx|print-session|print-check|print-place|print-place-br|print-status|print-status-br|print-confirm|print-record|print-shipped|print-alert)/method/.*)$\"}\nWALL",
+      "COPY <<'RESILIENCY' /dapr/airlock/resiliency.yaml\napiVersion: dapr.io/v1alpha1\nkind: Resiliency\nmetadata:\n  name: airlock\nspec:\n  policies:\n    circuitBreakers:\n      sink:\n        maxRequests: 1\n        interval: 60s\n        timeout: 30s\n        trip: consecutiveFailures >= 10\n  targets:\n    apps:\n      illustrate-card: {circuitBreaker: sink}\n      smollm3-draft: {circuitBreaker: sink}\n      heavy-draft: {circuitBreaker: sink}\n      print-quote: {circuitBreaker: sink}\n      print-quote-br: {circuitBreaker: sink}\n      print-fx: {circuitBreaker: sink}\n      print-session: {circuitBreaker: sink}\n      print-check: {circuitBreaker: sink}\n      print-place: {circuitBreaker: sink}\n      print-place-br: {circuitBreaker: sink}\n      print-status: {circuitBreaker: sink}\n      print-status-br: {circuitBreaker: sink}\n      print-confirm: {circuitBreaker: sink}\n      print-record: {circuitBreaker: sink}\n      print-shipped: {circuitBreaker: sink}\n      print-alert: {circuitBreaker: sink}\nRESILIENCY",
+      "COPY <<'BLOBS' /dapr/airlock/blobs.yaml\napiVersion: dapr.io/v1alpha1\nkind: Component\nmetadata:\n  name: env\nspec:\n  type: secretstores.local.env\n  version: v1\n  metadata: []\n---\napiVersion: dapr.io/v1alpha1\nkind: Component\nmetadata:\n  name: blobs\nspec:\n  type: bindings.aws.s3\n  version: v1\n  metadata:\n    - {name: bucket, value: mecha-objects}\n    - {name: region, value: rclone}\n    - {name: endpoint, secretKeyRef: {name: BLOBS_S3_URL, key: BLOBS_S3_URL}}\n    - {name: accessKey, value: GK000000000000000000000000}\n    - {name: secretKey, value: \"0000000000000000000000000000000000000000000000000000000000000000\"}\n    - {name: forcePathStyle, value: \"true\"}\n    - {name: disableSSL, value: \"true\"}\n    - {name: decodeBase64, value: \"true\"}\nauth:\n  secretStore: env\nBLOBS"
+    ],
+    "preambleCopyContexts": [],
+    "from": {
+      "name": "libraries_mecha-mesh-image"
+    },
+    "add": [],
+    "copy": [
+      {
+        "from": {
+          "name": "tarampampam/microcheck:1@sha256:79c187c05bfa67518078bf4db117771942fa8fe107dc79a905861c75ddf28dfa"
+        },
+        "srcs": [
+          "/bin/portcheck"
+        ],
+        "dst": "/usr/local/bin/portcheck",
+        "chmod": "755",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-airlock-image"
+        },
+        "srcs": [
+          "/app/airlock/dapr.yaml"
+        ],
+        "dst": "/dapr/config.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/illustrate-card.yaml"
+        ],
+        "dst": "/dapr/airlock/illustrate-card.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/smollm3-draft.yaml"
+        ],
+        "dst": "/dapr/airlock/smollm3-draft.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/heavy-draft.yaml"
+        ],
+        "dst": "/dapr/airlock/heavy-draft.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-quote.yaml"
+        ],
+        "dst": "/dapr/airlock/print-quote.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-quote-br.yaml"
+        ],
+        "dst": "/dapr/airlock/print-quote-br.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-fx.yaml"
+        ],
+        "dst": "/dapr/airlock/print-fx.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-session.yaml"
+        ],
+        "dst": "/dapr/airlock/print-session.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-check.yaml"
+        ],
+        "dst": "/dapr/airlock/print-check.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-place.yaml"
+        ],
+        "dst": "/dapr/airlock/print-place.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-place-br.yaml"
+        ],
+        "dst": "/dapr/airlock/print-place-br.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-status.yaml"
+        ],
+        "dst": "/dapr/airlock/print-status.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-status-br.yaml"
+        ],
+        "dst": "/dapr/airlock/print-status-br.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-confirm.yaml"
+        ],
+        "dst": "/dapr/airlock/print-confirm.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-record.yaml"
+        ],
+        "dst": "/dapr/airlock/print-record.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-shipped.yaml"
+        ],
+        "dst": "/dapr/airlock/print-shipped.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "services/airlock/dapr/print-alert.yaml"
+        ],
+        "dst": "/dapr/airlock/print-alert.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      }
+    ],
+    "epilogue": [],
+    "extra_hosts": [],
+    "mounts": [],
+    "secrets": {},
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "portcheck",
+        "--port",
+        "3500"
+      ],
+      "interval": "5s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "30s"
+    },
+    "expose": [],
+    "entrypoint": [
+      "/daprd",
+      "--app-id",
+      "airlock",
+      "--dapr-listen-addresses",
+      "0.0.0.0",
+      "--resources-path",
+      "/dapr/airlock",
+      "--config",
+      "/dapr/config.yaml",
+      "--dapr-http-port",
+      "3500",
+      "--max-body-size",
+      "64Mi",
+      "--log-level",
+      "info"
+    ],
+    "incremental": false,
+    "cmd": null
+  },
+  "entrypoint": {
+    "do": "let base = ($env.BAYT_LOCAL_WORK_DIR? | default $nu.temp-dir); let dir = ($base | path join $'airlock-mesh-($nu.pid)-(random int 1000..9999)'); mkdir ($dir | path join 'airlock'); let app = (if (($env.AIRLOCK_APP_DIR? | default '') != '') { $env.AIRLOCK_APP_DIR } else if ('services/airlock/dapr.yaml' | path exists) { 'services/airlock' } else { ((^mise where github:bonisoft3/mecha | str trim) | path join 'services/airlock') }); cp -f ($app | path join 'dapr.yaml') ($dir | path join 'config.yaml'); 'YXBpVmVyc2lvbjogZGFwci5pby92MWFscGhhMQpraW5kOiBDb21wb25lbnQKbWV0YWRhdGE6CiAgbmFtZTogd2FsbApzcGVjOgogIHR5cGU6IG1pZGRsZXdhcmUuaHR0cC5yb3V0ZXJjaGVja2VyCiAgdmVyc2lvbjogdjEKICBtZXRhZGF0YToKICAgIC0ge25hbWU6IHJ1bGUsIHZhbHVlOiAiXi92MVsuXTAvKGJpbmRpbmdzL2Jsb2JzfGhlYWx0aHooL291dGJvdW5kKT98aW52b2tlLyhpbGx1c3RyYXRlLWNhcmR8c21vbGxtMy1kcmFmdHxoZWF2eS1kcmFmdHxwcmludC1xdW90ZXxwcmludC1xdW90ZS1icnxwcmludC1meHxwcmludC1zZXNzaW9ufHByaW50LWNoZWNrfHByaW50LXBsYWNlfHByaW50LXBsYWNlLWJyfHByaW50LXN0YXR1c3xwcmludC1zdGF0dXMtYnJ8cHJpbnQtY29uZmlybXxwcmludC1yZWNvcmR8cHJpbnQtc2hpcHBlZHxwcmludC1hbGVydCkvbWV0aG9kLy4qKSQifQ==' | decode base64 | decode utf-8 | save -f ($dir | path join 'airlock/wall.yaml'); 'YXBpVmVyc2lvbjogZGFwci5pby92MWFscGhhMQpraW5kOiBSZXNpbGllbmN5Cm1ldGFkYXRhOgogIG5hbWU6IGFpcmxvY2sKc3BlYzoKICBwb2xpY2llczoKICAgIGNpcmN1aXRCcmVha2VyczoKICAgICAgc2luazoKICAgICAgICBtYXhSZXF1ZXN0czogMQogICAgICAgIGludGVydmFsOiA2MHMKICAgICAgICB0aW1lb3V0OiAzMHMKICAgICAgICB0cmlwOiBjb25zZWN1dGl2ZUZhaWx1cmVzID49IDEwCiAgdGFyZ2V0czoKICAgIGFwcHM6CiAgICAgIGlsbHVzdHJhdGUtY2FyZDoge2NpcmN1aXRCcmVha2VyOiBzaW5rfQogICAgICBzbW9sbG0zLWRyYWZ0OiB7Y2lyY3VpdEJyZWFrZXI6IHNpbmt9CiAgICAgIGhlYXZ5LWRyYWZ0OiB7Y2lyY3VpdEJyZWFrZXI6IHNpbmt9CiAgICAgIHByaW50LXF1b3RlOiB7Y2lyY3VpdEJyZWFrZXI6IHNpbmt9CiAgICAgIHByaW50LXF1b3RlLWJyOiB7Y2lyY3VpdEJyZWFrZXI6IHNpbmt9CiAgICAgIHByaW50LWZ4OiB7Y2lyY3VpdEJyZWFrZXI6IHNpbmt9CiAgICAgIHByaW50LXNlc3Npb246IHtjaXJjdWl0QnJlYWtlcjogc2lua30KICAgICAgcHJpbnQtY2hlY2s6IHtjaXJjdWl0QnJlYWtlcjogc2lua30KICAgICAgcHJpbnQtcGxhY2U6IHtjaXJjdWl0QnJlYWtlcjogc2lua30KICAgICAgcHJpbnQtcGxhY2UtYnI6IHtjaXJjdWl0QnJlYWtlcjogc2lua30KICAgICAgcHJpbnQtc3RhdHVzOiB7Y2lyY3VpdEJyZWFrZXI6IHNpbmt9CiAgICAgIHByaW50LXN0YXR1cy1icjoge2NpcmN1aXRCcmVha2VyOiBzaW5rfQogICAgICBwcmludC1jb25maXJtOiB7Y2lyY3VpdEJyZWFrZXI6IHNpbmt9CiAgICAgIHByaW50LXJlY29yZDoge2NpcmN1aXRCcmVha2VyOiBzaW5rfQogICAgICBwcmludC1zaGlwcGVkOiB7Y2lyY3VpdEJyZWFrZXI6IHNpbmt9CiAgICAgIHByaW50LWFsZXJ0OiB7Y2lyY3VpdEJyZWFrZXI6IHNpbmt9' | decode base64 | decode utf-8 | save -f ($dir | path join 'airlock/resiliency.yaml'); 'YXBpVmVyc2lvbjogZGFwci5pby92MWFscGhhMQpraW5kOiBDb21wb25lbnQKbWV0YWRhdGE6CiAgbmFtZTogZW52CnNwZWM6CiAgdHlwZTogc2VjcmV0c3RvcmVzLmxvY2FsLmVudgogIHZlcnNpb246IHYxCiAgbWV0YWRhdGE6IFtdCi0tLQphcGlWZXJzaW9uOiBkYXByLmlvL3YxYWxwaGExCmtpbmQ6IENvbXBvbmVudAptZXRhZGF0YToKICBuYW1lOiBibG9icwpzcGVjOgogIHR5cGU6IGJpbmRpbmdzLmF3cy5zMwogIHZlcnNpb246IHYxCiAgbWV0YWRhdGE6CiAgICAtIHtuYW1lOiBidWNrZXQsIHZhbHVlOiBtZWNoYS1vYmplY3RzfQogICAgLSB7bmFtZTogcmVnaW9uLCB2YWx1ZTogcmNsb25lfQogICAgLSB7bmFtZTogZW5kcG9pbnQsIHNlY3JldEtleVJlZjoge25hbWU6IEJMT0JTX1MzX1VSTCwga2V5OiBCTE9CU19TM19VUkx9fQogICAgLSB7bmFtZTogYWNjZXNzS2V5LCB2YWx1ZTogR0swMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDB9CiAgICAtIHtuYW1lOiBzZWNyZXRLZXksIHZhbHVlOiAiMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCJ9CiAgICAtIHtuYW1lOiBmb3JjZVBhdGhTdHlsZSwgdmFsdWU6ICJ0cnVlIn0KICAgIC0ge25hbWU6IGRpc2FibGVTU0wsIHZhbHVlOiAidHJ1ZSJ9CiAgICAtIHtuYW1lOiBkZWNvZGVCYXNlNjQsIHZhbHVlOiAidHJ1ZSJ9CmF1dGg6CiAgc2VjcmV0U3RvcmU6IGVudg==' | decode base64 | decode utf-8 | save -f ($dir | path join 'airlock/blobs.yaml'); open --raw 'services/airlock/dapr/illustrate-card.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/illustrate-card.yaml'); open --raw 'services/airlock/dapr/smollm3-draft.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/smollm3-draft.yaml'); open --raw 'services/airlock/dapr/heavy-draft.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/heavy-draft.yaml'); open --raw 'services/airlock/dapr/print-quote.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-quote.yaml'); open --raw 'services/airlock/dapr/print-quote-br.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-quote-br.yaml'); open --raw 'services/airlock/dapr/print-fx.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-fx.yaml'); open --raw 'services/airlock/dapr/print-session.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-session.yaml'); open --raw 'services/airlock/dapr/print-check.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-check.yaml'); open --raw 'services/airlock/dapr/print-place.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-place.yaml'); open --raw 'services/airlock/dapr/print-place-br.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-place-br.yaml'); open --raw 'services/airlock/dapr/print-status.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-status.yaml'); open --raw 'services/airlock/dapr/print-status-br.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-status-br.yaml'); open --raw 'services/airlock/dapr/print-confirm.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-confirm.yaml'); open --raw 'services/airlock/dapr/print-record.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-record.yaml'); open --raw 'services/airlock/dapr/print-shipped.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-shipped.yaml'); open --raw 'services/airlock/dapr/print-alert.yaml' | str replace --all 'http://cloudprinter-simulator:8080' $env.BRIDGE_CLOUDPRINTER_URL | str replace --all 'http://checkout-simulator:8080' $env.BRIDGE_STRIPE_URL | str replace --all 'http://prodigi-simulator:8080' $env.BRIDGE_PRODIGI_URL | str replace --all 'http://mail-simulator:8080' $env.BRIDGE_MAIL_URL | str replace --all 'http://tsbifrost:8090' $env.TSBIFROST_URL | save -f ($dir | path join 'airlock/print-alert.yaml'); exec daprd --app-id airlock --dapr-listen-addresses 127.0.0.1 --dapr-internal-grpc-listen-address 127.0.0.1 --resources-path ($dir | path join 'airlock') --config ($dir | path join 'config.yaml') --dapr-http-port $env.DAPR_HTTP_PORT --dapr-grpc-port $env.DAPR_GRPC_PORT --dapr-internal-grpc-port $env.DAPR_INTERNAL_GRPC_PORT --metrics-port 0 --profile-port 0 --max-body-size 64Mi --log-level info",
+    "shell": "nu",
+    "env": {
+      "AIRLOCK_ORIGINS": "",
+      "AIRLOCK_BRIDGES": "stripe prodigi cloudprinter mail tsbifrost",
+      "BLOBS_S3_URL": {
+        "peer": "rclone-s3",
+        "port": "http",
+        "part": "addr",
+        "prefix": "http://",
+        "suffix": ""
+      },
+      "TSBIFROST_URL": {
+        "peer": "tsbifrost",
+        "port": "http",
+        "part": "addr",
+        "prefix": "http://",
+        "suffix": ""
+      },
+      "BRIDGE_STRIPE_URL": {
+        "peer": "checkout-simulator",
+        "port": "http",
+        "part": "addr",
+        "prefix": "http://",
+        "suffix": ""
+      },
+      "BRIDGE_PRODIGI_URL": {
+        "peer": "prodigi-simulator",
+        "port": "http",
+        "part": "addr",
+        "prefix": "http://",
+        "suffix": ""
+      },
+      "BRIDGE_CLOUDPRINTER_URL": {
+        "peer": "cloudprinter-simulator",
+        "port": "http",
+        "part": "addr",
+        "prefix": "http://",
+        "suffix": ""
+      },
+      "BRIDGE_MAIL_URL": {
+        "peer": "mail-simulator",
+        "port": "http",
+        "part": "addr",
+        "prefix": "http://",
+        "suffix": ""
+      }
+    },
+    "after": {
+      "tsbifrost": "started",
+      "checkout-simulator": "started",
+      "prodigi-simulator": "started",
+      "cloudprinter-simulator": "started",
+      "mail-simulator": "started"
+    },
+    "host": true
+  },
+  "expose": {
+    "http": {
+      "port": 3500,
+      "env": "DAPR_HTTP_PORT"
+    },
+    "api": {
+      "port": 50001,
+      "env": "DAPR_GRPC_PORT"
+    },
+    "grpc": {
+      "port": 50002,
+      "env": "DAPR_INTERNAL_GRPC_PORT"
+    }
+  },
+  "healthcheck": {
+    "template": "tcp",
+    "port": 3500,
+    "interval": "5s",
+    "start_interval": "500ms",
+    "timeout": "5s",
+    "retries": 30,
+    "start_period": "30s"
+  },
+  "name": "airlock-mesh",
+  "process-compose": {
+    "activate": "mise x --",
+    "availability": {
+      "restart": "on_failure",
+      "backoff_seconds": 1,
+      "max_restarts": 15
+    }
+  },
+  "project": "snapcards",
+  "dir": ".",
+  "activate": "",
+  "srcs": {
+    "globs": [
+      "services/airlock/dapr/illustrate-card.yaml",
+      "services/airlock/dapr/smollm3-draft.yaml",
+      "services/airlock/dapr/heavy-draft.yaml",
+      "services/airlock/dapr/print-quote.yaml",
+      "services/airlock/dapr/print-quote-br.yaml",
+      "services/airlock/dapr/print-fx.yaml",
+      "services/airlock/dapr/print-session.yaml",
+      "services/airlock/dapr/print-check.yaml",
+      "services/airlock/dapr/print-place.yaml",
+      "services/airlock/dapr/print-place-br.yaml",
+      "services/airlock/dapr/print-status.yaml",
+      "services/airlock/dapr/print-status-br.yaml",
+      "services/airlock/dapr/print-confirm.yaml",
+      "services/airlock/dapr/print-record.yaml",
+      "services/airlock/dapr/print-shipped.yaml",
+      "services/airlock/dapr/print-alert.yaml"
+    ],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {},
+  "synthetics": {
+    "bayt": {
+      "name": "airlock-mesh_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.airlock-mesh.yaml",
+          ".bayt/Dockerfile.airlock-mesh",
+          ".bayt/bayt.airlock-mesh.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.airlock-mesh.yaml",
+        "./.bayt/compose.tsbifrost.yaml",
+        "./.bayt/compose.checkout-simulator.yaml",
+        "./.bayt/compose.prodigi-simulator.yaml",
+        "./.bayt/compose.cloudprinter-simulator.yaml",
+        "./.bayt/compose.mail-simulator.yaml",
+        "./.bayt/compose.mailpit.yaml"
+      ]
+    },
+    "outs": {
+      "name": "airlock-mesh_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.airlock-mesh.yaml",
+        "./.bayt/compose.tsbifrost.yaml",
+        "./.bayt/compose.checkout-simulator.yaml",
+        "./.bayt/compose.prodigi-simulator.yaml",
+        "./.bayt/compose.cloudprinter-simulator.yaml",
+        "./.bayt/compose.mail-simulator.yaml",
+        "./.bayt/compose.mailpit.yaml"
+      ]
+    },
+    "srcs": {
+      "name": "airlock-mesh_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          "services/airlock/dapr/illustrate-card.yaml",
+          "services/airlock/dapr/smollm3-draft.yaml",
+          "services/airlock/dapr/heavy-draft.yaml",
+          "services/airlock/dapr/print-quote.yaml",
+          "services/airlock/dapr/print-quote-br.yaml",
+          "services/airlock/dapr/print-fx.yaml",
+          "services/airlock/dapr/print-session.yaml",
+          "services/airlock/dapr/print-check.yaml",
+          "services/airlock/dapr/print-place.yaml",
+          "services/airlock/dapr/print-place-br.yaml",
+          "services/airlock/dapr/print-status.yaml",
+          "services/airlock/dapr/print-status-br.yaml",
+          "services/airlock/dapr/print-confirm.yaml",
+          "services/airlock/dapr/print-record.yaml",
+          "services/airlock/dapr/print-shipped.yaml",
+          "services/airlock/dapr/print-alert.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.airlock-mesh.yaml",
+        "./.bayt/compose.tsbifrost.yaml",
+        "./.bayt/compose.checkout-simulator.yaml",
+        "./.bayt/compose.prodigi-simulator.yaml",
+        "./.bayt/compose.cloudprinter-simulator.yaml",
+        "./.bayt/compose.mail-simulator.yaml",
+        "./.bayt/compose.mailpit.yaml"
+      ]
+    }
+  },
+  "visibility": "internal",
+  "emitsSrcs": true,
+  "deps": [
+    "tsbifrost_outs",
+    "checkout-simulator_outs",
+    "prodigi-simulator_outs",
+    "cloudprinter-simulator_outs",
+    "mail-simulator_outs"
+  ],
+  "sameProjectDeps": [
+    "tsbifrost_outs",
+    "checkout-simulator_outs",
+    "prodigi-simulator_outs",
+    "cloudprinter-simulator_outs",
+    "mail-simulator_outs"
+  ],
+  "transitiveDeps": [
+    "tsbifrost_outs",
+    "checkout-simulator_outs",
+    "prodigi-simulator_outs",
+    "cloudprinter-simulator_outs",
+    "mail-simulator_outs"
+  ],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "./.bayt/compose.airlock-mesh.yaml",
+    "./.bayt/compose.tsbifrost.yaml",
+    "./.bayt/compose.checkout-simulator.yaml",
+    "./.bayt/compose.prodigi-simulator.yaml",
+    "./.bayt/compose.cloudprinter-simulator.yaml",
+    "./.bayt/compose.mail-simulator.yaml",
+    "./.bayt/compose.mailpit.yaml"
+  ],
+  "chainedDeps": [
+    {
+      "name": "tsbifrost_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "checkout-simulator_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "prodigi-simulator_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "cloudprinter-simulator_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "mail-simulator_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    }
+  ],
+  "cmds": [],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

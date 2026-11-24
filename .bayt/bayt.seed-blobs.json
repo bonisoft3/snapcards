@@ -1,0 +1,224 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": false,
+    "manual": false,
+    "environment": {},
+    "ports": [],
+    "volumes": [],
+    "depends_on": {
+      "snapcards-rclone-s3": {
+        "condition": "service_healthy"
+      }
+    },
+    "networks": {
+      "default": {
+        "aliases": [
+          "seed-blobs"
+        ]
+      }
+    },
+    "restart": "no"
+  },
+  "dockerfile": {
+    "preamble": [],
+    "preambleCopyContexts": [],
+    "from": {
+      "name": "alpine/curl@sha256:5bd4985f3daa6d1ca87619802190afc24c0ccd410b1f123de5afc8e891b5fc71"
+    },
+    "add": [],
+    "mounts": [],
+    "secrets": {},
+    "extra_hosts": [],
+    "epilogue": [],
+    "copy": [
+      {
+        "from": null,
+        "srcs": [
+          "assets/seed/"
+        ],
+        "dst": "/seed/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      }
+    ],
+    "healthcheck": null,
+    "expose": [],
+    "entrypoint": [
+      "/bin/sh",
+      "-c",
+      "for f in /seed/*; do case \"$f\" in *.webp) t=image/webp;; *.png) t=image/png;; *.jpg) t=image/jpeg;; *) echo \"no type for $f\"; exit 1;; esac; curl -fsS -o /dev/null -X PUT -H \"content-type: $t\" --data-binary \"@$f\" \"http://rclone-s3:3900/mecha-objects/seed/${f##*/}\" || exit 1; done"
+    ],
+    "incremental": false,
+    "cmd": null
+  },
+  "entrypoint": {
+    "do": "for f in (glob 'assets/seed/*') { let ext = ($f | path parse | get extension); let t = (match $ext { 'webp' => 'image/webp', 'png' => 'image/png', 'jpg' => 'image/jpeg', _ => { print -e $'no type for ($f)'; exit 1 } }); let name = ($f | path basename); http put --content-type $t $'($env.SEED_BLOBS_URL)/mecha-objects/seed/($name)' (open --raw $f | into binary) | ignore }",
+    "shell": "nu",
+    "env": {
+      "SEED_BLOBS_URL": {
+        "peer": "rclone-s3",
+        "port": "http",
+        "part": "addr",
+        "prefix": "http://",
+        "suffix": ""
+      }
+    },
+    "after": {
+      "rclone-s3": "healthy"
+    },
+    "host": true
+  },
+  "name": "seed-blobs",
+  "process-compose": {
+    "activate": "mise x --"
+  },
+  "project": "snapcards",
+  "dir": ".",
+  "activate": "",
+  "srcs": {
+    "globs": [
+      "assets/seed/*"
+    ],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {},
+  "synthetics": {
+    "bayt": {
+      "name": "seed-blobs_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.seed-blobs.yaml",
+          ".bayt/Dockerfile.seed-blobs",
+          ".bayt/bayt.seed-blobs.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.seed-blobs.yaml",
+        "./.bayt/compose.rclone-s3.yaml"
+      ]
+    },
+    "outs": {
+      "name": "seed-blobs_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.seed-blobs.yaml",
+        "./.bayt/compose.rclone-s3.yaml"
+      ]
+    },
+    "srcs": {
+      "name": "seed-blobs_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          "assets/seed/*"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.seed-blobs.yaml",
+        "./.bayt/compose.rclone-s3.yaml"
+      ]
+    }
+  },
+  "visibility": "internal",
+  "emitsSrcs": true,
+  "deps": [
+    "rclone-s3_outs"
+  ],
+  "sameProjectDeps": [
+    "rclone-s3_outs"
+  ],
+  "transitiveDeps": [
+    "rclone-s3_outs"
+  ],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "./.bayt/compose.seed-blobs.yaml",
+    "./.bayt/compose.rclone-s3.yaml"
+  ],
+  "chainedDeps": [
+    {
+      "name": "rclone-s3_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    }
+  ],
+  "cmds": [],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

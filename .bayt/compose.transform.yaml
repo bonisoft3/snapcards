@@ -1,0 +1,75 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-transform:
+    build:
+      additional_contexts:
+        snapcards-redis: service:snapcards-redis
+        snapcards-crud: service:snapcards-crud
+      context: ..
+      dockerfile: .bayt/Dockerfile.transform
+      target: transform
+      tags:
+      - bayt-snapcards-transform:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-transform:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    depends_on:
+      snapcards-redis:
+        condition: service_healthy
+        restart: true
+      snapcards-crud:
+        condition: service_healthy
+        restart: true
+    develop:
+      watch:
+      - action: sync+restart
+        path: ../docker/snapcards-favorite-recount.yaml
+        target: /pipelines/snapcards-favorite-recount.yaml
+      - action: sync+restart
+        path: ../docker/snapcards-deck-cover.yaml
+        target: /pipelines/snapcards-deck-cover.yaml
+      - action: sync+restart
+        path: ../docker/snapcards-favorite-count.yaml
+        target: /pipelines/snapcards-favorite-count.yaml
+      - action: sync+restart
+        path: ../docker/snapcards-deck-level.yaml
+        target: /pipelines/snapcards-deck-level.yaml
+    environment:
+      CRUD_URL: http://crud:3000
+      REDIS_URL: redis://redis:6379
+      CDC_GROUPS: "[\"snapcards-deck-cover\",\"snapcards-deck-level\",\"snapcards-favorite-count\",\"snapcards-favorite-recount\"]"
+      SERVICE_JWT: >-
+        ${SERVICE_JWT:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtZWNoYTpzdGFjayIsInJvbGUiOiJzZXJ2aWNlIiwic3ViIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwiZXhwIjoxOTg4MTUwNDAwfQ.K4ZX9EDs-BwPIh3r_ZOKmO9XfrQrEx18rwlw3siXcxs}
+    image: bayt-snapcards-transform:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    networks:
+      default:
+        aliases:
+        - transform
+    restart: on-failure
+  snapcards-transform_bayt:
+    build:
+      additional_contexts:
+        snapcards-redis_bayt: service:snapcards-redis_bayt
+        snapcards-crud_bayt: service:snapcards-crud_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.transform
+      target: transform_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-transform_bayt:latest
+    scale: 0
+  snapcards-transform_srcs:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.transform
+      target: transform_srcs
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-transform_srcs:latest
+    scale: 0

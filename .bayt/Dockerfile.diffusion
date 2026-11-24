@@ -1,0 +1,121 @@
+# generated from bayt.cue — do not edit
+FROM denoland/deno:debian-2.9.7@sha256:fa335acdf6b72106eda2cb6a8cb5f4187e7630e357467489db4b2e7352d5e432 AS diffusion
+ARG BAYT_DIR
+WORKDIR /monorepo/${BAYT_DIR}
+COPY <<'EOF' /srv/diffusion.ts
+const CRC_TABLE = new Uint32Array(256);
+for (let n = 0; n < 256; n++) {
+  let c = n;
+  for (let k = 0; k < 8; k++) c = (c & 1) ? (0xedb88320 ^ (c >>> 1)) : (c >>> 1);
+  CRC_TABLE[n] = c >>> 0;
+}
+const crc32 = (buf: Uint8Array): number => {
+  let c = 0xffffffff;
+  for (let i = 0; i < buf.length; i++) c = CRC_TABLE[(c ^ buf[i]) & 0xff] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
+};
+const u32be = (v: number): Uint8Array => new Uint8Array([(v >>> 24) & 0xff, (v >>> 16) & 0xff, (v >>> 8) & 0xff, v & 0xff]);
+const chunk = (type: string, data: Uint8Array): Uint8Array => {
+  const out = new Uint8Array(12 + data.length);
+  out.set(u32be(data.length), 0);
+  for (let i = 0; i < 4; i++) out[4 + i] = type.charCodeAt(i);
+  out.set(data, 8);
+  out.set(u32be(crc32(out.subarray(4, 8 + data.length))), 8 + data.length);
+  return out;
+};
+const renderSubjectPng = async (prompt: string): Promise<string> => {
+  const W = 96, H = 96;
+  const raw = new Uint8Array(H * (1 + W * 3));
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < prompt.length; i++) h = Math.imul(h ^ prompt.charCodeAt(i), 16777619) >>> 0;
+  const p = prompt.toLowerCase();
+  const pal: [number, number, number, number, number, number] =
+    p.includes("cow") || p.includes("vaca") ? [45, 55, 72, 226, 232, 240] :
+    p.includes("horse") || p.includes("cavalo") ? [146, 64, 14, 217, 119, 6] :
+    p.includes("pig") || p.includes("porco") ? [219, 39, 119, 244, 114, 182] :
+    p.includes("hen") || p.includes("chicken") || p.includes("galinha") ? [185, 28, 28, 245, 158, 11] :
+    p.includes("sheep") || p.includes("ovelha") ? [71, 85, 105, 203, 213, 225] :
+    p.includes("rocket") || p.includes("foguete") ? [220, 38, 38, 59, 130, 246] :
+    p.includes("satellite") || p.includes("satélite") ? [37, 99, 235, 147, 197, 253] :
+    p.includes("guitar") || p.includes("violão") || p.includes("violin") ? [180, 83, 9, 251, 191, 36] :
+    p.includes("piano") ? [30, 41, 59, 148, 163, 184] :
+    [40 + (h % 160), 50 + ((h >>> 8) % 150), 60 + ((h >>> 16) % 150), 120 + ((h >>> 4) % 110), 130 + ((h >>> 12) % 100), 140 + ((h >>> 20) % 100)];
+  const [r1, g1, b1, r2, g2, b2] = pal;
+  const mode = h % 4;
+  for (let y = 0; y < H; y++) {
+    const rowOff = y * (1 + W * 3);
+    raw[rowOff] = 0;
+    for (let x = 0; x < W; x++) {
+      const px = rowOff + 1 + x * 3;
+      const dx = (x - W / 2) / (W / 2);
+      const dy = (y - H / 2) / (H / 2);
+      const d2 = dx * dx + dy * dy;
+      let r = 255, g = 255, b = 255;
+      if (d2 < 0.72) {
+        const ring = Math.sin(Math.sqrt(d2) * (8 + (h % 5)) + (mode * 1.1));
+        const angle = Math.atan2(dy, dx);
+        const petal = Math.cos(angle * (3 + (h % 4))) * 0.25;
+        if (d2 < 0.28 + petal * 0.2) {
+          r = r1; g = g1; b = b1;
+        } else if (ring > 0) {
+          r = r2; g = g2; b = b2;
+        } else {
+          r = Math.round((r1 + 255 * 2) / 3);
+          g = Math.round((g1 + 255 * 2) / 3);
+          b = Math.round((b1 + 255 * 2) / 3);
+        }
+      }
+      raw[px] = r; raw[px + 1] = g; raw[px + 2] = b;
+    }
+  }
+  const cs = new CompressionStream("deflate");
+  const writer = cs.writable.getWriter();
+  writer.write(raw);
+  writer.close();
+  const idatData = new Uint8Array(await new Response(cs.readable).arrayBuffer());
+  const sig = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
+  const ihdr = new Uint8Array(13);
+  ihdr.set(u32be(W), 0);
+  ihdr.set(u32be(H), 4);
+  ihdr[8] = 8; ihdr[9] = 2;
+  const c1 = chunk("IHDR", ihdr);
+  const c2 = chunk("IDAT", idatData);
+  const c3 = chunk("IEND", new Uint8Array(0));
+  const png = new Uint8Array(sig.length + c1.length + c2.length + c3.length);
+  png.set(sig, 0);
+  png.set(c1, sig.length);
+  png.set(c2, sig.length + c1.length);
+  png.set(c3, sig.length + c1.length + c2.length);
+  let bin = "";
+  for (let i = 0; i < png.length; i++) bin += String.fromCharCode(png[i]);
+  return btoa(bin);
+};
+Deno.serve({ hostname: Deno.env.get("HOST") ?? "0.0.0.0", port: Number(Deno.env.get("PORT") ?? "8000") }, async (req) => {
+  const url = new URL(req.url);
+  if (url.pathname === "/v1/models" || url.pathname === "/health") {
+    return Response.json({ data: [{ id: "sd-turbo-q4_0" }, { id: "sd-turbo-q8_0" }] });
+  }
+  const raw = await req.text();
+  await new Promise((r) => setTimeout(r, 80));
+  if (raw.includes("NSFW")) {
+    return new Response("8007: Input prompt contains NSFW content.", { status: 400 });
+  }
+  const b64 = await renderSubjectPng(raw);
+  return Response.json({ data: [{ b64_json: b64 }] });
+});
+EOF
+COPY --chmod=755 --from=tarampampam/microcheck:1@sha256:79c187c05bfa67518078bf4db117771942fa8fe107dc79a905861c75ddf28dfa /bin/httpcheck /usr/local/bin/httpcheck
+COPY .bayt/Taskfile.yml .bayt/Taskfile.bayt.yml .bayt/bayt.diffusion.json ./.bayt/
+EXPOSE 8000
+ENTRYPOINT ["sh","-c","deno run --allow-net --allow-env /srv/diffusion.ts"]
+HEALTHCHECK --interval=1s --timeout=5s --retries=30 --start-period=60s CMD ["httpcheck","http://127.0.0.1:8000/v1/models"]
+
+FROM busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223 AS diffusion_bayt_ctxs
+ARG BAYT_DIR
+WORKDIR /monorepo/${BAYT_DIR}
+COPY --parents .bayt/compose.diffusion.yaml .bayt/Dockerfile.diffusion .bayt/bayt.diffusion.json .bayt/Taskfile.yml .bayt/Taskfile.bayt.yml .bayt/process-compose.yaml ./
+ARG SOURCE_DATE_EPOCH
+ARG BAYT_CLAMP=1
+RUN if [ "${BAYT_CLAMP:-1}" != 0 ]; then { w=$(pwd); mkdir -p /.bayt-clamp && find "$w" -exec getfattr -dh {} + > /.bayt-clamp/x && if [ ! -s /.bayt-clamp/x ]; then cd / && cp -a "$w" /.bayt-clamp/w && rm -rf "$w" && mv /.bayt-clamp/w "$w"; fi && rm -rf /.bayt-clamp; } && find /monorepo/${BAYT_DIR} -exec touch -hd @${SOURCE_DATE_EPOCH:-0} {} + && { d=$(dirname /monorepo/${BAYT_DIR}); while [ "$d" != / ]; do touch -hd @${SOURCE_DATE_EPOCH:-0} "$d" || exit; d=$(dirname "$d"); done; }; fi
+FROM scratch AS diffusion_bayt
+COPY --from=diffusion_bayt_ctxs /monorepo /monorepo

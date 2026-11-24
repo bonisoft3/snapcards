@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "bridges": {},
+  "effects": {
+    "print-quote": "prodigi",
+    "print-quote-br": "cloudprinter",
+    "print-fx": "stripe",
+    "print-session": "stripe",
+    "print-check": "stripe",
+    "print-place": "prodigi",
+    "print-place-br": "cloudprinter",
+    "print-status": "prodigi",
+    "print-status-br": "cloudprinter",
+    "print-confirm": "mail",
+    "print-record": "mail",
+    "print-shipped": "mail",
+    "print-alert": "mail"
+  }
+}

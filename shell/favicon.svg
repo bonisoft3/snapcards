@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>Snapcards capybara</title>
+  <path d="M14 25C7 23 7 14 11 11C16 8 21 14 23 20M50 25C57 23 57 14 53 11C48 8 43 14 41 20" fill="#B97B3C" stroke="#66452D" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M12 36C12 20 20 13 32 13S52 20 52 36L57 44C59 54 48 60 32 60S5 54 7 44Z" fill="#E5A744" stroke="#66452D" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M17 22Q21 18 25 21M39 21Q43 18 47 22" stroke="#B67C35" stroke-width="2.5" stroke-linecap="round"/>
+  <ellipse cx="20" cy="30" rx="4" ry="6" fill="#FFE1A0"/>
+  <ellipse cx="44" cy="30" rx="4" ry="6" fill="#FFE1A0"/>
+  <ellipse cx="20.5" cy="30" rx="2.5" ry="4" fill="#2F2921"/>
+  <ellipse cx="43.5" cy="30" rx="2.5" ry="4" fill="#2F2921"/>
+  <circle cx="21" cy="28" r="1" fill="white"/>
+  <circle cx="44" cy="28" r="1" fill="white"/>
+  <path d="M21 41C21 34 25 32 32 32S43 34 43 41V47C43 54 21 54 21 47Z" fill="#D8B171"/>
+  <path d="M23 39C23 34 41 34 41 39L38 45H26Z" fill="#897044"/>
+  <ellipse cx="27" cy="40" rx="2" ry="3" transform="rotate(-25 27 40)" fill="#302B23"/>
+  <ellipse cx="37" cy="40" rx="2" ry="3" transform="rotate(25 37 40)" fill="#302B23"/>
+  <path d="M32 44V49M22 49Q27 54 32 49Q37 54 42 49" stroke="#503925" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,18 @@
+# generated from bayt.cue — do not edit
+FROM redis:8.4.8-trixie@sha256:90cb779e1f814f1123532293f7a7a18a6a48bdc01aa0a9d54ce9f3d61b71018f AS redis
+ARG BAYT_DIR
+WORKDIR /data
+COPY .bayt/Taskfile.yml .bayt/Taskfile.bayt.yml .bayt/bayt.redis.json ./.bayt/
+EXPOSE 6379
+CMD ["sh", "-c", "exec redis-server --save '' --appendonly no --maxmemory \"${REDIS_MAXMEMORY:-256mb}\" --maxmemory-policy noeviction"]
+HEALTHCHECK --interval=5s --timeout=3s --retries=6 --start-period=10s CMD redis-cli ping | grep PONG
+
+FROM busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223 AS redis_bayt_ctxs
+ARG BAYT_DIR
+WORKDIR /monorepo/${BAYT_DIR}
+COPY --parents .bayt/compose.redis.yaml .bayt/Dockerfile.redis .bayt/bayt.redis.json .bayt/Taskfile.yml .bayt/Taskfile.bayt.yml .bayt/process-compose.yaml ./
+ARG SOURCE_DATE_EPOCH
+ARG BAYT_CLAMP=1
+RUN if [ "${BAYT_CLAMP:-1}" != 0 ]; then { w=$(pwd); mkdir -p /.bayt-clamp && find "$w" -exec getfattr -dh {} + > /.bayt-clamp/x && if [ ! -s /.bayt-clamp/x ]; then cd / && cp -a "$w" /.bayt-clamp/w && rm -rf "$w" && mv /.bayt-clamp/w "$w"; fi && rm -rf /.bayt-clamp; } && find /monorepo/${BAYT_DIR} -exec touch -hd @${SOURCE_DATE_EPOCH:-0} {} + && { d=$(dirname /monorepo/${BAYT_DIR}); while [ "$d" != / ]; do touch -hd @${SOURCE_DATE_EPOCH:-0} "$d" || exit; d=$(dirname "$d"); done; }; fi
+FROM scratch AS redis_bayt
+COPY --from=redis_bayt_ctxs /monorepo /monorepo

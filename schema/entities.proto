@@ -1,0 +1,382 @@
+syntax = "proto3";
+package pronto.entities;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+
+message AppUser {
+  optional string id = 1 [json_name = "id"];
+  optional string handle = 2 [json_name = "handle"];
+  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
+}
+
+message BrowserDraft {
+  optional string id = 1 [json_name = "id"];
+  optional string topic = 2 [json_name = "topic"];
+  optional string locale = 3 [json_name = "locale"];
+  optional string status = 4 [json_name = "status"];
+  optional string w0 = 5 [json_name = "w0"];
+  optional string w1 = 6 [json_name = "w1"];
+  optional string w2 = 7 [json_name = "w2"];
+  optional string w3 = 8 [json_name = "w3"];
+  optional string w4 = 9 [json_name = "w4"];
+  optional string set_id = 10 [json_name = "set_id"];
+  optional string run = 11 [json_name = "run"];
+}
+
+message CardArt {
+  optional string id = 1 [json_name = "id"];
+  optional string card_id = 2 [json_name = "card_id"];
+  optional string set_id = 3 [json_name = "set_id"];
+  optional string run = 4 [json_name = "run"];
+  optional int32 level = 5 [json_name = "level"];
+  optional int32 position = 6 [json_name = "position"];
+  reserved 7;
+  reserved "subject";
+  reserved 8;
+  reserved "frame_percent";
+  optional string status = 9 [json_name = "status"];
+  optional string detail = 10 [json_name = "detail"];
+  optional string description = 11 [json_name = "description"];
+  optional int32 redraws = 12 [json_name = "redraws"];
+}
+
+message CardDelete {
+  optional string id = 1 [json_name = "id"];
+  optional string state = 2 [json_name = "state"];
+}
+
+message CardSet {
+  optional string id = 1 [json_name = "id"];
+  optional string name = 2 [json_name = "name"];
+  optional string category = 3 [json_name = "category"];
+  optional string locale = 4 [json_name = "locale"];
+  optional string region = 5 [json_name = "region"];
+  optional int32 count = 6 [json_name = "count"];
+  reserved 7;
+  reserved "favorite";
+  optional string cover_emoji = 8 [json_name = "cover_emoji"];
+  optional string details = 9 [json_name = "details"];
+  optional string device = 10 [json_name = "device"];
+  optional string owner = 11 [json_name = "owner"];
+  optional string audience_key = 12 [json_name = "audience_key"];
+  optional string audience = 13 [json_name = "audience"];
+  optional int32 number = 14 [json_name = "number"];
+}
+
+message CardTranslation {
+  optional string id = 1 [json_name = "id"];
+  optional string card_id = 2 [json_name = "card_id"];
+  optional string set_id = 3 [json_name = "set_id"];
+  optional string lang = 4 [json_name = "lang"];
+  optional string word = 5 [json_name = "word"];
+}
+
+message DeckLevel {
+  optional string id = 1 [json_name = "id"];
+  optional string set_id = 2 [json_name = "set_id"];
+  optional int32 level = 3 [json_name = "level"];
+  optional string run = 4 [json_name = "run"];
+  optional int32 total = 5 [json_name = "total"];
+  optional int32 drawn = 6 [json_name = "drawn"];
+  optional int32 failed = 7 [json_name = "failed"];
+  optional int32 unknown = 8 [json_name = "unknown"];
+  optional int32 pending = 9 [json_name = "pending"];
+  optional string status = 10 [json_name = "status"];
+}
+
+message DeckPressSeat {
+  optional string id = 1 [json_name = "id"];
+  optional string instance_id = 2 [json_name = "instance_id"];
+  optional string actor = 3 [json_name = "actor"];
+  optional string seat = 4 [json_name = "seat"];
+  optional int64 revision = 5 [json_name = "revision"];
+  optional string phase = 6 [json_name = "phase"];
+  google.protobuf.Value view = 7 [json_name = "view"];
+}
+
+message DeckProgress {
+  optional string id = 1 [json_name = "id"];
+  optional string run = 2 [json_name = "run"];
+  optional string status = 3 [json_name = "status"];
+}
+
+message DeckStats {
+  optional string deck_id = 1 [json_name = "deck_id"];
+  optional int32 favorite_count = 2 [json_name = "favorite_count"];
+  optional int64 counted_txid = 3 [json_name = "counted_txid"];
+  optional string cover = 4 [json_name = "cover"];
+}
+
+message DeckTranslation {
+  optional string id = 1 [json_name = "id"];
+  optional string set_id = 2 [json_name = "set_id"];
+  optional string lang = 3 [json_name = "lang"];
+  optional string name = 4 [json_name = "name"];
+  optional string category = 5 [json_name = "category"];
+}
+
+message DeliveryChoice {
+  optional string id = 1 [json_name = "id"];
+  optional string source = 2 [json_name = "source"];
+  optional string label = 3 [json_name = "label"];
+}
+
+message DeliveryDraft {
+  optional string id = 1 [json_name = "id"];
+  optional string step = 2 [json_name = "step"];
+  optional string text = 3 [json_name = "text"];
+  optional string search_q = 16 [json_name = "search_q"];
+  optional string address_q = 17 [json_name = "address_q"];
+  optional string pin_latitude = 4 [json_name = "pin_latitude"];
+  optional string pin_longitude = 5 [json_name = "pin_longitude"];
+  optional string pin_source = 6 [json_name = "pin_source"];
+  optional string pin_q = 7 [json_name = "pin_q"];
+  optional string near = 18 [json_name = "near"];
+  optional string recipient = 8 [json_name = "recipient"];
+  optional string phone = 19 [json_name = "phone"];
+  optional string phone_country = 27 [json_name = "phone_country"];
+  optional string email = 20 [json_name = "email"];
+  optional string line1 = 9 [json_name = "line1"];
+  optional string line2 = 10 [json_name = "line2"];
+  optional string district = 21 [json_name = "district"];
+  optional string city = 11 [json_name = "city"];
+  optional string region = 12 [json_name = "region"];
+  optional string postal_code = 13 [json_name = "postal_code"];
+  optional string country = 14 [json_name = "country"];
+  optional string instructions = 15 [json_name = "instructions"];
+  optional string pin_stale = 22 [json_name = "pin_stale"];
+  optional string line2_stale = 23 [json_name = "line2_stale"];
+  optional string line2_ghost = 24 [json_name = "line2_ghost"];
+  optional string search_stale = 25 [json_name = "search_stale"];
+  optional string order_id = 26 [json_name = "order_id"];
+  optional string tax_id = 28 [json_name = "tax_id"];
+}
+
+message Device {
+  optional string id = 1 [json_name = "id"];
+  optional string key = 2 [json_name = "key"];
+  optional string theme = 3 [json_name = "theme"];
+}
+
+message Favorite {
+  optional string id = 1 [json_name = "id"];
+  optional string user_id = 2 [json_name = "user_id"];
+  optional string deck_id = 3 [json_name = "deck_id"];
+  google.protobuf.Timestamp created_at = 4 [json_name = "created_at"];
+  google.protobuf.Timestamp deleted_at = 5 [json_name = "deleted_at"];
+}
+
+message FavoriteCount {
+  optional string id = 1 [json_name = "id"];
+  optional string user_id = 2 [json_name = "user_id"];
+  optional string deck_id = 3 [json_name = "deck_id"];
+  optional int32 mine_counted = 4 [json_name = "mine_counted"];
+  optional int32 total_at_read = 5 [json_name = "total_at_read"];
+  optional int64 as_of_txid = 6 [json_name = "as_of_txid"];
+}
+
+message Flashcard {
+  optional string id = 1 [json_name = "id"];
+  optional string set_id = 2 [json_name = "set_id"];
+  optional string front = 3 [json_name = "front"];
+  optional string back = 4 [json_name = "back"];
+  optional string hint = 5 [json_name = "hint"];
+  optional string difficulty = 6 [json_name = "difficulty"];
+  optional string emoji = 7 [json_name = "emoji"];
+  optional string color = 8 [json_name = "color"];
+  optional string description = 9 [json_name = "description"];
+  optional string redraw = 10 [json_name = "redraw"];
+  optional string owner = 11 [json_name = "owner"];
+}
+
+message GenerationAsk {
+  optional string id = 1 [json_name = "id"];
+  optional string set_id = 2 [json_name = "set_id"];
+  optional string run = 3 [json_name = "run"];
+  optional string input = 4 [json_name = "input"];
+  google.protobuf.Timestamp created_at = 5 [json_name = "created_at"];
+}
+
+message GenerationDraft {
+  optional string id = 1 [json_name = "id"];
+  optional string topic = 2 [json_name = "topic"];
+  optional string category = 3 [json_name = "category"];
+  optional string locale = 4 [json_name = "locale"];
+  optional string region = 5 [json_name = "region"];
+  optional int32 card_count = 6 [json_name = "card_count"];
+  optional string status = 7 [json_name = "status"];
+  optional string set_id = 8 [json_name = "set_id"];
+  optional string details = 9 [json_name = "details"];
+}
+
+message GenerationForm {
+  optional string id = 1 [json_name = "id"];
+  optional string topic = 2 [json_name = "topic"];
+  optional string category = 3 [json_name = "category"];
+  optional string locale = 4 [json_name = "locale"];
+  optional string region = 5 [json_name = "region"];
+  optional int32 card_count = 6 [json_name = "card_count"];
+  optional string status = 7 [json_name = "status"];
+  optional string set_id = 8 [json_name = "set_id"];
+  optional string details = 9 [json_name = "details"];
+  optional string words = 10 [json_name = "words"];
+  optional int32 next = 11 [json_name = "next"];
+  optional string audience_key = 12 [json_name = "audience_key"];
+  optional string audience = 13 [json_name = "audience"];
+  reserved 14;
+  reserved "asked";
+  reserved 15;
+  reserved "ended";
+  optional string run = 16 [json_name = "run"];
+}
+
+message LocalizedCard {
+  optional string id = 1 [json_name = "id"];
+  optional string set_id = 2 [json_name = "set_id"];
+  optional string front = 3 [json_name = "front"];
+  optional string original_front = 4 [json_name = "original_front"];
+  optional string emoji = 5 [json_name = "emoji"];
+}
+
+message LocalizedDeck {
+  optional string id = 1 [json_name = "id"];
+  optional string name = 2 [json_name = "name"];
+  optional string original_name = 3 [json_name = "original_name"];
+  optional string category = 4 [json_name = "category"];
+  optional string cover_emoji = 5 [json_name = "cover_emoji"];
+  optional int32 count = 6 [json_name = "count"];
+  optional string locale = 7 [json_name = "locale"];
+  optional string region = 8 [json_name = "region"];
+  reserved 9;
+  reserved "favorite";
+  optional string owner = 17 [json_name = "owner"];
+  optional int32 number = 18 [json_name = "number"];
+  reserved 10;
+  reserved "art";
+  reserved 11;
+  reserved "art1";
+  reserved 12;
+  reserved "art2";
+  reserved 13;
+  reserved "art3";
+  reserved 14;
+  reserved "art1_count";
+  reserved 15;
+  reserved "art2_count";
+  reserved 16;
+  reserved "art3_count";
+}
+
+message Me {
+  optional string id = 1 [json_name = "id"];
+}
+
+message NextPicture {
+  optional string id = 1 [json_name = "id"];
+  optional string back = 2 [json_name = "back"];
+}
+
+message PlaceAnswer {
+  optional string id = 1 [json_name = "id"];
+  optional string kind = 2 [json_name = "kind"];
+  optional string q = 3 [json_name = "q"];
+  optional string lang = 4 [json_name = "lang"];
+  optional string p0 = 5 [json_name = "p0"];
+  optional string p1 = 6 [json_name = "p1"];
+  optional string p2 = 7 [json_name = "p2"];
+  optional string p3 = 8 [json_name = "p3"];
+  optional string p4 = 9 [json_name = "p4"];
+}
+
+message PlaceSuggestion {
+  optional string id = 1 [json_name = "id"];
+  optional string label = 2 [json_name = "label"];
+  optional string line1 = 3 [json_name = "line1"];
+  optional string city = 4 [json_name = "city"];
+  optional string region = 5 [json_name = "region"];
+  optional string postal_code = 6 [json_name = "postal_code"];
+  optional string country = 7 [json_name = "country"];
+  optional string latitude = 8 [json_name = "latitude"];
+  optional string longitude = 9 [json_name = "longitude"];
+  optional string district = 11 [json_name = "district"];
+  optional string q = 10 [json_name = "q"];
+}
+
+message PlaySession {
+  optional string id = 1 [json_name = "id"];
+  optional string set_id = 2 [json_name = "set_id"];
+  optional int32 card_index = 3 [json_name = "card_index"];
+  optional string flipped = 4 [json_name = "flipped"];
+  optional int32 mastered = 5 [json_name = "mastered"];
+  optional int32 total = 6 [json_name = "total"];
+  optional string status = 7 [json_name = "status"];
+  optional string front = 8 [json_name = "front"];
+  optional string back = 9 [json_name = "back"];
+  optional string hint = 10 [json_name = "hint"];
+  optional string emoji = 11 [json_name = "emoji"];
+  optional string card_id = 12 [json_name = "card_id"];
+  optional string original_front = 13 [json_name = "original_front"];
+  optional string translation_failed_topic = 14 [json_name = "translation_failed_topic"];
+  optional string library_query = 15 [json_name = "library_query"];
+  reserved 16;
+  reserved "library_filter";
+  optional string finished = 17 [json_name = "finished"];
+}
+
+message PrintConfig {
+  optional string id = 1 [json_name = "id"];
+  optional string set_id = 2 [json_name = "set_id"];
+  optional string paper = 3 [json_name = "paper"];
+  optional string card_size = 4 [json_name = "card_size"];
+  optional string layout = 5 [json_name = "layout"];
+  optional string cut_lines = 6 [json_name = "cut_lines"];
+  optional string orientation = 7 [json_name = "orientation"];
+  optional string vendor = 8 [json_name = "vendor"];
+  optional string stock = 9 [json_name = "stock"];
+}
+
+message PrintOrder {
+  optional string id = 1 [json_name = "id"];
+  optional string owner_id = 2 [json_name = "owner_id"];
+  optional string status = 3 [json_name = "status"];
+  google.protobuf.Timestamp created_at = 4 [json_name = "created_at"];
+  optional string title = 5 [json_name = "title"];
+  optional string stock = 6 [json_name = "stock"];
+  optional int32 cards = 7 [json_name = "cards"];
+  optional string country = 8 [json_name = "country"];
+  google.protobuf.Value delivery = 9 [json_name = "delivery"];
+  google.protobuf.Value artwork = 10 [json_name = "artwork"];
+  optional int32 item = 11 [json_name = "item"];
+  optional int32 shipping = 12 [json_name = "shipping"];
+  optional int32 total = 13 [json_name = "total"];
+  optional int32 cost = 14 [json_name = "cost"];
+  optional string currency = 15 [json_name = "currency"];
+  optional string sku = 16 [json_name = "sku"];
+  optional string shipping_method = 17 [json_name = "shipping_method"];
+  optional string session_id = 18 [json_name = "session_id"];
+  optional string checkout_url = 19 [json_name = "checkout_url"];
+  optional int32 checks = 20 [json_name = "checks"];
+  optional string payment_state = 21 [json_name = "payment_state"];
+  optional string payment_intent = 22 [json_name = "payment_intent"];
+  optional string customer_email = 23 [json_name = "customer_email"];
+  google.protobuf.Timestamp paid_at = 24 [json_name = "paid_at"];
+  optional string vendor_order_id = 25 [json_name = "vendor_order_id"];
+  optional string vendor_state = 26 [json_name = "vendor_state"];
+  optional int32 vendor_checks = 27 [json_name = "vendor_checks"];
+  optional string failure = 28 [json_name = "failure"];
+  optional int32 cost_shipping = 29 [json_name = "cost_shipping"];
+  optional string fx_quote = 30 [json_name = "fx_quote"];
+  google.protobuf.Value fx_rates = 31 [json_name = "fx_rates"];
+  optional int32 fx_brl = 32 [json_name = "fx_brl"];
+  google.protobuf.Timestamp opened_at = 33 [json_name = "opened_at"];
+  optional string print_file = 34 [json_name = "print_file"];
+  optional string postal_code = 35 [json_name = "postal_code"];
+  optional string cover_file = 36 [json_name = "cover_file"];
+  optional string mail_message_id = 37 [json_name = "mail_message_id"];
+  optional string tracking_carrier = 38 [json_name = "tracking_carrier"];
+  optional string tracking_number = 39 [json_name = "tracking_number"];
+  optional string tracking_url = 40 [json_name = "tracking_url"];
+  google.protobuf.Timestamp shipped_at = 41 [json_name = "shipped_at"];
+}

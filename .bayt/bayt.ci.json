@@ -1,0 +1,2218 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": false,
+    "manual": false,
+    "build": {
+      "additional_contexts": {
+        "workspaceroot-pronto-sources_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:workspaceroot-pronto-sources_srcs}",
+        "libraries_mecha-database-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-database-image_bayt}",
+        "libraries_mecha-extensions-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-extensions-image_bayt}",
+        "libraries_mecha-mesh-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-mesh-image_bayt}",
+        "libraries_mecha-conduit-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-conduit-image_bayt}",
+        "libraries_mecha-auth-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-auth-image_bayt}",
+        "libraries_mecha-ticker-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-ticker-image_bayt}",
+        "libraries_mecha-clock-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-clock-image_bayt}",
+        "libraries_mecha-compute-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-compute-image_bayt}",
+        "libraries_mecha-airlock-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-airlock-image_bayt}",
+        "libraries_mecha-activepieces-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-activepieces-image_bayt}",
+        "libraries_mecha-database-image_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-database-image_srcs}",
+        "libraries_mecha-extensions-image_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-extensions-image_srcs}",
+        "libraries_mecha-mesh-image_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-mesh-image_srcs}",
+        "libraries_mecha-auth-image_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-auth-image_srcs}",
+        "libraries_mecha-ticker-image_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-ticker-image_srcs}",
+        "libraries_mecha-clock-image_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-clock-image_srcs}",
+        "libraries_mecha-compute-image_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-compute-image_srcs}",
+        "libraries_mecha-airlock-image_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-airlock-image_srcs}",
+        "libraries_mecha-activepieces-image_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-activepieces-image_srcs}",
+        "plugins_omnishell-runtime-image_srcs": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:plugins_omnishell-runtime-image_srcs}",
+        "plugins_omnishell-runtime-image_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:plugins_omnishell-runtime-image_bayt}",
+        "workspaceroot-pronto-sources_bayt": "${MONOREPO_COMPOSE_MODE:-docker-image://busybox:musl@sha256:03db190ed4c1ceb1c55d179a0940e2d71d42130636a780272629735893292223}${MONOREPO_COMPOSE_MODE:+:workspaceroot-pronto-sources_bayt}"
+      },
+      "secrets": [],
+      "args": {
+        "MONOREPO_COMPOSE_MODE": "${MONOREPO_COMPOSE_MODE:-}",
+        "BAYT_RUNTIME": "${BAYT_RUNTIME:-}"
+      }
+    },
+    "environment": {},
+    "ports": [],
+    "volumes": [],
+    "depends_on": {}
+  },
+  "dockerfile": {
+    "preamble": [
+      "COPY --from=bonitao/lazybox:0.8.6@sha256:0f30c48513fac757f844f02c864802991dec045f9c4189e3db2ae4ac297544df /lazybox/ /root/.local/share/lazybox/",
+      "COPY --from=alpine/socat:1.8.0.0@sha256:a6be4c0262b339c53ddad723cdd178a1a13271e1137c65e27f90a08c16de02b8 /usr/bin/socat1 /usr/local/bin/socat",
+      "COPY --from=alpine/socat:1.8.0.0@sha256:a6be4c0262b339c53ddad723cdd178a1a13271e1137c65e27f90a08c16de02b8 /usr/lib/libreadline.so.8 /usr/lib/libncursesw.so.6 /usr/lib/",
+      "ENV PATH=$PATH:/root/.local/bin:/root/.local/share/lazybox/bin",
+      "COPY <<'BKID_MISE' /opt/bkid/mise.toml\n[settings]\nexperimental = true\ngithub_attestations = false\nlocked = true\nlockfile = true\nslsa = false\n\n[settings.github]\ngithub_attestations = false\nslsa = false\n\n[tools]\n'github:depot/cli' = '2.102.25'\n'github:go-task/task' = 'v3.54.0'\nBKID_MISE\nCOPY <<'BKID_LOCK' /opt/bkid/mise.lock\n[tools]\n[[tools.'github:depot/cli']]\nbackend = 'github:depot/cli'\nversion = '2.102.25'\n\n[tools.'github:depot/cli'.platforms]\n[tools.'github:depot/cli'.platforms.linux-arm64]\nchecksum = 'sha256:52abe04ef24cd06f2ed37e15dbaa1d52d282db26ead04ff2493faf181347d6eb'\nurl = 'https://github.com/depot/cli/releases/download/v2.102.25/depot_2.102.25_linux_arm64.tar.gz'\nurl_api = 'https://api.github.com/repos/depot/cli/releases/assets/660782767'\n\n[tools.'github:depot/cli'.platforms.linux-arm64-musl]\nchecksum = 'sha256:52abe04ef24cd06f2ed37e15dbaa1d52d282db26ead04ff2493faf181347d6eb'\nurl = 'https://github.com/depot/cli/releases/download/v2.102.25/depot_2.102.25_linux_arm64.tar.gz'\nurl_api = 'https://api.github.com/repos/depot/cli/releases/assets/660782767'\n\n[tools.'github:depot/cli'.platforms.linux-x64]\nchecksum = 'sha256:b62952f5951a0bcd4f48597b59fe29a4b7d84cac4e82710ee19d79262bf271af'\nurl = 'https://github.com/depot/cli/releases/download/v2.102.25/depot_2.102.25_linux_amd64.tar.gz'\nurl_api = 'https://api.github.com/repos/depot/cli/releases/assets/660782770'\n\n[tools.'github:depot/cli'.platforms.linux-x64-musl]\nchecksum = 'sha256:b62952f5951a0bcd4f48597b59fe29a4b7d84cac4e82710ee19d79262bf271af'\nurl = 'https://github.com/depot/cli/releases/download/v2.102.25/depot_2.102.25_linux_amd64.tar.gz'\nurl_api = 'https://api.github.com/repos/depot/cli/releases/assets/660782770'\n\n[[tools.'github:go-task/task']]\nbackend = 'github:go-task/task'\nversion = 'v3.54.0'\n\n[tools.'github:go-task/task'.platforms]\n[tools.'github:go-task/task'.platforms.linux-arm64]\nchecksum = 'sha256:d7189d439d4a6058e39e1b2acd7c8b27acd4856691b408f23b242e4294e1df5b'\nurl = 'https://github.com/go-task/task/releases/download/v3.54.0/task_linux_arm64.tar.gz'\nurl_api = 'https://api.github.com/repos/go-task/task/releases/assets/604090041'\n\n[tools.'github:go-task/task'.platforms.linux-arm64-musl]\nchecksum = 'sha256:d7189d439d4a6058e39e1b2acd7c8b27acd4856691b408f23b242e4294e1df5b'\nurl = 'https://github.com/go-task/task/releases/download/v3.54.0/task_linux_arm64.tar.gz'\nurl_api = 'https://api.github.com/repos/go-task/task/releases/assets/604090041'\n\n[tools.'github:go-task/task'.platforms.linux-x64]\nchecksum = 'sha256:680859dbb4d881a9c72d4d9a8f510825450849af8567deacd7302c01124416fb'\nurl = 'https://github.com/go-task/task/releases/download/v3.54.0/task_linux_amd64.tar.gz'\nurl_api = 'https://api.github.com/repos/go-task/task/releases/assets/604090073'\n\n[tools.'github:go-task/task'.platforms.linux-x64-musl]\nchecksum = 'sha256:680859dbb4d881a9c72d4d9a8f510825450849af8567deacd7302c01124416fb'\nurl = 'https://github.com/go-task/task/releases/download/v3.54.0/task_linux_amd64.tar.gz'\nurl_api = 'https://api.github.com/repos/go-task/task/releases/assets/604090073'\nBKID_LOCK",
+      "COPY --from=bayt . /monorepo/plugins/bayt/runtime",
+      "RUN cd /opt/bkid && mise trust -y && mise install && mise exec -- sh -c 'cp \"$(mise which task)\" /usr/local/bin/task && cp \"$(mise which depot)\" /usr/local/bin/depot'",
+      "ENV PATH=/monorepo/plugins/bayt/runtime:${PATH}",
+      "ARG MONOREPO_COMPOSE_MODE",
+      "ENV MONOREPO_COMPOSE_MODE=$MONOREPO_COMPOSE_MODE",
+      "ARG BAYT_RUNTIME",
+      "ENV BAYT_RUNTIME=$BAYT_RUNTIME"
+    ],
+    "preambleCopyContexts": [
+      {
+        "name": "bayt",
+        "image": "bonitao/bayt-runtime:1.5.3@sha256:9560b4a6d6e40fe15a951ef14b5d10dcd613c3efa73ef1847072add962d60760"
+      },
+      {
+        "name": "alpine/socat:1.8.0.0@sha256:a6be4c0262b339c53ddad723cdd178a1a13271e1137c65e27f90a08c16de02b8"
+      },
+      {
+        "name": "alpine/socat:1.8.0.0@sha256:a6be4c0262b339c53ddad723cdd178a1a13271e1137c65e27f90a08c16de02b8"
+      }
+    ],
+    "from": {
+      "name": "docker:29.9.1-cli@sha256:6fae2214c3121a28d5aa639d09032f61310b7c9c75ffbad1025f261a1b621800"
+    },
+    "add": [],
+    "mounts": [],
+    "secrets": {
+      "docker_host": {
+        "environment": "DOCKER_HOST_TCP"
+      },
+      "buildx_builder": {
+        "environment": "BUILDX_BUILDER"
+      },
+      "buildx_instance": {
+        "environment": "BUILDX_INSTANCE"
+      },
+      "docker_config": {
+        "environment": "DOCKER_AUTH_CONFIG"
+      },
+      "testcontainers_host": {
+        "environment": "TESTCONTAINERS_HOST_OVERRIDE"
+      },
+      "cache_scope": {
+        "environment": "CACHE_SCOPE"
+      },
+      "cache_scope_fallback": {
+        "environment": "CACHE_SCOPE_FALLBACK"
+      },
+      "sayt_buildkit_syntax": {
+        "environment": "BUILDKIT_SYNTAX"
+      },
+      "sayt_no_cache": {
+        "environment": "SAYT_NO_CACHE"
+      },
+      "bayt_image_tag": {
+        "environment": "BAYT_IMAGE_TAG"
+      },
+      "bayt_pull_policy": {
+        "environment": "BAYT_PULL_POLICY"
+      },
+      "sayt_no_cache_from": {
+        "environment": "SAYT_NO_CACHE_FROM"
+      },
+      "sayt_no_cache_to": {
+        "environment": "SAYT_NO_CACHE_TO"
+      },
+      "depot_token": {
+        "environment": "DEPOT_TOKEN"
+      },
+      "depot_project_id": {
+        "environment": "DEPOT_PROJECT_ID"
+      },
+      "depot_org_id": {
+        "environment": "DEPOT_ORG_ID"
+      },
+      "depot_disable_otel": {
+        "environment": "DEPOT_DISABLE_OTEL"
+      },
+      "actions_results_url": {
+        "environment": "ACTIONS_RESULTS_URL"
+      },
+      "actions_runtime_token": {
+        "environment": "ACTIONS_RUNTIME_TOKEN"
+      },
+      "bkid_project": {
+        "environment": "BKID_PROJECT"
+      }
+    },
+    "extra_hosts": [],
+    "epilogue": [],
+    "copy": [
+      {
+        "from": {
+          "name": "libraries_mecha-activepieces-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-activepieces-image_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-airlock-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-airlock-image_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-auth-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-auth-image_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-clock-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-clock-image_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-compute-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-compute-image_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-conduit-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-database-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-database-image_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-extensions-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-extensions-image_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-mesh-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-mesh-image_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-ticker-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "libraries_mecha-ticker-image_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "plugins_omnishell-runtime-image_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "plugins_omnishell-runtime-image_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "workspaceroot-pronto-sources_bayt"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "workspaceroot-pronto-sources_srcs"
+        },
+        "srcs": [
+          "/monorep[o]"
+        ],
+        "dst": "/monorepo/",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "monorepo/*.yaml"
+        ],
+        "dst": "./",
+        "link": true,
+        "parents": true,
+        "exclude": []
+      }
+    ],
+    "healthcheck": null,
+    "expose": [],
+    "entrypoint": null,
+    "incremental": true,
+    "cmd": null
+  },
+  "name": "ci",
+  "project": "snapcards",
+  "dir": ".",
+  "activate": "",
+  "srcs": {
+    "globs": [
+      ".bayt/**"
+    ],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {
+    "BUILDX_BAKE_ENTITLEMENTS_FS": "0",
+    "COMPOSE_BAKE": "true"
+  },
+  "synthetics": {
+    "bayt": {
+      "name": "ci_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.ci.yaml",
+          ".bayt/Dockerfile.ci",
+          ".bayt/bayt.ci.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/Taskfile.ci.yaml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.ci.yaml",
+        "./.bayt/compose.ci-visual.yaml",
+        "./.bayt/compose.ci-replay.yaml",
+        "./.bayt/compose.ci-acceptance.yaml",
+        "./.bayt/compose.ci-checkout-ui.yaml",
+        "./.bayt/compose.ci-commerce.yaml",
+        "./.bayt/compose.airlock.yaml",
+        "./.bayt/compose.airlock-mesh.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.auth.yaml",
+        "./.bayt/compose.browser.yaml",
+        "./.bayt/compose.build.yaml",
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.check-acceptance.yaml",
+        "./.bayt/compose.check-checkout-ui.yaml",
+        "./.bayt/compose.check-commerce.yaml",
+        "./.bayt/compose.checkout-simulator.yaml",
+        "./.bayt/compose.clock.yaml",
+        "./.bayt/compose.cloudprinter-simulator.yaml",
+        "./.bayt/compose.conduit.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.diffusion.yaml",
+        "./.bayt/compose.electric.yaml",
+        "./.bayt/compose.generate.yaml",
+        "./.bayt/compose.imgproxy.yaml",
+        "./.bayt/compose.integrate.yaml",
+        "./.bayt/compose.launch.yaml",
+        "./.bayt/compose.mail-simulator.yaml",
+        "./.bayt/compose.mailpit.yaml",
+        "./.bayt/compose.mesh-events.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.prodigi-simulator.yaml",
+        "./.bayt/compose.rclone-s3.yaml",
+        "./.bayt/compose.redis.yaml",
+        "./.bayt/compose.render.yaml",
+        "./.bayt/compose.seed-blobs.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.setup.yaml",
+        "./.bayt/compose.smollm3.yaml",
+        "./.bayt/compose.ticker.yaml",
+        "./.bayt/compose.timer-check.yaml",
+        "./.bayt/compose.transform.yaml",
+        "./.bayt/compose.tsbifrost.yaml"
+      ]
+    },
+    "outs": {
+      "name": "ci_outs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.ci.yaml",
+        "./.bayt/compose.ci-visual.yaml",
+        "./.bayt/compose.ci-replay.yaml",
+        "./.bayt/compose.ci-acceptance.yaml",
+        "./.bayt/compose.ci-checkout-ui.yaml",
+        "./.bayt/compose.ci-commerce.yaml",
+        "./.bayt/compose.airlock.yaml",
+        "./.bayt/compose.airlock-mesh.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.auth.yaml",
+        "./.bayt/compose.browser.yaml",
+        "./.bayt/compose.build.yaml",
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.check-acceptance.yaml",
+        "./.bayt/compose.check-checkout-ui.yaml",
+        "./.bayt/compose.check-commerce.yaml",
+        "./.bayt/compose.checkout-simulator.yaml",
+        "./.bayt/compose.clock.yaml",
+        "./.bayt/compose.cloudprinter-simulator.yaml",
+        "./.bayt/compose.conduit.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.diffusion.yaml",
+        "./.bayt/compose.electric.yaml",
+        "./.bayt/compose.generate.yaml",
+        "./.bayt/compose.imgproxy.yaml",
+        "./.bayt/compose.integrate.yaml",
+        "./.bayt/compose.launch.yaml",
+        "./.bayt/compose.mail-simulator.yaml",
+        "./.bayt/compose.mailpit.yaml",
+        "./.bayt/compose.mesh-events.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.prodigi-simulator.yaml",
+        "./.bayt/compose.rclone-s3.yaml",
+        "./.bayt/compose.redis.yaml",
+        "./.bayt/compose.render.yaml",
+        "./.bayt/compose.seed-blobs.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.setup.yaml",
+        "./.bayt/compose.smollm3.yaml",
+        "./.bayt/compose.ticker.yaml",
+        "./.bayt/compose.timer-check.yaml",
+        "./.bayt/compose.transform.yaml",
+        "./.bayt/compose.tsbifrost.yaml"
+      ]
+    },
+    "srcs": {
+      "name": "ci_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/**"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [
+        "ci-visual_srcs",
+        "ci-replay_srcs",
+        "ci-acceptance_srcs",
+        "ci-checkout-ui_srcs",
+        "ci-commerce_srcs",
+        "integrate_srcs",
+        "checkout-simulator_srcs",
+        "prodigi-simulator_srcs",
+        "cloudprinter-simulator_srcs",
+        "mail-simulator_srcs",
+        "caddy_srcs",
+        "served_srcs",
+        "seed-blobs_srcs",
+        "render_srcs",
+        "database_srcs",
+        "migrate_srcs",
+        "conduit_srcs",
+        "transform_srcs",
+        "airlock_srcs",
+        "airlock-mesh_srcs",
+        "setup_srcs",
+        "check-acceptance_srcs",
+        "browser_srcs",
+        "check-checkout-ui_srcs",
+        "check-commerce_srcs"
+      ],
+      "transitiveCrossDeps": [
+        {
+          "project": "snapcards",
+          "name": "ci-replay_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              ".bayt/process-compose.yaml",
+              ".pronto/cluster.json",
+              "services/database/migrations/**",
+              "tests/[r]eplay.json",
+              "tests/[r]eplay/**"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "integrate_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "shell/shell.yaml",
+              "screens/cards.html",
+              "shell/screens/cards.css",
+              "screens/generate.html",
+              "shell/screens/generate.css",
+              "screens/explore.html",
+              "shell/screens/explore.css",
+              "shell/screens/deck.html",
+              "shell/screens/deck.css",
+              "screens/card.html",
+              "shell/screens/card.css",
+              "screens/print.html",
+              "shell/screens/print.css",
+              "shell/screens/about.html",
+              "shell/screens/about.css"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "checkout-simulator_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "commerce/simulator.ts",
+              "commerce/provider.ts"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "prodigi-simulator_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "commerce/prodigi-simulator.ts",
+              "commerce/catalogue.ts"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "cloudprinter-simulator_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "commerce/cloudprinter-simulator.ts",
+              "commerce/catalogue.ts"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "mail-simulator_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "commerce/mail-simulator.ts"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "caddy_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "docker/Caddyfile"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "served_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "shell/index.html",
+              "shell/shell.css",
+              "shell/boot.js",
+              "offline-first-sw.js",
+              "shell/shell.yaml",
+              "shell/shell.json",
+              "shell/design.css",
+              "screens/cards.html",
+              "shell/screens/cards.css",
+              "screens/generate.html",
+              "shell/screens/generate.css",
+              "screens/explore.html",
+              "shell/screens/explore.css",
+              "shell/screens/deck.html",
+              "shell/screens/deck.css",
+              "screens/card.html",
+              "shell/screens/card.css",
+              "screens/print.html",
+              "shell/screens/print.css",
+              "shell/screens/about.html",
+              "shell/screens/about.css",
+              "shell/handlers/count-step.js",
+              "shell/handlers/create_set.js",
+              "shell/handlers/delivery_accept.js",
+              "shell/handlers/delivery_address_q.js",
+              "shell/handlers/delivery_found.js",
+              "shell/handlers/delivery_offers.js",
+              "shell/handlers/delivery_pin.js",
+              "shell/handlers/delivery_submitted.js",
+              "shell/handlers/generation-input.js",
+              "shell/handlers/is_key.js",
+              "shell/handlers/legacy-generation-run.js",
+              "shell/handlers/localize_content.js",
+              "shell/handlers/play_master.js",
+              "shell/handlers/play_next.js",
+              "shell/handlers/play_prev.js",
+              "shell/handlers/play_restart.js",
+              "shell/handlers/play_select.js",
+              "shell/handlers/print_select.js",
+              "shell/handlers/row-is.js",
+              "shell/handlers/tab-fill.js",
+              "shell/handlers/value-is.js",
+              "shell/shared/address-formats.css",
+              "shell/shared/card-art.css",
+              "shell/shared/chrome-ready.css",
+              "shell/shared/chrome.css",
+              "shell/shared/nav.css",
+              "shell/shared/translation-feedback.css",
+              "pipelines/favorite-recount.js",
+              "shell/hatches/print-checkout.js",
+              "shell/hatches/window-print.js",
+              "shell/units/ai-browser/unit.js",
+              "shell/units/delivery-map/index.html",
+              "shell/units/delivery-map/vendor/maplibre-gl.css",
+              "shell/units/delivery-map/vendor/maplibre-gl.js",
+              "shell/units/geocoder/unit.js",
+              "shell/units/print-payment/index.html",
+              "messages/pt.json",
+              "messages/es.json",
+              "messages/en.json",
+              "messages/he.json",
+              "messages/zh.json",
+              "documents/about/index.html",
+              "documents/en/about/index.html",
+              "documents/es/about/index.html",
+              "documents/he/about/index.html",
+              "documents/zh/about/index.html",
+              "shell/shared/fonts/nunito-latin-wght-normal.woff2",
+              "shell/shared/fonts/nunito-latin-wght-italic.woff2",
+              "shell/shared/fonts/nunito-latin-ext-wght-normal.woff2",
+              "shell/shared/fonts/nunito-latin-ext-wght-italic.woff2",
+              "shell/shared/fonts/dm-sans-latin-wght-normal.woff2",
+              "shell/shared/fonts/dm-sans-latin-wght-italic.woff2",
+              "shell/shared/fonts/dm-sans-latin-ext-wght-normal.woff2",
+              "shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2",
+              "brief.md",
+              "brief.html",
+              "journal.html",
+              "ir.html",
+              "ir/card.css",
+              "acceptance.md",
+              "DESIGN.md",
+              "ir/neighbourhood-about.svg",
+              "ir/neighbourhood-app.svg",
+              "ir/neighbourhood-card.svg",
+              "ir/neighbourhood-cards.svg",
+              "ir/neighbourhood-deck.svg",
+              "ir/neighbourhood-explore.svg",
+              "ir/neighbourhood-generate.svg",
+              "ir/neighbourhood-print.svg",
+              "journal/2026-10-28-audience-en.png",
+              "journal/2026-10-28-card-navigation-en.png",
+              "journal/2026-10-28-cold-navigation-after.png",
+              "journal/2026-10-28-cold-navigation-during.png",
+              "journal/2026-10-28-deck-entry-en.png",
+              "journal/2026-10-28-language-switch-en.png",
+              "journal/2026-10-28-library-search-after.png",
+              "journal/2026-10-28-library-search-before.png",
+              "journal/2026-10-28-north-pole-he.png",
+              "journal/2026-10-28-rib-route-pt.png",
+              "journal/2026-10-28-study-layout-laptop.png",
+              "journal/2026-10-28-translation-glow-first.png",
+              "journal/2026-10-28-translation-glow-peak.png",
+              "journal/2026-10-28-translation-glow-reduced.png",
+              "journal/2026-10-29-mobile-hero-after.png",
+              "journal/2026-10-29-mobile-hero-before.png",
+              "journal/2026-10-30-delete-armed-pt.png",
+              "journal/2026-10-30-edit-sheet-drawn-pt.png",
+              "journal/2026-10-30-edit-sheet-pt.png",
+              "journal/2026-10-30-edit-sheet-refused-pt.png",
+              "journal/2026-10-30-title-details-pt.png",
+              "journal/2026-10-31-edit-after-reload-pt.png",
+              "journal/2026-10-31-favorite-count-pt.png",
+              "journal/2026-10-31-progress-settled-pt.png",
+              "journal/2026-10-31-progress-start-pt.png",
+              "journal/2026-11-05-cortex-generation.png",
+              "journal/2026-11-05-cortex-phone-recovery.png",
+              "journal/2026-11-05-cortex-print.png",
+              "journal/2026-11-07-presentation-watch.html",
+              "journal/2026-11-07-presentation-watch.json",
+              "journal/2026-11-07-presentation-watch.png",
+              "journal/2026-11-18-cancelled-checkout-new-order.png",
+              "journal/2026-11-18-mobile-nav-home.png",
+              "journal/2026-11-18-mobile-nav-sheet.png",
+              "journal/2026-11-18-tablet-rail.png",
+              "journal/2026-11-22-consent-bar-en-dark.png",
+              "journal/2026-11-22-consent-bar-en-light.png",
+              "journal/2026-11-22-consent-bar-gpc-shield.png",
+              "journal/2026-11-22-consent-bar-pt-dark.png",
+              "journal/2026-11-22-consent-bar-pt-light.png",
+              "journal/2026-11-22-consent-bar-pt-phone.png",
+              "journal/2026-11-22-consent-bar-reopened-en.png",
+              "robots.txt",
+              "sitemap.xml",
+              "shell/favicon.svg",
+              "shell/tag.html",
+              ".well-known/assetlinks.json",
+              ".well-known/apple-app-site-association"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "seed-blobs_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "assets/seed/*"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "render_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "shell/index.html",
+              "shell/shell.css",
+              "shell/boot.js",
+              "shell/shell.yaml",
+              "shell/shell.json",
+              "shell/design.css",
+              "shell/screens/cards.css",
+              "shell/screens/generate.css",
+              "shell/screens/explore.css",
+              "shell/screens/deck.html",
+              "shell/screens/deck.css",
+              "shell/screens/card.css",
+              "shell/screens/print.css",
+              "shell/screens/about.html",
+              "shell/screens/about.css",
+              "shell/handlers/count-step.js",
+              "shell/handlers/create_set.js",
+              "shell/handlers/delivery_accept.js",
+              "shell/handlers/delivery_address_q.js",
+              "shell/handlers/delivery_found.js",
+              "shell/handlers/delivery_offers.js",
+              "shell/handlers/delivery_pin.js",
+              "shell/handlers/delivery_submitted.js",
+              "shell/handlers/generation-input.js",
+              "shell/handlers/is_key.js",
+              "shell/handlers/legacy-generation-run.js",
+              "shell/handlers/localize_content.js",
+              "shell/handlers/play_master.js",
+              "shell/handlers/play_next.js",
+              "shell/handlers/play_prev.js",
+              "shell/handlers/play_restart.js",
+              "shell/handlers/play_select.js",
+              "shell/handlers/print_select.js",
+              "shell/handlers/row-is.js",
+              "shell/handlers/tab-fill.js",
+              "shell/handlers/value-is.js",
+              "shell/shared/address-formats.css",
+              "shell/shared/card-art.css",
+              "shell/shared/chrome-ready.css",
+              "shell/shared/chrome.css",
+              "shell/shared/nav.css",
+              "shell/shared/translation-feedback.css",
+              "shell/hatches/print-checkout.js",
+              "shell/hatches/window-print.js",
+              "shell/units/ai-browser/unit.js",
+              "shell/units/delivery-map/index.html",
+              "shell/units/delivery-map/vendor/maplibre-gl.css",
+              "shell/units/delivery-map/vendor/maplibre-gl.js",
+              "shell/units/geocoder/unit.js",
+              "shell/units/print-payment/index.html",
+              "messages/pt.json",
+              "messages/es.json",
+              "messages/en.json",
+              "messages/he.json",
+              "messages/zh.json",
+              "shell/shared/fonts/nunito-latin-wght-normal.woff2",
+              "shell/shared/fonts/nunito-latin-wght-italic.woff2",
+              "shell/shared/fonts/nunito-latin-ext-wght-normal.woff2",
+              "shell/shared/fonts/nunito-latin-ext-wght-italic.woff2",
+              "shell/shared/fonts/dm-sans-latin-wght-normal.woff2",
+              "shell/shared/fonts/dm-sans-latin-wght-italic.woff2",
+              "shell/shared/fonts/dm-sans-latin-ext-wght-normal.woff2",
+              "shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2",
+              "shell/favicon.svg",
+              "shell/tag.html"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "database_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "services/database/migrations/000_extensions.sql",
+              "services/database/migrations/001_roles.sql",
+              "services/database/migrations/002_grants.sql",
+              "services/database/migrations/004_types.sql",
+              "services/database/migrations/006_policies.sql",
+              "services/database/migrations/007_txid.sql",
+              "services/database/migrations/008_publication.sql",
+              "services/database/migrations/803_blob_claims.sql",
+              "services/database/migrations/003_rls.sql",
+              "services/database/migrations/005_create_tables.sql",
+              "services/database/migrations/010_machines.sql",
+              "services/database/migrations/802_signals.sql",
+              "services/database/migrations/016_mecha_actors.sql",
+              "services/database/migrations/017_card_art_fan_out.sql",
+              "services/database/migrations/018_deck_level.sql",
+              "services/database/migrations/019_deck_advance.sql",
+              "services/database/migrations/020_owner_writes.sql",
+              "services/database/migrations/021_me_provision.sql",
+              "services/database/migrations/022_deck_favorites.sql",
+              "services/database/migrations/023_deck_number.sql",
+              "services/database/migrations/900_seed.sql"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "migrate_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "services/database/pgroll/20261028_deck_press_actor_locks.json",
+              "services/database/pgroll/20261105_mecha_engines.json",
+              "services/database/pgroll/20261113_rule_argument_engines.json",
+              "services/database/pgroll/20261120_transition_engines.json",
+              "services/database/pgroll/20261121_after_engines.json",
+              "services/database/pgroll/20261105_cortex_generation.json",
+              "services/database/pgroll/20261113_origin_reducers.json",
+              "services/database/pgroll/20261113_trigger_origin_reducers.json",
+              "services/database/pgroll/20261121_seed_restore_machines.json",
+              "services/database/pgroll/20261103_deck_takes_its_cards.json",
+              "services/database/pgroll/20261103_orphan_cards_gone.json",
+              "services/database/pgroll/20261103_deck_takes_its_translations.json",
+              "services/database/pgroll/20261028_bounded_effect_jobs.json",
+              "services/database/pgroll/20261108_deck_cover.json",
+              "services/database/pgroll/20261114_card_count_bound.json",
+              "services/database/pgroll/20261106_print_order.json",
+              "services/database/pgroll/20261106_print_order_guards.json",
+              "services/database/pgroll/20261106_print_order_payments.json",
+              "services/database/pgroll/20261107_print_order_file.json",
+              "services/database/pgroll/20261113_bounded_job_keys.json",
+              "services/database/pgroll/20261113_job_key_once.json",
+              "services/database/pgroll/20261115_session_mode.json",
+              "services/database/pgroll/20261118_br_spiral_flip_deck.json",
+              "services/database/pgroll/20261119_order_confirmation_thread.json",
+              "services/database/pgroll/20261119_order_tracking_and_ship_mail.json",
+              "services/database/pgroll/20261121_machine_clock.json",
+              "services/database/pgroll/20261123_br_textbook_min_pages.json",
+              "services/database/pgroll/20261102_pictures_are_objects.json",
+              "services/database/pgroll/20261115_pictures_same_origin.json"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "conduit_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "docker/conduit-pipeline.yaml"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "transform_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "docker/snapcards-favorite-recount.yaml",
+              "docker/snapcards-deck-cover.yaml",
+              "docker/snapcards-favorite-count.yaml",
+              "docker/snapcards-deck-level.yaml"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "airlock_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "services/airlock/effects.json",
+              "effects/illustrate-card.js",
+              "effects/smollm3-draft.js",
+              "effects/heavy-draft.js",
+              "effects/print-quote.js",
+              "effects/print-quote-br.js",
+              "effects/print-fx.js",
+              "effects/print-session.js",
+              "effects/print-check.js",
+              "effects/print-place.js",
+              "effects/print-place-br.js",
+              "effects/print-status.js",
+              "effects/print-status-br.js",
+              "effects/print-confirm.js",
+              "effects/print-record.js",
+              "effects/print-shipped.js",
+              "effects/print-alert.js"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "airlock-mesh_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "services/airlock/dapr/illustrate-card.yaml",
+              "services/airlock/dapr/smollm3-draft.yaml",
+              "services/airlock/dapr/heavy-draft.yaml",
+              "services/airlock/dapr/print-quote.yaml",
+              "services/airlock/dapr/print-quote-br.yaml",
+              "services/airlock/dapr/print-fx.yaml",
+              "services/airlock/dapr/print-session.yaml",
+              "services/airlock/dapr/print-check.yaml",
+              "services/airlock/dapr/print-place.yaml",
+              "services/airlock/dapr/print-place-br.yaml",
+              "services/airlock/dapr/print-status.yaml",
+              "services/airlock/dapr/print-status-br.yaml",
+              "services/airlock/dapr/print-confirm.yaml",
+              "services/airlock/dapr/print-record.yaml",
+              "services/airlock/dapr/print-shipped.yaml",
+              "services/airlock/dapr/print-alert.yaml"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "setup_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "[m]ise.toml",
+              "[.]mise.toml",
+              "[m]ise.lock",
+              "[.]tool-versions",
+              "[m]ise.local.toml"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "check-acceptance_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "tests/**",
+              "messages/*.json"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "browser_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "[m]ise.toml",
+              "[.]mise.toml",
+              "[m]ise.lock",
+              "[.]tool-versions",
+              "[m]ise.local.toml"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "check-checkout-ui_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "tests/**",
+              "checkout-ui/*.ts",
+              "commerce/catalogue.ts",
+              "commerce/money.ts",
+              "commerce/address-formats.json",
+              "shell/shared/address-formats.css",
+              "checkout-ui/deno.json",
+              "checkout-ui/deno.lock",
+              "screens/print.html",
+              "shell/shell.json",
+              "shell/screens/print.css",
+              "messages/en.json"
+            ],
+            "exclude": []
+          }
+        },
+        {
+          "project": "snapcards",
+          "name": "check-commerce_srcs",
+          "dir": ".",
+          "outs": {
+            "globs": [
+              "tests/**",
+              "commerce/*.ts",
+              "commerce/deno.json",
+              "commerce/deno.lock",
+              "effects/print-*.js"
+            ],
+            "exclude": []
+          }
+        }
+      ],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "./.bayt/compose.ci.yaml",
+        "./.bayt/compose.ci-visual.yaml",
+        "./.bayt/compose.ci-replay.yaml",
+        "./.bayt/compose.ci-acceptance.yaml",
+        "./.bayt/compose.ci-checkout-ui.yaml",
+        "./.bayt/compose.ci-commerce.yaml",
+        "./.bayt/compose.airlock.yaml",
+        "./.bayt/compose.airlock-mesh.yaml",
+        "./.bayt/compose.airlock-upgrade.yaml",
+        "./.bayt/compose.auth.yaml",
+        "./.bayt/compose.browser.yaml",
+        "./.bayt/compose.build.yaml",
+        "./.bayt/compose.caddy.yaml",
+        "./.bayt/compose.check-acceptance.yaml",
+        "./.bayt/compose.check-checkout-ui.yaml",
+        "./.bayt/compose.check-commerce.yaml",
+        "./.bayt/compose.checkout-simulator.yaml",
+        "./.bayt/compose.clock.yaml",
+        "./.bayt/compose.cloudprinter-simulator.yaml",
+        "./.bayt/compose.conduit.yaml",
+        "./.bayt/compose.crud.yaml",
+        "./.bayt/compose.database.yaml",
+        "./.bayt/compose.diffusion.yaml",
+        "./.bayt/compose.electric.yaml",
+        "./.bayt/compose.generate.yaml",
+        "./.bayt/compose.imgproxy.yaml",
+        "./.bayt/compose.integrate.yaml",
+        "./.bayt/compose.launch.yaml",
+        "./.bayt/compose.mail-simulator.yaml",
+        "./.bayt/compose.mailpit.yaml",
+        "./.bayt/compose.mesh-events.yaml",
+        "./.bayt/compose.migrate.yaml",
+        "./.bayt/compose.prodigi-simulator.yaml",
+        "./.bayt/compose.rclone-s3.yaml",
+        "./.bayt/compose.redis.yaml",
+        "./.bayt/compose.render.yaml",
+        "./.bayt/compose.seed-blobs.yaml",
+        "./.bayt/compose.served.yaml",
+        "./.bayt/compose.setup.yaml",
+        "./.bayt/compose.smollm3.yaml",
+        "./.bayt/compose.ticker.yaml",
+        "./.bayt/compose.timer-check.yaml",
+        "./.bayt/compose.transform.yaml",
+        "./.bayt/compose.tsbifrost.yaml"
+      ]
+    }
+  },
+  "taskfile": {
+    "run": "once",
+    "incremental": false,
+    "preconditions": []
+  },
+  "visibility": "internal",
+  "emitsSrcs": true,
+  "deps": [
+    "ci-visual_srcs",
+    "ci-visual_bayt",
+    "ci-replay_srcs",
+    "ci-replay_bayt",
+    "ci-acceptance_srcs",
+    "ci-acceptance_bayt",
+    "ci-checkout-ui_srcs",
+    "ci-checkout-ui_bayt",
+    "ci-commerce_srcs",
+    "ci-commerce_bayt"
+  ],
+  "sameProjectDeps": [
+    "ci-visual_srcs",
+    "ci-visual_bayt",
+    "ci-replay_srcs",
+    "ci-replay_bayt",
+    "ci-acceptance_srcs",
+    "ci-acceptance_bayt",
+    "ci-checkout-ui_srcs",
+    "ci-checkout-ui_bayt",
+    "ci-commerce_srcs",
+    "ci-commerce_bayt"
+  ],
+  "transitiveDeps": [
+    "ci-visual_srcs",
+    "ci-visual_bayt",
+    "ci-replay_srcs",
+    "ci-replay_bayt",
+    "ci-acceptance_srcs",
+    "ci-acceptance_bayt",
+    "ci-checkout-ui_srcs",
+    "ci-checkout-ui_bayt",
+    "ci-commerce_srcs",
+    "ci-commerce_bayt",
+    "integrate_srcs",
+    "checkout-simulator_srcs",
+    "prodigi-simulator_srcs",
+    "cloudprinter-simulator_srcs",
+    "mail-simulator_srcs",
+    "caddy_srcs",
+    "served_srcs",
+    "seed-blobs_srcs",
+    "render_srcs",
+    "database_srcs",
+    "migrate_srcs",
+    "conduit_srcs",
+    "transform_srcs",
+    "airlock_srcs",
+    "airlock-mesh_srcs",
+    "setup_srcs",
+    "check-acceptance_srcs",
+    "browser_srcs",
+    "check-checkout-ui_srcs",
+    "check-commerce_srcs"
+  ],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "./.bayt/compose.ci.yaml",
+    "./.bayt/compose.ci-visual.yaml",
+    "./.bayt/compose.ci-replay.yaml",
+    "./.bayt/compose.ci-acceptance.yaml",
+    "./.bayt/compose.ci-checkout-ui.yaml",
+    "./.bayt/compose.ci-commerce.yaml",
+    "./.bayt/compose.airlock.yaml",
+    "./.bayt/compose.airlock-mesh.yaml",
+    "./.bayt/compose.airlock-upgrade.yaml",
+    "./.bayt/compose.auth.yaml",
+    "./.bayt/compose.browser.yaml",
+    "./.bayt/compose.build.yaml",
+    "./.bayt/compose.caddy.yaml",
+    "./.bayt/compose.check-acceptance.yaml",
+    "./.bayt/compose.check-checkout-ui.yaml",
+    "./.bayt/compose.check-commerce.yaml",
+    "./.bayt/compose.checkout-simulator.yaml",
+    "./.bayt/compose.clock.yaml",
+    "./.bayt/compose.cloudprinter-simulator.yaml",
+    "./.bayt/compose.conduit.yaml",
+    "./.bayt/compose.crud.yaml",
+    "./.bayt/compose.database.yaml",
+    "./.bayt/compose.diffusion.yaml",
+    "./.bayt/compose.electric.yaml",
+    "./.bayt/compose.generate.yaml",
+    "./.bayt/compose.imgproxy.yaml",
+    "./.bayt/compose.integrate.yaml",
+    "./.bayt/compose.launch.yaml",
+    "./.bayt/compose.mail-simulator.yaml",
+    "./.bayt/compose.mailpit.yaml",
+    "./.bayt/compose.mesh-events.yaml",
+    "./.bayt/compose.migrate.yaml",
+    "./.bayt/compose.prodigi-simulator.yaml",
+    "./.bayt/compose.rclone-s3.yaml",
+    "./.bayt/compose.redis.yaml",
+    "./.bayt/compose.render.yaml",
+    "./.bayt/compose.seed-blobs.yaml",
+    "./.bayt/compose.served.yaml",
+    "./.bayt/compose.setup.yaml",
+    "./.bayt/compose.smollm3.yaml",
+    "./.bayt/compose.ticker.yaml",
+    "./.bayt/compose.timer-check.yaml",
+    "./.bayt/compose.transform.yaml",
+    "./.bayt/compose.tsbifrost.yaml"
+  ],
+  "chainedDeps": [
+    {
+      "name": "ci-visual_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "ci-visual_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          ".bayt/compose.ci-visual.yaml",
+          ".bayt/Dockerfile.ci-visual",
+          ".bayt/bayt.ci-visual.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/Taskfile.ci-visual.yaml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "ci-replay_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          ".bayt/process-compose.yaml",
+          ".pronto/cluster.json",
+          "services/database/migrations/**",
+          "tests/[r]eplay.json",
+          "tests/[r]eplay/**"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "ci-replay_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          ".bayt/compose.ci-replay.yaml",
+          ".bayt/Dockerfile.ci-replay",
+          ".bayt/bayt.ci-replay.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/Taskfile.ci-replay.yaml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "ci-acceptance_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "ci-acceptance_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          ".bayt/compose.ci-acceptance.yaml",
+          ".bayt/Dockerfile.ci-acceptance",
+          ".bayt/bayt.ci-acceptance.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/Taskfile.ci-acceptance.yaml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "ci-checkout-ui_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "ci-checkout-ui_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          ".bayt/compose.ci-checkout-ui.yaml",
+          ".bayt/Dockerfile.ci-checkout-ui",
+          ".bayt/bayt.ci-checkout-ui.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/Taskfile.ci-checkout-ui.yaml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "ci-commerce_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [],
+        "exclude": []
+      }
+    },
+    {
+      "name": "ci-commerce_bayt",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          ".bayt/compose.ci-commerce.yaml",
+          ".bayt/Dockerfile.ci-commerce",
+          ".bayt/bayt.ci-commerce.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml",
+          ".bayt/Taskfile.ci-commerce.yaml",
+          ".bayt/process-compose.yaml"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "integrate_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "shell/shell.yaml",
+          "screens/cards.html",
+          "shell/screens/cards.css",
+          "screens/generate.html",
+          "shell/screens/generate.css",
+          "screens/explore.html",
+          "shell/screens/explore.css",
+          "shell/screens/deck.html",
+          "shell/screens/deck.css",
+          "screens/card.html",
+          "shell/screens/card.css",
+          "screens/print.html",
+          "shell/screens/print.css",
+          "shell/screens/about.html",
+          "shell/screens/about.css"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "checkout-simulator_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "commerce/simulator.ts",
+          "commerce/provider.ts"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "prodigi-simulator_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "commerce/prodigi-simulator.ts",
+          "commerce/catalogue.ts"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "cloudprinter-simulator_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "commerce/cloudprinter-simulator.ts",
+          "commerce/catalogue.ts"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "mail-simulator_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "commerce/mail-simulator.ts"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "caddy_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "docker/Caddyfile"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "served_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "shell/index.html",
+          "shell/shell.css",
+          "shell/boot.js",
+          "offline-first-sw.js",
+          "shell/shell.yaml",
+          "shell/shell.json",
+          "shell/design.css",
+          "screens/cards.html",
+          "shell/screens/cards.css",
+          "screens/generate.html",
+          "shell/screens/generate.css",
+          "screens/explore.html",
+          "shell/screens/explore.css",
+          "shell/screens/deck.html",
+          "shell/screens/deck.css",
+          "screens/card.html",
+          "shell/screens/card.css",
+          "screens/print.html",
+          "shell/screens/print.css",
+          "shell/screens/about.html",
+          "shell/screens/about.css",
+          "shell/handlers/count-step.js",
+          "shell/handlers/create_set.js",
+          "shell/handlers/delivery_accept.js",
+          "shell/handlers/delivery_address_q.js",
+          "shell/handlers/delivery_found.js",
+          "shell/handlers/delivery_offers.js",
+          "shell/handlers/delivery_pin.js",
+          "shell/handlers/delivery_submitted.js",
+          "shell/handlers/generation-input.js",
+          "shell/handlers/is_key.js",
+          "shell/handlers/legacy-generation-run.js",
+          "shell/handlers/localize_content.js",
+          "shell/handlers/play_master.js",
+          "shell/handlers/play_next.js",
+          "shell/handlers/play_prev.js",
+          "shell/handlers/play_restart.js",
+          "shell/handlers/play_select.js",
+          "shell/handlers/print_select.js",
+          "shell/handlers/row-is.js",
+          "shell/handlers/tab-fill.js",
+          "shell/handlers/value-is.js",
+          "shell/shared/address-formats.css",
+          "shell/shared/card-art.css",
+          "shell/shared/chrome-ready.css",
+          "shell/shared/chrome.css",
+          "shell/shared/nav.css",
+          "shell/shared/translation-feedback.css",
+          "pipelines/favorite-recount.js",
+          "shell/hatches/print-checkout.js",
+          "shell/hatches/window-print.js",
+          "shell/units/ai-browser/unit.js",
+          "shell/units/delivery-map/index.html",
+          "shell/units/delivery-map/vendor/maplibre-gl.css",
+          "shell/units/delivery-map/vendor/maplibre-gl.js",
+          "shell/units/geocoder/unit.js",
+          "shell/units/print-payment/index.html",
+          "messages/pt.json",
+          "messages/es.json",
+          "messages/en.json",
+          "messages/he.json",
+          "messages/zh.json",
+          "documents/about/index.html",
+          "documents/en/about/index.html",
+          "documents/es/about/index.html",
+          "documents/he/about/index.html",
+          "documents/zh/about/index.html",
+          "shell/shared/fonts/nunito-latin-wght-normal.woff2",
+          "shell/shared/fonts/nunito-latin-wght-italic.woff2",
+          "shell/shared/fonts/nunito-latin-ext-wght-normal.woff2",
+          "shell/shared/fonts/nunito-latin-ext-wght-italic.woff2",
+          "shell/shared/fonts/dm-sans-latin-wght-normal.woff2",
+          "shell/shared/fonts/dm-sans-latin-wght-italic.woff2",
+          "shell/shared/fonts/dm-sans-latin-ext-wght-normal.woff2",
+          "shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2",
+          "brief.md",
+          "brief.html",
+          "journal.html",
+          "ir.html",
+          "ir/card.css",
+          "acceptance.md",
+          "DESIGN.md",
+          "ir/neighbourhood-about.svg",
+          "ir/neighbourhood-app.svg",
+          "ir/neighbourhood-card.svg",
+          "ir/neighbourhood-cards.svg",
+          "ir/neighbourhood-deck.svg",
+          "ir/neighbourhood-explore.svg",
+          "ir/neighbourhood-generate.svg",
+          "ir/neighbourhood-print.svg",
+          "journal/2026-10-28-audience-en.png",
+          "journal/2026-10-28-card-navigation-en.png",
+          "journal/2026-10-28-cold-navigation-after.png",
+          "journal/2026-10-28-cold-navigation-during.png",
+          "journal/2026-10-28-deck-entry-en.png",
+          "journal/2026-10-28-language-switch-en.png",
+          "journal/2026-10-28-library-search-after.png",
+          "journal/2026-10-28-library-search-before.png",
+          "journal/2026-10-28-north-pole-he.png",
+          "journal/2026-10-28-rib-route-pt.png",
+          "journal/2026-10-28-study-layout-laptop.png",
+          "journal/2026-10-28-translation-glow-first.png",
+          "journal/2026-10-28-translation-glow-peak.png",
+          "journal/2026-10-28-translation-glow-reduced.png",
+          "journal/2026-10-29-mobile-hero-after.png",
+          "journal/2026-10-29-mobile-hero-before.png",
+          "journal/2026-10-30-delete-armed-pt.png",
+          "journal/2026-10-30-edit-sheet-drawn-pt.png",
+          "journal/2026-10-30-edit-sheet-pt.png",
+          "journal/2026-10-30-edit-sheet-refused-pt.png",
+          "journal/2026-10-30-title-details-pt.png",
+          "journal/2026-10-31-edit-after-reload-pt.png",
+          "journal/2026-10-31-favorite-count-pt.png",
+          "journal/2026-10-31-progress-settled-pt.png",
+          "journal/2026-10-31-progress-start-pt.png",
+          "journal/2026-11-05-cortex-generation.png",
+          "journal/2026-11-05-cortex-phone-recovery.png",
+          "journal/2026-11-05-cortex-print.png",
+          "journal/2026-11-07-presentation-watch.html",
+          "journal/2026-11-07-presentation-watch.json",
+          "journal/2026-11-07-presentation-watch.png",
+          "journal/2026-11-18-cancelled-checkout-new-order.png",
+          "journal/2026-11-18-mobile-nav-home.png",
+          "journal/2026-11-18-mobile-nav-sheet.png",
+          "journal/2026-11-18-tablet-rail.png",
+          "journal/2026-11-22-consent-bar-en-dark.png",
+          "journal/2026-11-22-consent-bar-en-light.png",
+          "journal/2026-11-22-consent-bar-gpc-shield.png",
+          "journal/2026-11-22-consent-bar-pt-dark.png",
+          "journal/2026-11-22-consent-bar-pt-light.png",
+          "journal/2026-11-22-consent-bar-pt-phone.png",
+          "journal/2026-11-22-consent-bar-reopened-en.png",
+          "robots.txt",
+          "sitemap.xml",
+          "shell/favicon.svg",
+          "shell/tag.html",
+          ".well-known/assetlinks.json",
+          ".well-known/apple-app-site-association"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "seed-blobs_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "assets/seed/*"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "render_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "shell/index.html",
+          "shell/shell.css",
+          "shell/boot.js",
+          "shell/shell.yaml",
+          "shell/shell.json",
+          "shell/design.css",
+          "shell/screens/cards.css",
+          "shell/screens/generate.css",
+          "shell/screens/explore.css",
+          "shell/screens/deck.html",
+          "shell/screens/deck.css",
+          "shell/screens/card.css",
+          "shell/screens/print.css",
+          "shell/screens/about.html",
+          "shell/screens/about.css",
+          "shell/handlers/count-step.js",
+          "shell/handlers/create_set.js",
+          "shell/handlers/delivery_accept.js",
+          "shell/handlers/delivery_address_q.js",
+          "shell/handlers/delivery_found.js",
+          "shell/handlers/delivery_offers.js",
+          "shell/handlers/delivery_pin.js",
+          "shell/handlers/delivery_submitted.js",
+          "shell/handlers/generation-input.js",
+          "shell/handlers/is_key.js",
+          "shell/handlers/legacy-generation-run.js",
+          "shell/handlers/localize_content.js",
+          "shell/handlers/play_master.js",
+          "shell/handlers/play_next.js",
+          "shell/handlers/play_prev.js",
+          "shell/handlers/play_restart.js",
+          "shell/handlers/play_select.js",
+          "shell/handlers/print_select.js",
+          "shell/handlers/row-is.js",
+          "shell/handlers/tab-fill.js",
+          "shell/handlers/value-is.js",
+          "shell/shared/address-formats.css",
+          "shell/shared/card-art.css",
+          "shell/shared/chrome-ready.css",
+          "shell/shared/chrome.css",
+          "shell/shared/nav.css",
+          "shell/shared/translation-feedback.css",
+          "shell/hatches/print-checkout.js",
+          "shell/hatches/window-print.js",
+          "shell/units/ai-browser/unit.js",
+          "shell/units/delivery-map/index.html",
+          "shell/units/delivery-map/vendor/maplibre-gl.css",
+          "shell/units/delivery-map/vendor/maplibre-gl.js",
+          "shell/units/geocoder/unit.js",
+          "shell/units/print-payment/index.html",
+          "messages/pt.json",
+          "messages/es.json",
+          "messages/en.json",
+          "messages/he.json",
+          "messages/zh.json",
+          "shell/shared/fonts/nunito-latin-wght-normal.woff2",
+          "shell/shared/fonts/nunito-latin-wght-italic.woff2",
+          "shell/shared/fonts/nunito-latin-ext-wght-normal.woff2",
+          "shell/shared/fonts/nunito-latin-ext-wght-italic.woff2",
+          "shell/shared/fonts/dm-sans-latin-wght-normal.woff2",
+          "shell/shared/fonts/dm-sans-latin-wght-italic.woff2",
+          "shell/shared/fonts/dm-sans-latin-ext-wght-normal.woff2",
+          "shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2",
+          "shell/favicon.svg",
+          "shell/tag.html"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "database_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "services/database/migrations/000_extensions.sql",
+          "services/database/migrations/001_roles.sql",
+          "services/database/migrations/002_grants.sql",
+          "services/database/migrations/004_types.sql",
+          "services/database/migrations/006_policies.sql",
+          "services/database/migrations/007_txid.sql",
+          "services/database/migrations/008_publication.sql",
+          "services/database/migrations/803_blob_claims.sql",
+          "services/database/migrations/003_rls.sql",
+          "services/database/migrations/005_create_tables.sql",
+          "services/database/migrations/010_machines.sql",
+          "services/database/migrations/802_signals.sql",
+          "services/database/migrations/016_mecha_actors.sql",
+          "services/database/migrations/017_card_art_fan_out.sql",
+          "services/database/migrations/018_deck_level.sql",
+          "services/database/migrations/019_deck_advance.sql",
+          "services/database/migrations/020_owner_writes.sql",
+          "services/database/migrations/021_me_provision.sql",
+          "services/database/migrations/022_deck_favorites.sql",
+          "services/database/migrations/023_deck_number.sql",
+          "services/database/migrations/900_seed.sql"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "migrate_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "services/database/pgroll/20261028_deck_press_actor_locks.json",
+          "services/database/pgroll/20261105_mecha_engines.json",
+          "services/database/pgroll/20261113_rule_argument_engines.json",
+          "services/database/pgroll/20261120_transition_engines.json",
+          "services/database/pgroll/20261121_after_engines.json",
+          "services/database/pgroll/20261105_cortex_generation.json",
+          "services/database/pgroll/20261113_origin_reducers.json",
+          "services/database/pgroll/20261113_trigger_origin_reducers.json",
+          "services/database/pgroll/20261121_seed_restore_machines.json",
+          "services/database/pgroll/20261103_deck_takes_its_cards.json",
+          "services/database/pgroll/20261103_orphan_cards_gone.json",
+          "services/database/pgroll/20261103_deck_takes_its_translations.json",
+          "services/database/pgroll/20261028_bounded_effect_jobs.json",
+          "services/database/pgroll/20261108_deck_cover.json",
+          "services/database/pgroll/20261114_card_count_bound.json",
+          "services/database/pgroll/20261106_print_order.json",
+          "services/database/pgroll/20261106_print_order_guards.json",
+          "services/database/pgroll/20261106_print_order_payments.json",
+          "services/database/pgroll/20261107_print_order_file.json",
+          "services/database/pgroll/20261113_bounded_job_keys.json",
+          "services/database/pgroll/20261113_job_key_once.json",
+          "services/database/pgroll/20261115_session_mode.json",
+          "services/database/pgroll/20261118_br_spiral_flip_deck.json",
+          "services/database/pgroll/20261119_order_confirmation_thread.json",
+          "services/database/pgroll/20261119_order_tracking_and_ship_mail.json",
+          "services/database/pgroll/20261121_machine_clock.json",
+          "services/database/pgroll/20261123_br_textbook_min_pages.json",
+          "services/database/pgroll/20261102_pictures_are_objects.json",
+          "services/database/pgroll/20261115_pictures_same_origin.json"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "conduit_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "docker/conduit-pipeline.yaml"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "transform_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "docker/snapcards-favorite-recount.yaml",
+          "docker/snapcards-deck-cover.yaml",
+          "docker/snapcards-favorite-count.yaml",
+          "docker/snapcards-deck-level.yaml"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "airlock_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "services/airlock/effects.json",
+          "effects/illustrate-card.js",
+          "effects/smollm3-draft.js",
+          "effects/heavy-draft.js",
+          "effects/print-quote.js",
+          "effects/print-quote-br.js",
+          "effects/print-fx.js",
+          "effects/print-session.js",
+          "effects/print-check.js",
+          "effects/print-place.js",
+          "effects/print-place-br.js",
+          "effects/print-status.js",
+          "effects/print-status-br.js",
+          "effects/print-confirm.js",
+          "effects/print-record.js",
+          "effects/print-shipped.js",
+          "effects/print-alert.js"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "airlock-mesh_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "services/airlock/dapr/illustrate-card.yaml",
+          "services/airlock/dapr/smollm3-draft.yaml",
+          "services/airlock/dapr/heavy-draft.yaml",
+          "services/airlock/dapr/print-quote.yaml",
+          "services/airlock/dapr/print-quote-br.yaml",
+          "services/airlock/dapr/print-fx.yaml",
+          "services/airlock/dapr/print-session.yaml",
+          "services/airlock/dapr/print-check.yaml",
+          "services/airlock/dapr/print-place.yaml",
+          "services/airlock/dapr/print-place-br.yaml",
+          "services/airlock/dapr/print-status.yaml",
+          "services/airlock/dapr/print-status-br.yaml",
+          "services/airlock/dapr/print-confirm.yaml",
+          "services/airlock/dapr/print-record.yaml",
+          "services/airlock/dapr/print-shipped.yaml",
+          "services/airlock/dapr/print-alert.yaml"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "setup_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "[m]ise.toml",
+          "[.]mise.toml",
+          "[m]ise.lock",
+          "[.]tool-versions",
+          "[m]ise.local.toml"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "check-acceptance_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "tests/**",
+          "messages/*.json"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "browser_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "[m]ise.toml",
+          "[.]mise.toml",
+          "[m]ise.lock",
+          "[.]tool-versions",
+          "[m]ise.local.toml"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "check-checkout-ui_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "tests/**",
+          "checkout-ui/*.ts",
+          "commerce/catalogue.ts",
+          "commerce/money.ts",
+          "commerce/address-formats.json",
+          "shell/shared/address-formats.css",
+          "checkout-ui/deno.json",
+          "checkout-ui/deno.lock",
+          "screens/print.html",
+          "shell/shell.json",
+          "shell/screens/print.css",
+          "messages/en.json"
+        ],
+        "exclude": []
+      }
+    },
+    {
+      "name": "check-commerce_srcs",
+      "project": "snapcards",
+      "dir": ".",
+      "outs": {
+        "globs": [
+          "tests/**",
+          "commerce/*.ts",
+          "commerce/deno.json",
+          "commerce/deno.lock",
+          "effects/print-*.js"
+        ],
+        "exclude": []
+      }
+    }
+  ],
+  "cmds": [
+    {
+      "srcs": {
+        "globs": [
+          ".bayt/**"
+        ],
+        "exclude": [],
+        "defaultGlobs": null,
+        "defaultExclude": null
+      },
+      "name": "builtin",
+      "do": "set -eu\nexport DOCKER_HOST_TCP=\"$DOCKER_HOST\"\nexport DEPOT_DISABLE_OTEL=1\ndocker compose --profile '*' config -o /tmp/ci-compose.yaml\ndocker buildx bake --allow=fs.read=/ -f /tmp/ci-compose.yaml --print ci-visual ci-replay ci-acceptance ci-checkout-ui ci-commerce > /tmp/ci-bake.json\nfor target in ci-visual ci-replay ci-acceptance ci-checkout-ui ci-commerce; do\n docker buildx bake -f /tmp/ci-bake.json --progress plain --set '*.output=type=cacheonly' ${SAYT_NO_CACHE:+--no-cache --set \"*.cache-from=\" --set \"*.cache-to=\"} ${SAYT_NO_CACHE_FROM:+--set \"*.cache-from=\"} ${SAYT_NO_CACHE_TO:+--set \"*.cache-to=\"} \"$target\"\ndone",
+      "shell": "sh",
+      "dockerfile": {
+        "inject": {
+          "secrets": [
+            {
+              "id": "docker_host",
+              "var": {
+                "contents": "DOCKER_HOST"
+              }
+            },
+            {
+              "id": "buildx_builder",
+              "var": {
+                "contents": "BUILDX_BUILDER"
+              }
+            },
+            {
+              "id": "testcontainers_host",
+              "var": {
+                "contents": "TESTCONTAINERS_HOST_OVERRIDE"
+              }
+            },
+            {
+              "id": "cache_scope",
+              "var": {
+                "contents": "CACHE_SCOPE"
+              }
+            },
+            {
+              "id": "cache_scope_fallback",
+              "var": {
+                "contents": "CACHE_SCOPE_FALLBACK"
+              }
+            },
+            {
+              "id": "sayt_buildkit_syntax",
+              "var": {
+                "contents": "BUILDKIT_SYNTAX"
+              }
+            },
+            {
+              "id": "sayt_no_cache",
+              "var": {
+                "contents": "SAYT_NO_CACHE"
+              }
+            },
+            {
+              "id": "bayt_image_tag",
+              "var": {
+                "contents": "BAYT_IMAGE_TAG"
+              }
+            },
+            {
+              "id": "bayt_pull_policy",
+              "var": {
+                "contents": "BAYT_PULL_POLICY"
+              }
+            },
+            {
+              "id": "sayt_no_cache_from",
+              "var": {
+                "contents": "SAYT_NO_CACHE_FROM"
+              }
+            },
+            {
+              "id": "sayt_no_cache_to",
+              "var": {
+                "contents": "SAYT_NO_CACHE_TO"
+              }
+            },
+            {
+              "id": "depot_token",
+              "var": {
+                "contents": "DEPOT_TOKEN"
+              }
+            },
+            {
+              "id": "depot_project_id",
+              "var": {
+                "contents": "DEPOT_PROJECT_ID"
+              }
+            },
+            {
+              "id": "depot_org_id",
+              "var": {
+                "contents": "DEPOT_ORG_ID"
+              }
+            },
+            {
+              "id": "depot_disable_otel",
+              "var": {
+                "contents": "DEPOT_DISABLE_OTEL"
+              }
+            },
+            {
+              "id": "actions_results_url",
+              "var": {
+                "contents": "ACTIONS_RESULTS_URL"
+              }
+            },
+            {
+              "id": "actions_runtime_token",
+              "var": {
+                "contents": "ACTIONS_RUNTIME_TOKEN"
+              }
+            },
+            {
+              "id": "bkid_project",
+              "var": {
+                "contents": "BKID_PROJECT"
+              }
+            },
+            {
+              "id": "buildx_instance",
+              "var": {
+                "contents": "BUILDX_INSTANCE"
+              }
+            },
+            {
+              "id": "docker_config",
+              "var": {
+                "contents": "DOCKER_AUTH_CONFIG",
+                "path": "/root/.docker/config.json"
+              },
+              "mode": "0600"
+            }
+          ],
+          "defaultSteps": {
+            "buildx-instance": {
+              "name": "buildx-instance",
+              "priority": 11,
+              "pre": "if [ -n \"$BUILDX_BUILDER\" ] && [ -n \"$BUILDX_INSTANCE\" ]; then\n  install -d -m 0700 /root/.docker/buildx/instances\n  printf '%s' \"$BUILDX_INSTANCE\" > \"/root/.docker/buildx/instances/$BUILDX_BUILDER\"\n  chmod 0600 \"/root/.docker/buildx/instances/$BUILDX_BUILDER\"\nfi"
+            },
+            "unix-socket-forward": {
+              "name": "unix-socket-forward",
+              "priority": 10,
+              "pre": "if [ -n \"$DOCKER_HOST\" ] && [ ! -e /var/run/docker.sock ]; then\n  ulimit -n 1048576 2>/dev/null || true\n  addr=${DOCKER_HOST#tcp://}\n  [ -n \"$addr\" ] || { echo \"bkid: DOCKER_HOST=$DOCKER_HOST has no tcp:// address\" >&2; exit 1; }\n  socat -d0 -t 86400 UNIX-LISTEN:/var/run/docker.sock,fork,backlog=1024,reuseaddr \"TCP:$addr,keepalive,keepidle=30,keepintvl=15,keepcnt=4\" &\n  SOCAT_PID=$!\n  trap 'kill $SOCAT_PID 2>/dev/null || true' EXIT INT TERM\n  socat -u OPEN:/dev/null UNIX-CONNECT:/var/run/docker.sock,retry=20,interval=0.2 >/dev/null 2>&1 \\\n    || { echo \"bkid: socat bridge to /var/run/docker.sock not ready\" >&2; exit 1; }\nfi"
+            }
+          },
+          "steps": []
+        }
+      },
+      "stop": false
+    }
+  ],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

@@ -1,0 +1,93 @@
+-- A seed picture was inline in its row, so every reader's sync and every rendered
+-- document carried all of them. They are objects now, as any picture is
+-- (capabilities.seedBlobs). A row someone has since changed keeps what it holds.
+-- Rows the edge wrote spell a physical bucket; a row names the plane by its
+-- logical name on every target.
+SET lock_timeout = '5s';
+SET statement_timeout = '60s';
+
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/555aa0cf6a73362d71aef28f8cf997a015568822f6420af844c7851a5cd53e5b.webp' WHERE id = '00aaee6a-28b0-4319-9023-ff7e5ade1619' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/4372255aa87d9f3ae5f75c7d9e9c2507215199fb880dcc9a102d78e04d86a345.webp' WHERE id = '022c555f-8b86-4e5e-ab6d-621e341698d7' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/2356ed27fc3c151caa49612ec2e4e5f204e752e73ed06928b5867583c616e05a.webp' WHERE id = '0388119e-7f06-4c15-a453-a9e1b23f2e6b' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/162df193784ee40b6b36443c9b4e0237597ef3ea489c1db865ee5281adfac4a0.webp' WHERE id = '03ec18e5-70f6-4595-9686-5cc53c6c8c78' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/00b76f43388b55137f8029bf7dd9828717c007a47ca7fda9a85f2e4843d439dc.webp' WHERE id = '054101d7-e740-496e-aa58-a20bf932c94a' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/7d4d69e1680e93453518119105dfe5b6f1f4132d2a81c816bed32e8188134fff.webp' WHERE id = '05d3ade0-8cdc-4eb5-924f-22375b00e1e5' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/b71a098b5a1e509edc634a9363c3c07de74229ff927e92626d2cabea048c0e56.webp' WHERE id = '0853c22f-7f4c-45bd-a07c-08bbfa81b631' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/4a6fc2781792ecbe6ea3f6536fe47c8a0a5a52af0e6198a13cdadbd3c9f0d42d.webp' WHERE id = '0a2cd824-f6a3-4c9b-b363-292e0d5938fb' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/c05ac22738bf8c4e28ec2d81d5c9eb24aceef09c4a567634c818536b1f3976c6.webp' WHERE id = '0f76c6eb-c686-476e-878f-9ad71883435e' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/92971e066807d7824eacf36b02106769f373197982f847d385934cf2db63c66e.webp' WHERE id = '0fceda3c-d49f-430c-8b43-a3fab36d2ea2' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/1128d743b7bfcda1018b5b00c09e3c1629f380fe8b962d30fa419ae406a961d2.webp' WHERE id = '1233834f-ff2e-4bc7-bbeb-94dc8f671eb7' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/876a34cb402ab33c897098bf56c1b5605348a6a97922886e10a505fd72b389a7.webp' WHERE id = '14b65943-0b3f-4b5f-966d-ce5da5a75278' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/c2099e3cb512b58d5bf467b9b3b058b784e024f1a0d8750f681cafd0e786e1cd.webp' WHERE id = '16dddfbc-6ef8-494c-9f27-2c9926c3162e' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/ebf250808fb517a7c4415918dffeb85a3a4b13f3b2df3db8a398168ee42a92c5.webp' WHERE id = '18d9156d-2533-49ea-8aa1-0989a46e957c' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/360283513efb4ab16b9f7a42018a48b6eac3d8799440bf99b72f349fff6a0722.webp' WHERE id = '1a7d46ff-5362-4fed-ba3e-7fea0144a8fd' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/e1365af81be87d35e7cd4bab79c50e722a3a13867c6993f5d907a9c40d53f39a.webp' WHERE id = '1c5e3e93-692b-496c-a22a-99bda13d3fbc' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/49c02acc3b5828ae65e84051c84327805eeaecb0d171dea1c990d53ad645a320.webp' WHERE id = '24bce156-4cc8-4c93-b221-c269ee63a9c0' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/59d5bde6dfe321183b43f67cb160215e7f19e9c75cc50efe60c6a64757433cc0.webp' WHERE id = '28e53c6c-49ae-4ae7-8a66-740ab1f9996f' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/e4ce0f47494f93983207116d06e252a35a3de245979e6c2cd98086271a7585a9.webp' WHERE id = '2beb857f-c9b7-4dac-b6b1-c7095c72d74c' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/42b9799a11458866adfa23f07eb4f84fd76014d808e8dbdf9432714555530935.webp' WHERE id = '2c1be3ea-db74-42d5-adf3-a791f12a0fda' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/12c5285bd81ead724cb26f2c50e45bce1090840732255e8f2bdf090dfbfdd8e7.webp' WHERE id = '2c77c43b-eec5-46e5-a3ad-c06cdbe01a88' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/4e3fee5e540abe1c8e9702f3f0c7a809051dcef6028b6578415ff619a09039d4.webp' WHERE id = '2db33440-f5e1-4aec-8b50-a6b124d87775' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/7504c4b3e74a00372f853ac5c79bf0d2058265a4c67dcdc8ea3d55b9f7e661f9.webp' WHERE id = '30ebc339-bb8c-4fec-a1a4-bf4c4f2468f3' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/ba8eccc325e2652da21f631efbfae2729f90aa8107c6c41a6eb68adce56cc21d.webp' WHERE id = '33f4f7aa-5729-48d2-9e43-35bf1b02791c' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/63bd08d6ec7dad443e9299ebf05bfe891de8f3f2bea2ee8cfb452d1094fae675.webp' WHERE id = '38353ee7-dea9-4266-a8a9-109df08ee372' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/91fb0d8a9426dc36508c99ee597a1339645be6eb08385244dea6b57fc007f6c2.webp' WHERE id = '3f725969-750a-4d18-b8b0-96c51695c85b' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/7ae7f77138455012b76b429133b0f3358fbc57a37d2d60b923e7b64296ef8820.webp' WHERE id = '3f9d19fd-4888-4415-9a38-f5fc4e88d975' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/678b7856ff316e1aeebb45808615fccae7d4f66dcf61375e144c1c92f6e72491.webp' WHERE id = '4bd14dd7-22cf-4a50-92c1-e5eb12ea0487' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/f4a5ddbeda4245324497b4e6aef2174a6eea7416fa5df4745313ab694f1823c3.webp' WHERE id = '4ef94ea4-3e4c-429d-81a3-a0d4e77368f9' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/7943ac6cb55894e9e6b8f365fc3acc68e068ecbea546994547d55146357840cd.webp' WHERE id = '51ec7868-6b23-4219-b4f1-149bfdd768ee' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/a85126f66e2f87751914f9dc925bdeea4fb636bee6690eb5c4350677350bd799.webp' WHERE id = '56d4d0ef-ced5-4351-b93c-4bbfcc5c86bf' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/bbde49e0dd27fbc9be988c13f82ca7f4c977896d53e6d1778a08cab60463df51.webp' WHERE id = '5fbea82c-4111-4e3b-85e5-f43e08aa8e17' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/200f00346096bf902b14d78c4bc8c622a85fd91a4264afae48336f992dcfff67.webp' WHERE id = '60b4201e-824c-48e0-b1ec-54dbb0ea223e' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/172cc2e51a206c9ae54fae5da6ac0a7e0f12a35490050d6bca4d527310702ef2.webp' WHERE id = '60ddaeed-e372-43db-b003-aceb82fab05d' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/05c0872bf120ca4cb504a6c080f6b95d3070f8238358ffd33bfb83c278008d84.webp' WHERE id = '6389550a-332e-40f2-a23e-a0514d760b77' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/2d2a2b793083486ac06c90fc04faba941d0fc57e40fa704934b4227a47c10e3a.webp' WHERE id = '6870046e-b111-4493-b7b3-739b4b02dfdc' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/1af8c4ead1adcf472a71bcd84d63f6caeffbd57959b66ac34c27569d896c8b83.webp' WHERE id = '6ddf2caa-ebcf-49cf-9c8e-285151fe23a3' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/c1091eca0b5ed0a28201aeccfe6fef14d534d8f0f50aea3c069e5f90f872d5bb.webp' WHERE id = '6ebf0d62-5528-43a4-8bd0-2740c52f4194' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/27395e589f9067b03e63007bee37d1e3572b8b038f718527f0a31961be766738.webp' WHERE id = '6fb4bff7-11b8-4efc-82b3-22eff852a781' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/8ab1e87ac630bb92090737e99d1982a073e650f6bc14cb70279692fbd776835a.webp' WHERE id = '71c13753-e747-4c5a-ad1e-800264784b54' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/b1c33a79be0b416f5d5b8957b6cf89801cf8069651718cc05b36fb20a1b16019.webp' WHERE id = '77c4f977-4a68-4431-9f19-275a5644a025' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/021c5637dd9dd5eb18872b9249294baa0170a6d7ac845ab8620593a25125da55.webp' WHERE id = '7cef2722-fc0c-469f-b52a-d687cef7beff' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/c62a3ea00bb3d91bc86f6e7e91904d7a2032c6b8546e3c1145ac3f51caea0a62.webp' WHERE id = '7dacbc5b-a1ee-46f8-97a2-cede079fe6fc' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/11431543e0d4cbaca659f36e7cbb5e3abe65c4812b03cc503efbccc155f8cd85.webp' WHERE id = '7df620f4-82e2-4fc9-b91b-919b043b6aa7' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/c2dde06ba2555fc662112f63c993367b5084c5c0042691bd63e31b3fab214d24.webp' WHERE id = '872b6b7d-31c9-4733-a4a0-6f2c6fe34473' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/797702302f88add309f28503f4c7a7a5e33116b406a113853475a3e2af2d39aa.webp' WHERE id = '89303d32-4989-4139-ace8-97298820ec51' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/c22e2b745c5afd37c53457994d65a29c84b1c31adea09114ae9d3b9225f74fbf.webp' WHERE id = '8aeca44c-ed30-42ff-980a-bedd8d24aa36' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/94ed54b15894c6e700c07bbb093aa0ca43950da0fe8b30e429c7abc84c19cdde.webp' WHERE id = '8cbf2a82-0de3-4f5e-95ce-0759c2d60c92' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/effa940d2249e0b9961e734a7da9ce406e9d638ed975937f1ffcb7b5f6114c26.webp' WHERE id = '98f18f7b-d72a-4034-9e67-562b9da0d18d' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/99997a2bab85698f95ff6ea83393ca63f610eccaa6343a6e31453c721e5a707d.webp' WHERE id = '9c922e42-1723-4d22-a7ed-f6e696b7671c' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/278f49a779ac767ce5a6e9dd67b5f9dd6122345147b758d5f22235e0e77eb37a.webp' WHERE id = '9e60e6c3-304b-48c3-854b-450acd4e9681' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/eea2639209603e87a080509bd72feba55a846815bf747effd7cc065d36ea01cc.webp' WHERE id = '9e860917-ee9e-4043-97d8-9d92be06cd0a' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/523d3519edebd992846b96d4d7dac92411448f8a10bc33942ccd854eba3526f2.webp' WHERE id = 'a8beeb92-9bc6-4884-86f9-9a3323c01413' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/190e20e4060fb7545bc37db854d224204a1cfb7fb579bae5e04b527fc9615380.webp' WHERE id = 'aa4e8c76-beeb-4d2c-b410-82b5f3844fb3' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/bf1b25605ec5c9ea377db9eecbb9070efdc07c0560519ca228d406982d65875a.webp' WHERE id = 'ab0004a6-e853-486c-b907-04becadcbdc0' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/56083fec17a9b18558ed41f78367455ad60d9904bbdf8c650a6787d3b79dd31d.webp' WHERE id = 'ab976a18-1f61-4ee4-9262-8ee36a19f0e7' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/fd86e240d940d71ff2e1bcc8935a9e3faf6214afa0c50a365f18ff4b062d0fb5.webp' WHERE id = 'ac586f7d-82ab-491f-81a6-5757ac975d6a' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/86593ca9aa9f493997200cdc42cda205a4231c962b06e56e60e74904bae4d9a8.webp' WHERE id = 'b4f3a258-88a8-4d15-89fe-6947ee70e04c' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/ce18f3ad5d77ddcc2e180a1a6b0c266c4330f762b3928a944ac832dbaa6a4606.webp' WHERE id = 'b6fc72d4-3d04-4b10-9b4b-b4923a44ccb2' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/8773599eba3ac69b814880384a0672e7bcc9cc38b3104c75a808563a195ab6be.webp' WHERE id = 'b8346618-9c29-4945-8d08-fd4536b7957c' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/67e3568a0ca9d0f16b1172d8d958297b8681ef39460ada19aa4775dc992e3569.webp' WHERE id = 'bc2efdd2-1911-4c12-8de5-b92548456e73' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/b17f837815066db0c9a7849e5e21251c5f3ed395331b3c27917288a306e70ee7.webp' WHERE id = 'c08bb422-6cb8-49e8-9361-2edd8a2fd8f0' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/7fb88a460ba287b1c922a58ba40c7793428a37b493e2e259b4b44d3f0b1a5e2f.webp' WHERE id = 'c248d811-8266-467e-a5ee-6db9bc7f511d' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/e628c20218d3c60062b47d0d2f165b315aedfa258fc41fb08ef806c76ec66189.webp' WHERE id = 'c367294c-5486-4fbc-8e93-1ef97ce9fcb7' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/a57ad4fceec7e2691b4dcf0c653eabf9114cd08c4f10bde56689767a038f2c54.webp' WHERE id = 'c69d2e37-c70d-4b98-a45a-d6140437340e' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/07ea22943b8838ba3b15a5dc64f4c598c6182aed17ddbaae2a28c19d03cc1214.webp' WHERE id = 'c7a6392d-c3cd-4df8-9825-0e46b6eb2365' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/0475d9406887b1d5686ba83f8393f66ca65ba21d32237677c8f297ff8259ff6a.webp' WHERE id = 'c82890b5-5e84-48d6-9b73-36d3ef45b610' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/668c3177809fba1afb17e6d7f34894ed8ec888b8848d736ac9747e68a12d9426.webp' WHERE id = 'c9d55c3a-f3cf-42a0-80aa-8273647fb408' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/dc16cd223c56e2372d26b0ca5b8f0193e8bb69884611ed804b6ea9079e8a1b81.webp' WHERE id = 'cabe638c-5070-4930-abba-e9c9976711a4' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/8a406d08bc41c00d44e32b611edc923c9b8ec92511d9a8631fcff15853b0879c.webp' WHERE id = 'cc6f8e8b-6f6f-43cd-b277-80ef274c2187' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/05230fd5af87fec3e41a64b55c5c3e1468bbfc995a4a18644fa216be1166def9.webp' WHERE id = 'd15b63e9-88e9-4813-87d8-5fec6eb22f80' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/70f6313923cf30f97cec0b0dd7a251de02539b04167d684f2eb261a38ba2cda9.webp' WHERE id = 'd583e95d-92f9-4ba1-b70b-118602a465e2' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/37a569f05b3ab34998477290025bf5559b7faf2b00cb1ad15b34b7c5d445a47d.webp' WHERE id = 'dd14d317-143e-48d0-aa18-eb6c7fc46f2b' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/793e3048db1cdc96819f4083f2be2e621403f15eeabc6b11b6caf018d89d02cb.webp' WHERE id = 'e020c881-e4df-4b8b-88e0-b06a8b097b75' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/62f309ab276f51241538361ee9a34d1ee623c43eb61b922fa2ee03e002ebd465.webp' WHERE id = 'e3753a58-2696-4e1e-8160-27f0e85c3b8f' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/81e1ec0ba32bbdac2d7633f62ff9b09b964fbbfceac86d6fa5529b59b4b97fcb.webp' WHERE id = 'e4207053-793b-4fd4-b8c1-0aaa61eaa3dd' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/384b390a2a2d6331c2b10ad73e063622ade777b5960ea4cc539a8a013e72fa39.webp' WHERE id = 'ea02e03a-bfca-486b-87a6-937f2461195d' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/df202512f8b7e6dece412c9e5288a7cf1046020f1b848130d71bc4a661ba9722.webp' WHERE id = 'f4893ce4-a462-42cc-b4fa-dbccc86ae451' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/31de8a793f4cdcdaa34918f859e009f2d60b5904641e9b47e852500aea0f08fc.webp' WHERE id = 'f517168d-ac96-4638-8792-def3177e4ffa' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/811b3ed090bd357caaf421cc1e19bb9da478a1b30fd7726a24a3007d4ff297a9.webp' WHERE id = 'f8c09435-4236-42ec-bc5f-b541f89cb124' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/f317a1418a45df5a39619c0e004aa6f06cd68bad5e8657d8f2c84ded735fa5e4.webp' WHERE id = 'f94ad522-df46-4c3d-9fc9-3dc5053efd1e' AND back LIKE 'data:%';
+UPDATE flashcard SET back = '/img/insecure/plain/s3://mecha-objects/seed/aed4b0b4995d503fa47c6bef8152f7fa342c1d410f67f96e23817b95ab8ae91d.webp' WHERE id = 'fbd01bc7-c952-4f36-b492-bb485bbf8193' AND back LIKE 'data:%';
+
+UPDATE flashcard SET back = replace(back, 's3://trash-362115-snapcards-bytes/', 's3://mecha-objects/')
+  WHERE back LIKE '/img/insecure/plain/s3://trash-362115-snapcards-bytes/%';

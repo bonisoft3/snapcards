@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delivery map</title>
+<link rel="stylesheet" href="vendor/maplibre-gl.css">
+<style>
+:root {
+  --ink: #28231e; --ink-soft: #5d5142; --muted: #7a6d5f; --accent: #7e451e;
+  --paper: #fffdf9; --rule: #cfc3b1; --rule-soft: #e3dacd; --ground: #ece3d3;
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+html, body { margin: 0; padding: 0; background: transparent; color: var(--ink); font: 13px/1.45 var(--font-sans); }
+[hidden] { display: none !important; }
+#root { display: grid; gap: 0; padding: 0; }
+#root:empty, #root.empty { padding: 0; }
+
+/* The search box's leading toggle: the reader's position, on or off. */
+.locate { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 3px 0 0 3px; background: #f2eee6; color: #8c8276; cursor: pointer; transition: background-color .14s ease, color .14s ease; }
+.locate:hover { background: #ebe4d8; color: var(--ink); }
+.locate[aria-pressed="true"] { background: #e6efe8; color: #2f6846; }
+.locate[aria-busy="true"], .locate[data-spinning] { cursor: progress; color: #2f6846; }
+.locate:is([aria-busy="true"], [data-spinning]) svg { animation: spin .9s linear infinite; }
+.locate[data-failed] { color: #a84739; }
+.locate:focus-visible { outline: 2px solid #8b7965; outline-offset: -2px; }
+.locate svg { width: 20px; height: 20px; flex: none; transform-origin: 50% 50%; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* A still preview of the pin until the reader asks to adjust it; then a map to move. */
+.map { position: relative; height: 180px; border: 0; border-radius: 3px; overflow: hidden; background: var(--ground); }
+.map[data-editing] { height: 320px; }
+.map:not([data-editing]) .tools, .map:not([data-editing]) #done, .map[data-editing] #adjust { display: none; }
+/* Top left: the bottom right is the tiles' attribution. */
+.pin-bar { position: absolute; inset-inline-start: 8px; top: 8px; z-index: 3; display: inline-flex; align-items: center; gap: 4px; }
+.pin-action { min-height: 30px; padding: 0 11px; border: 1px solid var(--ink); border-radius: 3px; background: var(--paper); color: var(--ink); font: 600 12.5px/1 var(--font-sans); cursor: pointer; box-shadow: 0 2px 6px #2b211826; }
+.pin-action:focus-visible { outline: 2px solid #8b7965; outline-offset: 2px; }
+#done { background: var(--ink); color: var(--paper); }
+.map:not([data-editing]) .pin { cursor: default; }
+.map .canvas { position: absolute; inset: 0; }
+.pin { display: block; width: 28px; height: 40px; filter: drop-shadow(0 3px 3px #2b211833); cursor: grab; touch-action: none; }
+.pin:active { cursor: grabbing; }
+.pin:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+.dragging .pin { filter: drop-shadow(0 8px 6px #2b211855); transform: translateY(-6px); }
+.pin-hint { position: relative; display: grid; place-items: center; width: 26px; height: 26px; border: 1px solid var(--rule); border-radius: 999px; background: #fffdf9eb; color: var(--ink-soft); font: 700 12px/1 var(--font-sans); cursor: help; box-shadow: 0 1px 4px #2b21181f; }
+.pin-hint:is(:hover, :focus-visible) { border-color: var(--ink); color: var(--ink); outline: none; }
+.cap { position: absolute; inset-inline-start: 0; top: calc(100% + 6px); z-index: 4; display: none; width: max-content; max-width: 210px; margin: 0; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 3px; background: var(--paper); color: var(--ink-soft); font: 400 11.5px/1.35 var(--font-sans); text-align: start; box-shadow: 0 4px 12px #2b211826; pointer-events: none; }
+.pin-hint:is(:hover, :focus-visible, :focus-within) .cap { display: block; }
+.tools { position: absolute; inset-inline-end: 8px; top: 8px; z-index: 3; display: grid; border: 1px solid var(--rule); border-radius: 3px; background: var(--paper); overflow: hidden; }
+.tools button { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; background: transparent; color: #51473d; font: 400 17px/1 var(--font-sans); cursor: pointer; }
+.tools button + button { border-top: 1px solid var(--rule-soft); }
+.tools button[aria-busy="true"] { color: var(--muted); cursor: progress; }
+.tools svg { width: 14px; height: 14px; }
+
+.maplibregl-ctrl-bottom-right .maplibregl-ctrl-attrib { margin: 0; border-radius: 3px 0 0 0; background: #faf7f2d9; color: #6b5e50; font: 10px/1.5 var(--font-sans); }
+.maplibregl-ctrl-attrib a { color: #6b5e50; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-locate" viewBox="0 0 16 16"><circle cx="8" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/><path d="M8 0.5v3M8 12.5v3M0.5 8h3M12.5 8h3" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 28 40"><path d="M14 39 C14 39 2 23 2 14 a12 12 0 0 1 24 0 C26 23 14 39 14 39z" fill="#28231e"/><circle cx="14" cy="14" r="4.5" fill="#faf7f2"/></symbol>
+</svg>
+<div id="root">
+  <button type="button" class="locate" id="locate" hidden><svg aria-hidden="true"><use href="#i-locate"/></svg></button>
+  <div class="map" id="map" role="application" hidden>
+    <div class="canvas" id="canvas"></div>
+    <div class="pin-bar">
+      <button type="button" class="pin-action" id="adjust"></button>
+      <button type="button" class="pin-action" id="done"></button>
+      <div class="pin-hint" id="cap-wrap" tabindex="0" hidden>?<span class="cap" id="cap"></span></div>
+    </div>
+    <div class="tools">
+      <button type="button" id="zoom-in" aria-label="Zoom in">+</button>
+      <button type="button" id="zoom-out" aria-label="Zoom out">−</button>
+    </div>
+  </div>
+</div>
+<script src="vendor/maplibre-gl.js"></script>
+<script>
+"use strict";
+const STYLE = "https://tiles.openfreemap.org/styles/liberty";
+const ZOOM = 16;
+// Beyond this the props name a different place than the one on screen; below
+// it they are the echo of a pin this unit posted.
+const SAME_PLACE_M = 1;
+
+const $ = (id) => document.getElementById(id);
+const post = (message) => parent.postMessage(message, "*");
+const raise = (name, detail) => post({ type: "pronto:event", name, detail });
+
+const BLANK = Object.freeze({ mode: "", latitude: "", longitude: "", near: "", locate: "", locating: "", denied: "", unavailable: "", hint: "", adjust: "", done: "" });
+// The camera's gestures, all of which wait for the reader to ask to adjust.
+const HANDLERS = ["dragPan", "scrollZoom", "boxZoom", "doubleClickZoom", "touchZoomRotate", "keyboard"];
+let props = BLANK;
+let locating = false;
+let awaitingFill = false;
+let fillTimer = 0;
+let failure = ""; // "" | "denied" | "unavailable"
+let map;
+let marker;
+let editing = false;
+let followed;
+let lastHeight = -1;
+// Arrow keys move a focused pin this many pixels, Shift ten times as far.
+const NUDGE_PX = 4;
+
+const fixed = (n) => n.toFixed(6);
+
+function coordinates() {
+  if (props.latitude === "" || props.longitude === "") return undefined;
+  const lat = Number(props.latitude);
+  const lng = Number(props.longitude);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) {
+    throw new Error(`delivery-map: props carry no coordinate: latitude "${props.latitude}", longitude "${props.longitude}"`);
+  }
+  return { lat, lng };
+}
+
+function metres(a, b) {
+  const rad = Math.PI / 180;
+  const dLat = (b.lat - a.lat) * rad;
+  const dLng = (b.lng - a.lng) * rad;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLng / 2) ** 2;
+  return 2 * 6371008.8 * Math.asin(Math.sqrt(h));
+}
+
+// Explicit click only: a permission prompt on load reads as the shop asking
+// for the customer's location before they asked for anything.
+function locate() {
+  if (locating) return;
+  locating = true;
+  awaitingFill = true;
+  clearTimeout(fillTimer);
+  fillTimer = setTimeout(() => {
+    awaitingFill = false;
+    render();
+  }, 6000);
+  failure = "";
+  render();
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      locating = false;
+      const at = { lat: position.coords.latitude, lng: position.coords.longitude };
+      raise("pin", { latitude: fixed(at.lat), longitude: fixed(at.lng), source: "gps" });
+      render();
+    },
+    (error) => {
+      locating = false;
+      awaitingFill = false;
+      clearTimeout(fillTimer);
+      failure = error.code === error.PERMISSION_DENIED ? "denied" : "unavailable";
+      render();
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 },
+  );
+}
+
+function createMap(center) {
+  map = new maplibregl.Map({
+    container: $("canvas"),
+    style: STYLE,
+    center,
+    zoom: ZOOM,
+    attributionControl: false,
+    dragRotate: false,
+    pitchWithRotate: false,
+    touchPitch: false,
+  });
+  map.touchZoomRotate.disableRotation();
+  map.keyboard.disableRotation();
+  map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+  // Extruded buildings hide the doors the pin is for; the checkout map is flat.
+  // A flat map, as the checkout is drawn; a style without 3D buildings has
+  // nothing to flatten.
+  map.on("style.load", () => {
+    if (map.getLayer("building-3d")) map.setLayoutProperty("building-3d", "visibility", "none");
+  });
+  map.on("styleimagemissing", ({ id }) => {
+    if (!map.hasImage(id)) map.addImage(id, { width: 1, height: 1, data: new Uint8Array(4) });
+  });
+  // The camera is the reader's to look around with; only the pin itself,
+  // taken and dropped, moves the pin.
+  const pin = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  pin.setAttribute("class", "pin");
+  pin.setAttribute("tabindex", "0");
+  pin.setAttribute("role", "button");
+  pin.innerHTML = '<use href="#i-pin"/>';
+  marker = new maplibregl.Marker({ element: pin, anchor: "bottom", draggable: true }).setLngLat(center).addTo(map);
+  marker.on("dragstart", () => $("map").classList.add("dragging"));
+  marker.on("dragend", () => {
+    $("map").classList.remove("dragging");
+    dropped();
+  });
+  pin.addEventListener("keydown", (e) => {
+    if (!editing) return;
+    const step = (e.shiftKey ? 10 : 1) * NUDGE_PX;
+    const by = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+    if (by === undefined) return;
+    e.preventDefault();
+    const at = map.project(marker.getLngLat());
+    marker.setLngLat(map.unproject([at.x + by[0], at.y + by[1]]));
+    dropped();
+  });
+  map.on("error", (e) => { throw e.error; });
+  $("zoom-in").addEventListener("click", () => map.zoomIn());
+  $("zoom-out").addEventListener("click", () => map.zoomOut());
+  // The frame grows and shrinks with the editing state; the canvas follows.
+  new ResizeObserver(() => map.resize()).observe($("map"));
+  edit(false);
+}
+
+// A preview holds still and frames the pin; adjusting gives the reader the
+// camera and the pin, and "done" frames the pin again where they left it.
+function edit(on) {
+  editing = on;
+  $("map").toggleAttribute("data-editing", on);
+  for (const name of HANDLERS) map[name][on ? "enable" : "disable"]();
+  marker.setDraggable(on);
+  marker.getElement().setAttribute("tabindex", on ? "0" : "-1");
+  if (!on) map.jumpTo({ center: marker.getLngLat() });
+}
+$("adjust").addEventListener("click", () => {
+  edit(true);
+  marker.getElement().focus();
+});
+$("done").addEventListener("click", () => {
+  edit(false);
+  $("adjust").focus();
+});
+
+function dropped() {
+  const c = marker.getLngLat().wrap();
+  const latitude = fixed(c.lat);
+  const longitude = fixed(c.lng);
+  if (latitude === props.latitude && longitude === props.longitude) return;
+  raise("pin", { latitude, longitude, source: "map" });
+}
+
+function render() {
+  const mode = props.mode;
+  // A seat delivers {} when the frame is ready before the mount's first props.
+  if (mode !== "" && mode !== "locate" && mode !== "map") throw new Error(`delivery-map: unknown mode "${mode}"`);
+  const message = failure === "" ? "" : props[failure];
+  // The page's language and direction, so its words are read and laid out as
+  // the page's are.
+  if (props.lang) document.documentElement.lang = props.lang;
+  if (props.dir) document.documentElement.dir = props.dir;
+  if (props.zoomin) $("zoom-in").setAttribute("aria-label", props.zoomin);
+  if (props.zoomout) $("zoom-out").setAttribute("aria-label", props.zoomout);
+
+  // The toggle is on while the reader keeps their position on (`near`),
+  // wherever the pin has gone since; a failure is said by its colour and its
+  // name, the only room an icon has.
+  const button = $("locate");
+  button.hidden = mode !== "locate";
+  if (awaitingFill && props.near !== "" && props.hint !== "") {
+    awaitingFill = false;
+    clearTimeout(fillTimer);
+  }
+  const label = locating ? props.locating : message !== "" ? message : props.locate;
+  button.setAttribute("aria-label", label);
+  button.title = label;
+  button.setAttribute("aria-pressed", String(props.near !== ""));
+  button.setAttribute("aria-busy", String(locating));
+  button.toggleAttribute("data-spinning", locating || awaitingFill);
+  button.toggleAttribute("data-failed", message !== "");
+
+  const at = mode === "map" ? coordinates() : undefined;
+  $("map").hidden = at === undefined;
+  if (at !== undefined) {
+    // The pin follows the props only when they move: a re-delivery of props
+    // that still name the old place must not undo the reader's drop before
+    // the seat echoes it back. The preview frames the pin wherever it goes;
+    // while adjusting, a pin moved off screen is brought back into view and
+    // one still in view leaves the reader's camera alone.
+    if (map === undefined) createMap(at);
+    else {
+      map.resize();
+      const moved = followed === undefined || followed.lat !== at.lat || followed.lng !== at.lng;
+      if (moved && metres(marker.getLngLat().wrap(), at) > SAME_PLACE_M) {
+        marker.setLngLat(at);
+        if (!editing || !map.getBounds().contains(at)) map.jumpTo({ center: at });
+      }
+    }
+    followed = at;
+    $("map").setAttribute("aria-label", props.hint);
+    marker.getElement().setAttribute("aria-label", props.hint);
+    $("adjust").textContent = props.adjust;
+    $("done").textContent = props.done;
+  }
+
+  const capWrap = $("cap-wrap");
+  const cap = $("cap");
+  cap.textContent = props.hint;
+  capWrap.title = props.hint;
+  capWrap.setAttribute("aria-label", props.hint);
+  capWrap.hidden = at === undefined || props.hint === "";
+
+  $("root").classList.toggle("empty", mode === "" || (mode === "map" && at === undefined));
+  reportHeight();
+}
+
+function reportHeight() {
+  const height = Math.ceil($("root").getBoundingClientRect().height);
+  if (height === lastHeight) return;
+  lastHeight = height;
+  post({ type: "pronto:event", name: "height", height });
+}
+
+// Pressed, the toggle turns the reader's position off: an empty pin.
+$("locate").addEventListener("click", () => {
+  if (props.near !== "") {
+    awaitingFill = false;
+    clearTimeout(fillTimer);
+    raise("pin", { latitude: "", longitude: "", source: "" });
+    render();
+  } else locate();
+});
+new ResizeObserver(reportHeight).observe($("root"));
+
+addEventListener("message", (e) => {
+  if (e.source !== parent) return;
+  const message = e.data;
+  if (message === null || typeof message !== "object" || message.type !== "pronto:props") return;
+  props = { ...BLANK, ...message.props };
+  render();
+});
+post({ type: "pronto:ready" });
+</script>
+</body>
+</html>

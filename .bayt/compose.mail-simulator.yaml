@@ -1,0 +1,69 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-mail-simulator:
+    build:
+      additional_contexts:
+        snapcards-mailpit: service:snapcards-mailpit
+      context: ..
+      dockerfile: .bayt/Dockerfile.mail-simulator
+      target: mail-simulator
+      tags:
+      - bayt-snapcards-mail-simulator:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-mail-simulator:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    depends_on:
+      snapcards-mailpit:
+        condition: service_healthy
+        restart: true
+    environment:
+      PORT: "8080"
+      MAILPIT_URL: http://mailpit:8025
+    healthcheck:
+      test:
+      - CMD
+      - httpcheck
+      - http://127.0.0.1:8080/_simulator/health
+      interval: 1s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+      start_interval: 200ms
+    image: bayt-snapcards-mail-simulator:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    networks:
+      default:
+        aliases:
+        - mail-simulator
+      airlock-out:
+        aliases:
+        - mail-simulator
+      bridge-mail-egress:
+        aliases:
+        - mail-simulator
+    restart: on-failure
+  snapcards-mail-simulator_bayt:
+    build:
+      additional_contexts:
+        snapcards-mailpit_bayt: service:snapcards-mailpit_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.mail-simulator
+      target: mail-simulator_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-mail-simulator_bayt:latest
+    scale: 0
+  snapcards-mail-simulator_srcs:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.mail-simulator
+      target: mail-simulator_srcs
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-mail-simulator_srcs:latest
+    scale: 0

@@ -1,0 +1,45 @@
+# generated from bayt.cue — do not edit
+services:
+  snapcards-diffusion:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.diffusion
+      target: diffusion
+      tags:
+      - bayt-snapcards-diffusion:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+      - bayt-snapcards-diffusion:latest
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    environment:
+      PORT: "8000"
+    healthcheck:
+      test:
+      - CMD
+      - httpcheck
+      - http://127.0.0.1:8000/v1/models
+      interval: 1s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+      start_interval: 200ms
+    image: bayt-snapcards-diffusion:${BAYT_IMAGE_TAG:-${COMPOSE_PROJECT_NAME}}
+    networks:
+      default:
+        aliases:
+        - diffusion
+      airlock-egress:
+        aliases:
+        - diffusion
+  snapcards-diffusion_bayt:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.diffusion
+      target: diffusion_bayt
+      args:
+        BAYT_DIR: ${MONOREPO_COMPOSE_MODE:+apps/snapcards}
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.27@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+    image: bayt-snapcards-diffusion_bayt:latest
+    scale: 0

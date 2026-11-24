@@ -1,0 +1,10 @@
+{
+  "operations": [
+    {
+      "sql": {
+        "up": "SET LOCAL lock_timeout = '5s';\nSET LOCAL statement_timeout = '30s';\n\n-- Cloudprinter textbook preflight requires >= 24 pages; pre-deploy Brazil orders\n-- of <= 11 cards carry 20/22-page quotes or stored book PDFs.\nDO $$ BEGIN\n  IF EXISTS (\n    SELECT 1 FROM print_order\n    WHERE country = 'BR' AND cards <= 11\n      AND (status IN ('quoting_br', 'converting', 'opening', 'checking', 'confirming', 'placing_br')\n        OR (status = 'awaiting_payment' AND cover_file IS NOT NULL))\n  ) THEN\n    RAISE EXCEPTION 'a Brazil print order under 12 cards is in flight with a pre-24-page quote or book PDF';\n  END IF;\nEND $$;\n\nDELETE FROM print_order WHERE country = 'BR' AND cards <= 11 AND status = 'quoted';\n",
+        "onComplete": true
+      }
+    }
+  ]
+}

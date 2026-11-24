@@ -1,0 +1,9 @@
+{
+  "operations": [
+    {
+      "sql": {
+        "up": "-- A deck's cards go with it, here rather than in the browser: a screen reads no\n-- more of a deck's cards than it shows, so one deleted from a list named none of\n-- them and left them all behind. The card's own delete policy is its owner's, and\n-- this runs as the table's, since a deck's owner may delete all of its cards.\nSET lock_timeout = '5s';\nSET statement_timeout = '60s';\n\nCREATE FUNCTION snapcards_delete_deck_cards() RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_catalog AS $$\nBEGIN\n  DELETE FROM flashcard WHERE set_id = OLD.id;\n  RETURN OLD;\nEND $$;\nREVOKE ALL ON FUNCTION snapcards_delete_deck_cards() FROM PUBLIC;\n\nCREATE TRIGGER card_set_takes_its_cards AFTER DELETE ON card_set\n  FOR EACH ROW EXECUTE FUNCTION snapcards_delete_deck_cards();\n"
+      }
+    }
+  ]
+}
