@@ -109,6 +109,7 @@ auth:
   service: /auth
   providers:
     - google
+    - email
   mode: passkey
 consent:
   mode: bar

@@ -1863,7 +1863,7 @@ Deno.test("browser replies retain accepted deck and run identity even when the t
 // mistranslated as "Sign in" / "Entrar".
 Deno.test("no screen draws its own sign-in, every screen offers ⋯ for the routes a phone's bar leaves out, and generate offers a guest a passkey for its collections", async () => {
   const shell = JSON.parse(await Deno.readTextFile(new URL("../shell/shell.json", import.meta.url)));
-  assertEquals(shell.auth?.providers, ["google"]);
+  assertEquals(shell.auth?.providers, ["google", "email"]);
   assertEquals(shell.hostDom?.["window-print"]?.src, "shell/hatches/window-print.js");
   for (const screen of ["cards", "generate", "explore", "card", "print", "about"]) {
     const html = await screenMarkup(screen);
