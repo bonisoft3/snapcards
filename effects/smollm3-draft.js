@@ -121,6 +121,9 @@ export async function issue(input, sink) {
     "zh": "简体中文 (Simplified Chinese)",
     "zh-cn": "简体中文 (Simplified Chinese)",
     "中文": "简体中文 (Simplified Chinese)",
+    "hi": "हिन्दी (Hindi)",
+    "hi-in": "हिन्दी (Hindi)",
+    "हिन्दी": "हिन्दी (Hindi)",
     "fr": "Français",
     "fr-fr": "Français",
     "français": "Français",
@@ -153,6 +156,9 @@ export async function issue(input, sink) {
     "zh": "China",
     "zh-cn": "China",
     "中文": "China",
+    "hi": "India",
+    "hi-in": "India",
+    "हिन्दी": "India",
   };
   const langLabel = langNames[locale.toLowerCase()] || locale;
   const rawRegion = String(input?.region || "").replace(/\s*::\s*run-\d+$/, "").trim();

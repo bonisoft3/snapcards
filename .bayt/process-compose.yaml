@@ -98,6 +98,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 10
+    shutdown:
+      timeout_seconds: 10
   visual:
     depends_on:
       launch:
@@ -158,6 +160,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 150
+    shutdown:
+      timeout_seconds: 10
   check-acceptance:
     depends_on:
       launch:
@@ -256,6 +260,8 @@ processes:
       period_seconds: 5
       timeout_seconds: 5
       failure_threshold: 32
+    shutdown:
+      timeout_seconds: 10
   checkout-simulator:
     depends_on:
       "bayt:httpcheck":
@@ -285,6 +291,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 60
+    shutdown:
+      timeout_seconds: 10
   prodigi-simulator:
     depends_on:
       "bayt:httpcheck":
@@ -313,6 +321,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 60
+    shutdown:
+      timeout_seconds: 10
   cloudprinter-simulator:
     depends_on:
       "bayt:httpcheck":
@@ -344,6 +354,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 60
+    shutdown:
+      timeout_seconds: 10
   mail-simulator:
     depends_on:
       mailpit:
@@ -373,6 +385,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 60
+    shutdown:
+      timeout_seconds: 10
   seed-blobs:
     depends_on:
       rclone-s3:
@@ -414,6 +428,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 60
+    shutdown:
+      timeout_seconds: 10
   diffusion:
     depends_on:
       "bayt:httpcheck":
@@ -437,6 +453,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 90
+    shutdown:
+      timeout_seconds: 10
   tsbifrost:
     depends_on:
       "bayt:portcheck":
@@ -476,6 +494,8 @@ processes:
       period_seconds: 5
       timeout_seconds: 5
       failure_threshold: 36
+    shutdown:
+      timeout_seconds: 10
   mailpit:
     depends_on:
       "bayt:httpcheck":
@@ -500,6 +520,8 @@ processes:
       period_seconds: 2
       timeout_seconds: 5
       failure_threshold: 20
+    shutdown:
+      timeout_seconds: 10
   database:
     entrypoint:
     - mise
@@ -669,6 +691,8 @@ processes:
       period_seconds: 5
       timeout_seconds: 5
       failure_threshold: 36
+    shutdown:
+      timeout_seconds: 10
   auth:
     depends_on:
       database:
@@ -767,6 +791,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 60
+    shutdown:
+      timeout_seconds: 10
   redis:
     depends_on:
       "bayt:portcheck":
@@ -791,6 +817,8 @@ processes:
       period_seconds: 5
       timeout_seconds: 3
       failure_threshold: 36
+    shutdown:
+      timeout_seconds: 10
   mesh-events:
     depends_on:
       caddy:
@@ -837,6 +865,8 @@ processes:
       period_seconds: 5
       timeout_seconds: 5
       failure_threshold: 36
+    shutdown:
+      timeout_seconds: 10
   conduit:
     depends_on:
       database:
@@ -874,6 +904,8 @@ processes:
       period_seconds: 5
       timeout_seconds: 5
       failure_threshold: 44
+    shutdown:
+      timeout_seconds: 10
   rclone-s3:
     depends_on:
       "bayt:portcheck":
@@ -900,6 +932,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 10
+    shutdown:
+      timeout_seconds: 10
   imgproxy:
     depends_on:
       rclone-s3:
@@ -935,6 +969,8 @@ processes:
       period_seconds: 1
       timeout_seconds: 5
       failure_threshold: 10
+    shutdown:
+      timeout_seconds: 10
   transform:
     depends_on:
       redis:
@@ -1072,6 +1108,8 @@ processes:
       period_seconds: 5
       timeout_seconds: 5
       failure_threshold: 36
+    shutdown:
+      timeout_seconds: 10
   airlock-mesh:
     depends_on:
       tsbifrost:
@@ -1125,3 +1163,5 @@ processes:
       period_seconds: 5
       timeout_seconds: 5
       failure_threshold: 36
+    shutdown:
+      timeout_seconds: 10

@@ -19,6 +19,7 @@ _favoriteCountBlobl:   _ @embed(file="pipelines/favorite-count.blobl", type=text
 _deckCoverBlobl:       _ @embed(file="pipelines/deck-cover.blobl", type=text)
 _deckCoverSql:         _ @embed(file="migrations/20261108_deck_cover.sql", type=text)
 _cardCountBoundSql:    _ @embed(file="migrations/20261114_card_count_bound.sql", type=text)
+_hindiLangSql:         _ @embed(file="migrations/20261125_translation_lang_hi.sql", type=text)
 
 code: pronto.#App & {
 	state: entities: {
@@ -165,7 +166,7 @@ code: pronto.#App & {
 				// "<deck>:<lang>"
 				{ordinal: 1, name: "id", type: "string", pk: true, cel: "this.size() > 0"},
 				{ordinal: 2, name: "set_id", type: "string", cel: "this.size() > 0"},
-				{ordinal: 3, name: "lang", type: "string", cel: "this in ['pt', 'es', 'en', 'he', 'zh']"},
+				{ordinal: 3, name: "lang", type: "string", cel: "this in ['pt', 'es', 'en', 'he', 'zh', 'hi']"},
 				{ordinal: 4, name: "name", type: "string", cel: "this.size() > 0"},
 				{ordinal: 5, name: "category", type: "string", cel: "this.size() >= 0"},
 			]
@@ -181,7 +182,7 @@ code: pronto.#App & {
 				{ordinal: 1, name: "id", type: "string", pk: true, cel: "this.size() > 0"},
 				{ordinal: 2, name: "card_id", type: "string", cel: "this.size() > 0"},
 				{ordinal: 3, name: "set_id", type: "string", cel: "this.size() > 0"},
-				{ordinal: 4, name: "lang", type: "string", cel: "this in ['pt', 'es', 'en', 'he', 'zh']"},
+				{ordinal: 4, name: "lang", type: "string", cel: "this in ['pt', 'es', 'en', 'he', 'zh', 'hi']"},
 				{ordinal: 5, name: "word", type: "string", cel: "this.size() > 0"},
 			]
 			indexes: [{on: "set_id"}]
@@ -523,8 +524,8 @@ code: pronto.#App & {
 	state: baseline: {
 		entities: ["CardArt", "DeckLevel", "DeckProgress", "AppUser", "CardSet", "Flashcard", "Me", "Favorite", "FavoriteCount", "DeckStats", "DeckTranslation", "CardTranslation", "GenerationDraft", "DeckPressSeat"]
 		after: "20261106"
-		// 20261106_print_order_payments, 20261107_print_order_file, 20261113_bounded_job_keys, 20261113_job_key_once, 20261115_session_mode, 20261118_br_spiral_flip_deck, 20261119_order_confirmation_thread, 20261119_order_tracking_and_ship_mail and 20261121_machine_clock carry the order since its release.
-		carried: "20261106_print_order": "0d3c938d558b26d92fbd688037923179c99dd6b871b4865ba7048647e15815d3"
+		// 20261106_print_order_payments, 20261107_print_order_file, 20261113_bounded_job_keys, 20261113_job_key_once, 20261115_session_mode, 20261118_br_spiral_flip_deck, 20261119_order_confirmation_thread, 20261119_order_tracking_and_ship_mail, 20261121_machine_clock and 20261125_print_country_in carry the order since its release.
+		carried: "20261106_print_order": "2d3b737a1d0a79cfd30d13b9d08da46061d64f9da255e02096cd17db3325dee9"
 	}
 
 	state: rawMigrations: [
@@ -548,6 +549,8 @@ code: pronto.#App & {
 	state: migrations: "20261108_deck_cover": {operations: [{sql: {up: _deckCoverSql, onComplete: true}}]}
 	// The draft's upper bound on card_count, which 005 keeps without.
 	state: migrations: "20261114_card_count_bound": {operations: [{sql: {up: _cardCountBoundSql, onComplete: true}}]}
+	// Hindi among the translations' languages, which 005 keeps without.
+	state: migrations: "20261125_translation_lang_hi": {operations: [{sql: {up: _hindiLangSql, onComplete: true}}]}
 
 	state: pipelines: {
 		// Absolute recounts of the event's own deck, never deltas; a foreign
@@ -921,6 +924,18 @@ code: pronto.#App & {
 				states:    ["reading"]
 				hatches:   ["window-print"]
 			}
+			// Landing pages for search ads, one per keyword theme: reached from an
+			// ad, never from the strip.
+			for name, title in {kids: "Picture Flashcards for Kids", teachers: "Classroom Flashcards", printed: "Printed Picture Cards"} {
+				(name): {
+					files: shared: ["shell/shared/chrome-ready.css", "shell/shared/chrome.css", "shell/shared/nav.css", "shell/shared/landing.css"]
+					"title":   title
+					route:     "/\(name)"
+					strip:     false
+					prerender: true
+					states:    ["reading"]
+				}
+			}
 		}
 		handlers: {
 			"generation-input": {ir: "handler-generation-input", of: "generate", src: "shell/handlers/generation-input.js", note: "freeze the form input for one Create request"}
@@ -975,6 +990,8 @@ code: pronto.#App & {
 		googleTag: {
 			id:    "AW-11407991574"
 			hosts: [domain, "www.\(domain)"]
+			// Google Ads' "Sign-up (web)".
+			conversions: signup: "BAXrCP28w78dEJbG4L8q"
 		}
 		// Brazil's readers are the press's own, and the LGPD asks their consent
 		// for advertising cookies as Google's policy asks the EEA's.
@@ -1021,6 +1038,7 @@ code: pronto.#App & {
 				"en": path: "en"
 				"he": path: "he"
 				"zh": path: "zh"
+				"hi": path: "hi"
 			}
 			catalogues: _catalogues
 		}
@@ -1041,8 +1059,10 @@ code: pronto.#App & {
 
 // The faces chrome.css names (shell/shared/fonts/), served beside the sheet
 // that reaches them by url().
-_fontStatics: [for face in ["nunito", "dm-sans"] for subset in ["latin", "latin-ext"] for style in ["normal", "italic"] {
-	let f = "shell/shared/fonts/\(face)-\(subset)-wght-\(style).woff2"
+_fontStatics: [for f in list.Concat([
+	[for face in ["nunito", "dm-sans"] for subset in ["latin", "latin-ext"] for style in ["normal", "italic"] {"shell/shared/fonts/\(face)-\(subset)-wght-\(style).woff2"}],
+	["shell/shared/fonts/noto-sans-devanagari-devanagari-wght-normal.woff2"],
+]) {
 	file:   f
 	target: "/srv/\(f)"
 	watch:  true
@@ -1465,12 +1485,12 @@ _snapcardsRoot: {
 		id: "snapcards"
 		meta: host: "omnishell"
 		initial: "routing"
-		on: {for screenName in ["cards", "generate", "explore", "deck", "card", "print", "about"] {
+		on: {for screenName in ["cards", "generate", "explore", "deck", "card", "print", "about", "kids", "teachers", "printed"] {
 			"route:\(screenName)": {target: ".\(screenName)", reenter: true}
 		}}
 		states: {
 			routing: {}
-			for screenName in ["cards", "generate", "explore", "deck", "card", "print", "about"] {
+			for screenName in ["cards", "generate", "explore", "deck", "card", "print", "about", "kids", "teachers", "printed"] {
 				(screenName): {
 					meta: screen: screenName
 					if _rowActors[screenName+"Rows"] != _|_ {invoke: {src: screenName + "Rows"}}

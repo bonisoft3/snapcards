@@ -13,7 +13,7 @@ DO E'BEGIN
   IF EXISTS (SELECT FROM information_schema.columns WHERE table_schema = ''airlock'' AND table_name = ''external_effect_ledger'' AND column_name = ''request'') THEN
     ALTER TABLE airlock.external_effect_ledger RENAME COLUMN request TO input;
     EXECUTE E''DO $$ BEGIN
-  IF obj_description(to_regprocedure(''''"trg_print_order_status_timer_arm"()''''), ''''pg_proc'''') IS DISTINCT FROM ''''eb6c84caf4269ac717b7082f7132d4b89de23e95a00aca0cd4d325893ed5f207'''' THEN
+  IF obj_description(to_regprocedure(''''"trg_print_order_status_timer_arm"()''''), ''''pg_proc'''') IS DISTINCT FROM ''''a65e453f8b7565832dd2990e773013e28dde644afbfee2e1ef2d97f1c2ac844c'''' THEN
     RAISE EXCEPTION ''''machine PrintOrderMachine timer interpreter differs from the program: migrate 010_machines.sql and existing state-entry deadlines before starting'''';
   END IF;
 END $$;
@@ -153,7 +153,7 @@ BEGIN
         NEW."status" := ''''converting'''';
         NEW."cost" := (outcome->''''data''''->>''''cost'''')::int;
         NEW."cost_shipping" := (outcome->''''data''''->>''''shipping'''')::int;
-        NEW."currency" := CASE NEW.country WHEN ''''BR'''' THEN ''''brl'''' WHEN ''''AR'''' THEN ''''ars'''' WHEN ''''IL'''' THEN ''''ils'''' WHEN ''''US'''' THEN ''''usd'''' WHEN ''''GB'''' THEN ''''gbp'''' WHEN ''''CN'''' THEN ''''cny'''' END;
+        NEW."currency" := CASE NEW.country WHEN ''''BR'''' THEN ''''brl'''' WHEN ''''AR'''' THEN ''''ars'''' WHEN ''''IL'''' THEN ''''ils'''' WHEN ''''US'''' THEN ''''usd'''' WHEN ''''GB'''' THEN ''''gbp'''' WHEN ''''CN'''' THEN ''''cny'''' WHEN ''''IN'''' THEN ''''inr'''' END;
         NEW."sku" := outcome->''''data''''->>''''sku'''';
         NEW."shipping_method" := outcome->''''data''''->>''''shipping_method'''';
         INSERT INTO "airlock"."external_effect_ledger" ("key", "effect", "row", "input")
@@ -943,7 +943,7 @@ REVOKE ALL ON FUNCTION "trg_print_order_status_timer_fire"() FROM PUBLIC;
 DROP TRIGGER IF EXISTS "trg_print_order_status_timer_fire" ON public.machine_timer_tick;
 CREATE TRIGGER "trg_print_order_status_timer_fire" AFTER INSERT ON public.machine_timer_tick
   FOR EACH ROW EXECUTE FUNCTION "trg_print_order_status_timer_fire"();
-COMMENT ON FUNCTION "trg_print_order_status_timer_arm"() IS ''''eb6c84caf4269ac717b7082f7132d4b89de23e95a00aca0cd4d325893ed5f207'''';
+COMMENT ON FUNCTION "trg_print_order_status_timer_arm"() IS ''''a65e453f8b7565832dd2990e773013e28dde644afbfee2e1ef2d97f1c2ac844c'''';
 
 CREATE SCHEMA IF NOT EXISTS cortex_runtime;
 REVOKE ALL ON SCHEMA cortex_runtime FROM PUBLIC;

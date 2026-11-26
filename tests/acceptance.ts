@@ -303,7 +303,7 @@ async function liveCheckout(page: Page, base: string, api: string) {
     // page count and page size.
     async mailPdf(mail: string): Promise<{ pages: number; size: { width: number; height: number } }> {
       const { Text, Attachments } = await (await fetch(`${mailpit}/api/v1/message/${mail}`)).json();
-      const link = /^Print file: (\S+)$/m.exec(Text)?.[1];
+      const link = /^[ \t]*Print file: (\S+)$/m.exec(Text)?.[1];
       if (!link) throw new Error(`The mail links no print file: ${Text}`);
       const file = await fetch(`${api}${new URL(link).pathname}`);
       if (!file.ok) throw new Error(`The print file at ${link}: ${file.status}`);
@@ -673,12 +673,33 @@ const CASES: TestCase[] = [
     run: async (page, base) => {
       // Header action rows were non-wrapping flex rows wider than a phone, clipping the language switch and sign-in at both edges.
       await page.setViewportSize({ width: 375, height: 812 });
-      for (const path of ["/en", "/he", "/en/explore/69618be6-9206-f9c7-59eb-b5e4b072cf3d"]) {
+      for (const path of ["/en", "/he", "/hi", "/hi/about", "/en/explore/69618be6-9206-f9c7-59eb-b5e4b072cf3d"]) {
         await page.goto(`${base}${path}`, { waitUntil: "domcontentloaded" });
         await waitForPronto(page);
         const width = await page.evaluate(() => ({ doc: document.documentElement.scrollWidth, viewport: innerWidth }));
         if (width.doc > width.viewport) throw new Error(`${path} scrolls horizontally on a phone: ${JSON.stringify(width)}`);
       }
+    },
+  },
+  {
+    id: "hindi-about-devanagari",
+    accepts: ["accept-browse"],
+    run: async (page, base) => {
+      // Nunito and DM Sans ship Latin alone: Hindi fell to whatever face the phone had.
+      const served = await (await fetch(`${base}/hi/about`)).text();
+      if (!/<html[^>]*\blang="hi"/.test(served) || /<html[^>]*\bdir="rtl"/.test(served)) throw new Error("/hi/about is not served as left-to-right Hindi");
+      await page.goto(`${base}/hi/about`, { waitUntil: "domcontentloaded" });
+      await waitForPronto(page);
+      const face = await page.evaluate(async () => {
+        const heading = document.querySelector(".shell-screen:not([hidden]) h1")!;
+        await document.fonts.ready;
+        return {
+          dir: getComputedStyle(heading).direction,
+          text: heading.textContent ?? "",
+          devanagari: [...document.fonts].some((f) => f.status === "loaded" && f.unicodeRange.includes("U+900-97F")),
+        };
+      });
+      if (face.dir !== "ltr" || !/[ऀ-ॿ]/.test(face.text) || !face.devanagari) throw new Error(`/hi/about does not set Hindi in its own face: ${JSON.stringify(face)}`);
     },
   },
   {

@@ -16,6 +16,48 @@ function host(origin) {
   return match[1];
 }
 
+const ZERO_DECIMAL = new Set(["bif", "clp", "djf", "gnf", "jpy", "kmf", "krw", "mga", "pyg", "rwf", "vnd", "vuv", "xaf", "xof", "xpf"]);
+
+function formatMoney(total, currency) {
+  const cur = String(currency ?? "usd").toUpperCase();
+  const minor = Number(total ?? 0);
+  if (ZERO_DECIMAL.has(cur.toLowerCase())) {
+    return `${Math.round(minor)} ${cur}`;
+  }
+  const fixed = (minor / 100).toFixed(2);
+  if (cur === "BRL") return `R$ ${fixed.replace(".", ",")}`;
+  if (cur === "USD") return `$${fixed} USD`;
+  return `${fixed} ${cur}`;
+}
+
+function formatDelivery(delivery, fallbackEmail) {
+  const a = delivery?.address ?? {};
+  const c = delivery?.contact ?? {};
+  const street = [a.line1, a.line2].filter(Boolean).join(", ");
+  const cityState = [a.city, a.region].filter(Boolean).join(" - ");
+  const locality = [a.district, cityState].filter(Boolean).join(", ");
+  const postalCountry = [a.postalCode, a.country].filter(Boolean).join(" · ");
+  const typed = String(delivery?.text ?? "").trim();
+  const email = String(c.email || fallbackEmail || "").trim();
+  const phone = String(c.phone ?? "").trim();
+  const instructions = String(delivery?.instructions ?? "").trim();
+  const lat = delivery?.pin?.latitude;
+  const lon = delivery?.pin?.longitude;
+  const hasPin = typeof lat === "number" && Number.isFinite(lat) && typeof lon === "number" && Number.isFinite(lon);
+  return [
+    a.recipient ? `  Recipient: ${a.recipient}` : "",
+    street ? `  Address: ${street}` : "",
+    locality ? `  Area: ${locality}` : "",
+    postalCountry ? `  Postal: ${postalCountry}` : "",
+    typed && typed !== String(a.line1 ?? "").trim() ? `  Typed address: ${typed}` : "",
+    a.taxId ? `  CPF / Tax ID: ${a.taxId}` : "",
+    `  Email: ${email || "not supplied"}`,
+    phone ? `  Phone: ${phone}` : "",
+    instructions ? `  Instructions: ${instructions}` : "",
+    hasPin ? `  Map pin: ${lat}, ${lon} (https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=17/${lat}/${lon})` : "",
+  ].filter(Boolean);
+}
+
 function customerSubject(input, test, br) {
   const shortId = String(input.id ?? "").slice(0, 8);
   return br
@@ -70,6 +112,17 @@ export async function issue(input, sink, secrets) {
     if (buyerRes.status >= 500 || buyerRes.status === 429) throw new Error(`buyer mail answered ${buyerRes.status}`);
   }
 
+  const sameBrl = String(input.currency ?? "").toLowerCase() === "brl" && input.fx_brl != null && Number(input.fx_brl) === Number(input.total);
+  const fxNote = input.fx_quote ? `Stripe FX quote ${input.fx_quote}` : "";
+  const payoutNote = input.fx_brl != null
+    ? `payout target ${formatMoney(input.fx_brl, "brl")}${fxNote ? `, ${fxNote}` : ""}`
+    : fxNote;
+  const chargedLine = sameBrl
+    ? `  Charged: ${formatMoney(input.total, input.currency)}${fxNote ? ` (${fxNote})` : ""}`
+    : `  Charged: ${formatMoney(input.total, input.currency)}${payoutNote ? ` (${payoutNote})` : ""}`;
+  const costLine = input.cost != null ? `  ${vendor} cost: ${formatMoney(input.cost, "usd")}` : "";
+  const deliveryLines = formatDelivery(input.delivery, buyerEmail);
+
   const res = await sink.fetch(`/client/v4/accounts/${secrets.MAIL_ACCOUNT_ID}/email/sending/send`, {
     method: "POST",
     body: {
@@ -78,17 +131,27 @@ export async function issue(input, sink, secrets) {
       subject: `${test}Snapcards order ${input.id}`,
       text: [
         live ? "" : "Stripe test-mode order: no real payment collected; do not print or ship.",
-        `Order record ${input.id}. ${vendor} prints and posts this order; there is nothing to do.`,
-        `Deck: ${input.title}`,
-        `Stock: ${input.stock} (${input.sku}), ${format}`,
-        `Charged: ${input.total} ${input.currency} (minor units), priced to receive ${input.fx_brl} brl by Stripe FX quote ${input.fx_quote}; ${vendor}'s cost ${input.cost} usd`,
-        `${vendor} order: ${input.vendor_order_id}`,
-        `Customer: ${buyerEmail || "not supplied"}`,
-        `Delivery, as the customer stated it; payment verifies none of it: ${JSON.stringify(input.delivery)}`,
-        `Print file: ${sink.origin}/blobs/mecha-objects/${input.print_file}`,
-        input.cover_file ? `Cover file: ${sink.origin}/blobs/mecha-objects/${input.cover_file}` : "",
-        file.unread ? `The print file is not attached: ${file.unread}` : "",
-      ].filter(Boolean).join("\n"),
+        `${vendor} prints and posts this order — there is nothing to do.`,
+        ``,
+        `Order`,
+        `  ID: ${input.id}`,
+        `  ${vendor} order: ${input.vendor_order_id}`,
+        `  Deck: ${input.title}`,
+        `  Format: ${format}, ${input.stock} (${input.sku})`,
+        `  Track: ${sink.origin}/print?order=${input.id}`,
+        ``,
+        `Payment`,
+        chargedLine,
+        ...(costLine ? [costLine] : []),
+        ``,
+        `Customer & Delivery (as stated by customer; unverified)`,
+        ...deliveryLines,
+        ``,
+        `Files`,
+        `  Print file: ${sink.origin}/blobs/mecha-objects/${input.print_file}`,
+        input.cover_file ? `  Cover file: ${sink.origin}/blobs/mecha-objects/${input.cover_file}` : "",
+        file.unread ? `  The print file is not attached: ${file.unread}` : "",
+      ].filter((line, idx, arr) => line !== "" || (idx > 0 && arr[idx - 1] !== "")).join("\n"),
       attachments: file.content ? [{ content: file.content, filename: `snapcards-${input.id}.pdf`, type: "application/pdf", disposition: "attachment" }] : [],
     },
   });

@@ -190,6 +190,36 @@
         },
         {
           "action": "rebuild",
+          "path": "../shell/screens/kids.html",
+          "target": "/srv/shell/screens/kids.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/kids.css",
+          "target": "/srv/shell/screens/kids.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/printed.html",
+          "target": "/srv/shell/screens/printed.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/printed.css",
+          "target": "/srv/shell/screens/printed.css"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/teachers.html",
+          "target": "/srv/shell/screens/teachers.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/screens/teachers.css",
+          "target": "/srv/shell/screens/teachers.css"
+        },
+        {
+          "action": "rebuild",
           "path": "../shell/handlers/count-step.js",
           "target": "/srv/shell/handlers/count-step.js"
         },
@@ -315,6 +345,11 @@
         },
         {
           "action": "rebuild",
+          "path": "../shell/shared/landing.css",
+          "target": "/srv/shell/shared/landing.css"
+        },
+        {
+          "action": "rebuild",
           "path": "../shell/shared/nav.css",
           "target": "/srv/shell/shared/nav.css"
         },
@@ -365,6 +400,11 @@
         },
         {
           "action": "rebuild",
+          "path": "../messages/hi.json",
+          "target": "/srv/messages/hi.json"
+        },
+        {
+          "action": "rebuild",
           "path": "../documents/about/index.html",
           "target": "/srv/about/index.html"
         },
@@ -375,8 +415,38 @@
         },
         {
           "action": "rebuild",
+          "path": "../documents/en/kids/index.html",
+          "target": "/srv/en/kids/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/en/printed/index.html",
+          "target": "/srv/en/printed/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/en/teachers/index.html",
+          "target": "/srv/en/teachers/index.html"
+        },
+        {
+          "action": "rebuild",
           "path": "../documents/es/about/index.html",
           "target": "/srv/es/about/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/es/kids/index.html",
+          "target": "/srv/es/kids/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/es/printed/index.html",
+          "target": "/srv/es/printed/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/es/teachers/index.html",
+          "target": "/srv/es/teachers/index.html"
         },
         {
           "action": "rebuild",
@@ -385,8 +455,73 @@
         },
         {
           "action": "rebuild",
+          "path": "../documents/he/kids/index.html",
+          "target": "/srv/he/kids/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/he/printed/index.html",
+          "target": "/srv/he/printed/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/he/teachers/index.html",
+          "target": "/srv/he/teachers/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/hi/about/index.html",
+          "target": "/srv/hi/about/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/hi/kids/index.html",
+          "target": "/srv/hi/kids/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/hi/printed/index.html",
+          "target": "/srv/hi/printed/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/hi/teachers/index.html",
+          "target": "/srv/hi/teachers/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/kids/index.html",
+          "target": "/srv/kids/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/printed/index.html",
+          "target": "/srv/printed/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/teachers/index.html",
+          "target": "/srv/teachers/index.html"
+        },
+        {
+          "action": "rebuild",
           "path": "../documents/zh/about/index.html",
           "target": "/srv/zh/about/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/zh/kids/index.html",
+          "target": "/srv/zh/kids/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/zh/printed/index.html",
+          "target": "/srv/zh/printed/index.html"
+        },
+        {
+          "action": "rebuild",
+          "path": "../documents/zh/teachers/index.html",
+          "target": "/srv/zh/teachers/index.html"
         },
         {
           "action": "rebuild",
@@ -427,6 +562,11 @@
           "action": "rebuild",
           "path": "../shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2",
           "target": "/srv/shell/shared/fonts/dm-sans-latin-ext-wght-italic.woff2"
+        },
+        {
+          "action": "rebuild",
+          "path": "../shell/shared/fonts/noto-sans-devanagari-devanagari-wght-normal.woff2",
+          "target": "/srv/shell/shared/fonts/noto-sans-devanagari-devanagari-wght-normal.woff2"
         },
         {
           "action": "rebuild",
@@ -500,8 +640,23 @@
         },
         {
           "action": "rebuild",
+          "path": "../ir/neighbourhood-kids.svg",
+          "target": "/srv/docs/ir/neighbourhood-kids.svg"
+        },
+        {
+          "action": "rebuild",
           "path": "../ir/neighbourhood-print.svg",
           "target": "/srv/docs/ir/neighbourhood-print.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/neighbourhood-printed.svg",
+          "target": "/srv/docs/ir/neighbourhood-printed.svg"
+        },
+        {
+          "action": "rebuild",
+          "path": "../ir/neighbourhood-teachers.svg",
+          "target": "/srv/docs/ir/neighbourhood-teachers.svg"
         },
         {
           "action": "rebuild",
@@ -712,6 +867,91 @@
           "action": "rebuild",
           "path": "../journal/2026-11-22-consent-bar-reopened-en.png",
           "target": "/srv/docs/journal/2026-11-22-consent-bar-reopened-en.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-hindi-about-dark.png",
+          "target": "/srv/docs/journal/2026-11-25-hindi-about-dark.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-hindi-about-light.png",
+          "target": "/srv/docs/journal/2026-11-25-hindi-about-light.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-hindi-about-system-face.png",
+          "target": "/srv/docs/journal/2026-11-25-hindi-about-system-face.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-hindi-kids-light.png",
+          "target": "/srv/docs/journal/2026-11-25-hindi-kids-light.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-hindi-printed-dark.png",
+          "target": "/srv/docs/journal/2026-11-25-hindi-printed-dark.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-kids-en-dark.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-kids-en-dark.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-kids-en-light.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-kids-en-light.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-kids-pt-dark.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-kids-pt-dark.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-kids-pt-light.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-kids-pt-light.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-printed-en-dark.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-printed-en-dark.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-printed-en-light.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-printed-en-light.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-printed-pt-dark.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-printed-pt-dark.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-printed-pt-light.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-printed-pt-light.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-teachers-en-dark.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-teachers-en-dark.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-teachers-en-light.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-teachers-en-light.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-teachers-pt-dark.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-teachers-pt-dark.png"
+        },
+        {
+          "action": "rebuild",
+          "path": "../journal/2026-11-25-landing-teachers-pt-light.png",
+          "target": "/srv/docs/journal/2026-11-25-landing-teachers-pt-light.png"
         },
         {
           "action": "rebuild",

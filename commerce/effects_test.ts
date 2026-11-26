@@ -86,7 +86,7 @@ Deno.test("a quote is Prodigi's cheapest total and shipping, in USD alone", asyn
 Deno.test("the price's scales are money.ts's for every currency an order is charged in", async () => {
 	const source = await Deno.readTextFile(new URL("../effects/print-fx.js", import.meta.url));
 	const table = Object.fromEntries([...source.matchAll(/(\w{3}): (\d+)n/g)].map((m) => [m[1], Number(m[2])]));
-	for (const currency of ["brl", "ars", "ils", "usd", "gbp", "cny"]) assert.equal(table[currency], currencyScale(currency), currency);
+	for (const currency of ["brl", "ars", "ils", "usd", "gbp", "cny", "inr"]) assert.equal(table[currency], currencyScale(currency), currency);
 });
 
 Deno.test("a price marks up Prodigi's non-shipping cost at the reference rate in BRL, passes shipping through at cost, and charges elsewhere what Stripe pays out as that BRL", async () => {
@@ -112,6 +112,13 @@ Deno.test("a price marks up Prodigi's non-shipping cost at the reference rate in
 	const ars = await fx({ cost: 2377, shipping: 1847, currency: "ars", markup_percent: 80 }, sink("print-fx:ars"));
 	assert.ok(ars.done, JSON.stringify(ars));
 	assert.ok(ars.done.total * fxRates.ars.exchange >= ars.done.brl);
+	// India in Prodigi's sandbox: 3 postcards are $1.59 of items and $18.38 of
+	// shipping, which passes through unmarked.
+	const inr = await fx({ cost: 1997, shipping: 1838, currency: "inr", markup_percent: 80 }, sink("print-fx:inr"));
+	// (159 × 1.8 + 1838) × 5.4012 = 11473.07 centavos; 11474 / 0.0618638 = 185471.6 paise.
+	assert.deepEqual([inr.done.brl, inr.done.total, inr.done.shipping, inr.done.item], [11474, 185472, 160482, 24990]);
+	assert.ok(inr.done.total * fxRates.inr.exchange >= inr.done.brl);
+	assert.deepEqual(Object.keys(inr.done.rates).sort(), ["inr", "usd"]);
 });
 
 Deno.test("a session is paid only by a read that matches the order, and a webhook names the row", async () => {
@@ -296,15 +303,52 @@ Deno.test("the record reaches Mailpit in Cloudflare's shape, marked as a test, l
 	// A refused alert settled the order as alerted; thrown, the airlock tries it again.
 	const refusing = sinkOf(() => Response.json({ errors: [{ message: "Authentication error" }] }, { status: 403 }), { Authorization: "Bearer t" }, "print-alert:2");
 	await assert.rejects(() => alert({ ...input, failure: "prodigi: 400" }, refusing, { MAIL_ACCOUNT_ID: "acct" }), /mail answered 403/);
-	// Brazil spiral flip-deck mails name Cloudprinter and link both print and cover files.
+	// Brazil spiral flip-deck mails name Cloudprinter, link both print and cover files, and format money & delivery for humans.
 	await record(
-		{ ...input, country: "BR", sku: flipDeck.sku, cover_file: "effects/cover.pdf" },
+		{
+			...input,
+			title: "maravilhas do mundo antigo",
+			cards: 10,
+			total: 6721,
+			currency: "brl",
+			fx_brl: 6721,
+			cost: 999,
+			country: "BR",
+			sku: flipDeck.sku,
+			cover_file: "effects/cover.pdf",
+			delivery: {
+				pin: { source: "search", latitude: -23.585245, longitude: -46.673697 },
+				text: "Rua Iara, 123",
+				address: {
+					recipient: "Davi de Castro Reis",
+					line1: "Rua Iara, 123",
+					line2: "Ap 111 Torre Raritate",
+					district: "Itaim Bibi",
+					city: "São Paulo",
+					region: "SP",
+					postalCode: "04542-030",
+					country: "BR",
+					taxId: "008.871.796-81",
+				},
+				contact: { email: "buyer@example.test", phone: "+55 31 99189 6945" },
+				acceptedSuggestions: [{ label: "noise", source: "search" }],
+			},
+		},
 		sinkOf(mail, { Authorization: "Bearer t" }, "print-record:br", "application/json", new Map([[file, pdf]])),
 		{ MAIL_ACCOUNT_ID: "acct" },
 	);
-	assert.match(sent.at(-1)!.Text, /Cloudprinter prints and posts this order/);
-	assert.match(sent.at(-1)!.Text, /spiral flip-deck/);
-	assert.ok(sent.at(-1)!.Text.includes(`Cover file: ${ORIGIN}/blobs/mecha-objects/effects/cover.pdf`));
+	const brOperator = sent.at(-1)!.Text;
+	assert.match(brOperator, /Cloudprinter prints and posts this order/);
+	assert.match(brOperator, /spiral flip-deck/);
+	assert.ok(brOperator.includes("Charged: R$ 67,21 (Stripe FX quote fxq_1)"), brOperator);
+	assert.ok(brOperator.includes("Cloudprinter cost: $9.99 USD"), brOperator);
+	assert.ok(brOperator.includes("Recipient: Davi de Castro Reis"), brOperator);
+	assert.ok(brOperator.includes("Address: Rua Iara, 123, Ap 111 Torre Raritate"), brOperator);
+	assert.ok(brOperator.includes("CPF / Tax ID: 008.871.796-81"), brOperator);
+	assert.ok(brOperator.includes("Phone: +55 31 99189 6945"), brOperator);
+	assert.ok(brOperator.includes("Map pin: -23.585245, -46.673697"), brOperator);
+	assert.ok(!brOperator.includes("acceptedSuggestions") && !brOperator.includes("(minor units)"), brOperator);
+	assert.ok(brOperator.includes(`Cover file: ${ORIGIN}/blobs/mecha-objects/effects/cover.pdf`));
 
 	// Immediate buyer confirmation sends Email #1 with order details before printer
 	// confirmation, and print-record replies with Email #2 in the exact same thread.

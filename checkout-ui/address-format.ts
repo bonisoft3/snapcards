@@ -70,7 +70,7 @@ export const KINDS: Record<Token, readonly string[]> = {
   D: ["neighborhood", "district", "suburb"],
   C: ["city", "post_town"],
   S: ["state", "province"],
-  Z: ["postal", "zip"],
+  Z: ["postal", "zip", "pin"],
 };
 
 // Six columns: a line of one field spans them all, of two half each, of three

@@ -7,6 +7,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/"/>
@@ -16,6 +17,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/"/>
@@ -25,6 +27,17 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/"/>
+  </url>
+  <url>
+    <loc>{{$o}}/hi</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/"/>
@@ -34,6 +47,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/"/>
@@ -43,6 +57,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/"/>
@@ -52,6 +67,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/generate"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/generate"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/generate"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/generate"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/generate"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/generate"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/generate"/>
@@ -61,6 +77,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/generate"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/generate"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/generate"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/generate"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/generate"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/generate"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/generate"/>
@@ -70,6 +87,17 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/generate"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/generate"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/generate"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/generate"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/generate"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/generate"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/generate"/>
+  </url>
+  <url>
+    <loc>{{$o}}/hi/generate</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/generate"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/generate"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/generate"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/generate"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/generate"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/generate"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/generate"/>
@@ -79,6 +107,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/generate"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/generate"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/generate"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/generate"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/generate"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/generate"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/generate"/>
@@ -88,6 +117,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/generate"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/generate"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/generate"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/generate"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/generate"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/generate"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/generate"/>
@@ -97,6 +127,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/explore"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/explore"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/explore"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/explore"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/explore"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/explore"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/explore"/>
@@ -106,6 +137,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/explore"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/explore"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/explore"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/explore"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/explore"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/explore"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/explore"/>
@@ -115,6 +147,17 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/explore"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/explore"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/explore"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/explore"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/explore"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/explore"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/explore"/>
+  </url>
+  <url>
+    <loc>{{$o}}/hi/explore</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/explore"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/explore"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/explore"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/explore"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/explore"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/explore"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/explore"/>
@@ -124,6 +167,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/explore"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/explore"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/explore"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/explore"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/explore"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/explore"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/explore"/>
@@ -133,6 +177,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/explore"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/explore"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/explore"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/explore"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/explore"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/explore"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/explore"/>
@@ -142,6 +187,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/print"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/print"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/print"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/print"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/print"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/print"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/print"/>
@@ -151,6 +197,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/print"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/print"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/print"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/print"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/print"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/print"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/print"/>
@@ -160,6 +207,17 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/print"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/print"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/print"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/print"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/print"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/print"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/print"/>
+  </url>
+  <url>
+    <loc>{{$o}}/hi/print</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/print"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/print"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/print"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/print"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/print"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/print"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/print"/>
@@ -169,6 +227,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/print"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/print"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/print"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/print"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/print"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/print"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/print"/>
@@ -178,6 +237,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/print"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/print"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/print"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/print"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/print"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/print"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/print"/>
@@ -187,6 +247,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/about"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/about"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/about"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/about"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/about"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/about"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/about"/>
@@ -196,6 +257,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/about"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/about"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/about"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/about"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/about"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/about"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/about"/>
@@ -205,6 +267,17 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/about"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/about"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/about"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/about"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/about"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/about"/>
+  </url>
+  <url>
+    <loc>{{$o}}/hi/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/about"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/about"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/about"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/about"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/about"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/about"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/about"/>
@@ -214,6 +287,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/about"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/about"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/about"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/about"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/about"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/about"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/about"/>
@@ -223,8 +297,189 @@
     <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/about"/>
     <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/about"/>
     <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/about"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/about"/>
     <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/about"/>
     <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/about"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/about"/>
+  </url>
+  <url>
+    <loc>{{$o}}/en/kids</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/kids"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/kids"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/kids"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/kids"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/kids"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/kids"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/kids"/>
+  </url>
+  <url>
+    <loc>{{$o}}/es/kids</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/kids"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/kids"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/kids"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/kids"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/kids"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/kids"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/kids"/>
+  </url>
+  <url>
+    <loc>{{$o}}/he/kids</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/kids"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/kids"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/kids"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/kids"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/kids"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/kids"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/kids"/>
+  </url>
+  <url>
+    <loc>{{$o}}/hi/kids</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/kids"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/kids"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/kids"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/kids"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/kids"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/kids"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/kids"/>
+  </url>
+  <url>
+    <loc>{{$o}}/kids</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/kids"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/kids"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/kids"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/kids"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/kids"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/kids"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/kids"/>
+  </url>
+  <url>
+    <loc>{{$o}}/zh/kids</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/kids"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/kids"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/kids"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/kids"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/kids"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/kids"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/kids"/>
+  </url>
+  <url>
+    <loc>{{$o}}/en/printed</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/printed"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/printed"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/printed"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/printed"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/printed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/printed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/printed"/>
+  </url>
+  <url>
+    <loc>{{$o}}/es/printed</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/printed"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/printed"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/printed"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/printed"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/printed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/printed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/printed"/>
+  </url>
+  <url>
+    <loc>{{$o}}/he/printed</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/printed"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/printed"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/printed"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/printed"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/printed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/printed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/printed"/>
+  </url>
+  <url>
+    <loc>{{$o}}/hi/printed</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/printed"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/printed"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/printed"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/printed"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/printed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/printed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/printed"/>
+  </url>
+  <url>
+    <loc>{{$o}}/printed</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/printed"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/printed"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/printed"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/printed"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/printed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/printed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/printed"/>
+  </url>
+  <url>
+    <loc>{{$o}}/zh/printed</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/printed"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/printed"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/printed"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/printed"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/printed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/printed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/printed"/>
+  </url>
+  <url>
+    <loc>{{$o}}/en/teachers</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/teachers"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/teachers"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/teachers"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/teachers"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/teachers"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/teachers"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/teachers"/>
+  </url>
+  <url>
+    <loc>{{$o}}/es/teachers</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/teachers"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/teachers"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/teachers"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/teachers"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/teachers"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/teachers"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/teachers"/>
+  </url>
+  <url>
+    <loc>{{$o}}/he/teachers</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/teachers"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/teachers"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/teachers"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/teachers"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/teachers"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/teachers"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/teachers"/>
+  </url>
+  <url>
+    <loc>{{$o}}/hi/teachers</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/teachers"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/teachers"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/teachers"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/teachers"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/teachers"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/teachers"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/teachers"/>
+  </url>
+  <url>
+    <loc>{{$o}}/teachers</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/teachers"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/teachers"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/teachers"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/teachers"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/teachers"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/teachers"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/teachers"/>
+  </url>
+  <url>
+    <loc>{{$o}}/zh/teachers</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{{$o}}/en/teachers"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{$o}}/es/teachers"/>
+    <xhtml:link rel="alternate" hreflang="he" href="{{$o}}/he/teachers"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="{{$o}}/hi/teachers"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="{{$o}}/teachers"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{$o}}/zh/teachers"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{$o}}/teachers"/>
   </url>
 </urlset>

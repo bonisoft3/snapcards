@@ -374,6 +374,7 @@ const DEFAULT_COUNTRY_PIN: Record<string, readonly [ string, string ]> = {
   US: ["37.334606", "-122.009102"],
   GB: ["51.507222", "-0.127500"],
   CN: ["39.904200", "116.407396"],
+  IN: ["28.613939", "77.209021"],
 };
 function effectiveCountry(current: DeliveryAddress): string {
   if (known(current.address.country)) return current.address.country;
@@ -382,6 +383,7 @@ function effectiveCountry(current: DeliveryAddress): string {
   if (lang.startsWith("es")) return "AR";
   if (lang.startsWith("he")) return "IL";
   if (lang.startsWith("zh")) return "CN";
+  if (lang.startsWith("hi")) return "IN";
   return "US";
 }
 function cepOrPostalProblem(country: string, postalCode: string): string | null {
@@ -2582,7 +2584,7 @@ export default function mount(
     }, { signal });
     syncCpfValidity();
   }
-  const SHORTLIST_COUNTRIES: CountryCode[] = ["BR", "AR", "IL", "US", "GB", "CN"];
+  const SHORTLIST_COUNTRIES: CountryCode[] = ["BR", "AR", "IL", "US", "GB", "CN", "IN"];
   const countryFlag = (cc: string) =>
     cc.toUpperCase().replace(/./g, (ch) => String.fromCodePoint(127397 + ch.charCodeAt(0)));
   // The row's phone_country is the picker's own choice (a pick, an arriving

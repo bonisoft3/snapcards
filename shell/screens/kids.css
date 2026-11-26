@@ -1,0 +1,10 @@
+@import url("shared/chrome-ready.css");
+@import url("shared/landing.css");
+
+/* Three word cards fanned like a hand a child holds, each picture over its word. */
+.landing-kids .landing-card { width: min(36cqw, 66cqh); aspect-ratio: 4 / 5; }
+.landing-kids .landing-card:nth-child(1) { transform: translate(-82%, 4%) rotate(-7deg); }
+.landing-kids .landing-card:nth-child(2) { transform: translate(82%, 8%) rotate(6deg); }
+.landing-kids .landing-card:nth-child(3) { transform: translateY(-6%) rotate(-1deg); }
+.landing-kids .landing-art:hover .landing-card:nth-child(1) { transform: translate(-88%, 2%) rotate(-10deg); }
+.landing-kids .landing-art:hover .landing-card:nth-child(2) { transform: translate(88%, 10%) rotate(9deg); }

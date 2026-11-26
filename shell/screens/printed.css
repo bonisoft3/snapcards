@@ -1,0 +1,19 @@
+@import url("shared/chrome-ready.css");
+@import url("shared/landing.css");
+
+/* A flip-deck: cards stacked under a spiral binding along their top edge. */
+.landing-printed .landing-deck::before {
+  content: "";
+  position: absolute;
+  z-index: var(--layer-4);
+  inset-block-start: calc(50% - min(23.5cqw, 30cqh) - var(--sp-sm));
+  inset-inline: 24%;
+  height: 12px;
+  background: repeating-linear-gradient(90deg, var(--snapcards-secondary) 0 4px, transparent 4px 12px);
+  border-radius: var(--r-sm);
+}
+.landing-printed .landing-card { width: min(70cqw, 90cqh); aspect-ratio: 152 / 102; }
+.landing-printed .landing-card:nth-child(1) { z-index: var(--layer-1); transform: translateY(10%) rotate(4deg); }
+.landing-printed .landing-card:nth-child(2) { z-index: var(--layer-2); transform: translateY(5%) rotate(-3deg); }
+.landing-printed .landing-card:nth-child(3) { z-index: var(--layer-3); }
+.landing-printed .landing-art:hover .landing-card:nth-child(1) { transform: translateY(14%) rotate(6deg); }

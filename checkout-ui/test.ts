@@ -407,7 +407,7 @@ function fakeCluster(bundle: string, page: string) {
         if (failCardsConstraint || typeof body.cards !== "number" || body.cards < 1 || body.cards > 100) {
           return Response.json({ error: 'new row for relation "print_order" violates check constraint "print_order_cards_check"' }, { status: 500 });
         }
-        if (body.country === refusedCountry || !["BR", "AR", "IL", "US", "GB", "CN"].includes(body.country)) {
+        if (body.country === refusedCountry || !["BR", "AR", "IL", "US", "GB", "CN", "IN"].includes(body.country)) {
           return Response.json({ error: 'new row for relation "print_order" violates check constraint "print_order_country_check"' }, { status: 500 });
         }
         const row = { id: crypto.randomUUID(), status: "draft", checks: 0, delivery: null, artwork: null, item: null, shipping: null, total: null, currency: null, checkout_url: null, payment_state: null, vendor_state: null, failure: null, ...body };

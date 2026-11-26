@@ -7,7 +7,7 @@ ENTRYPOINT ["psql"]
 CMD ["-X", "--set=ON_ERROR_STOP=1", "--single-transaction", "--file=/timer-check.sql"]
 COPY <<'TIMERS' /timer-check.sql
 DO $$ BEGIN
-  IF obj_description(to_regprocedure('"trg_print_order_status_timer_arm"()'), 'pg_proc') IS DISTINCT FROM 'eb6c84caf4269ac717b7082f7132d4b89de23e95a00aca0cd4d325893ed5f207' THEN
+  IF obj_description(to_regprocedure('"trg_print_order_status_timer_arm"()'), 'pg_proc') IS DISTINCT FROM 'a65e453f8b7565832dd2990e773013e28dde644afbfee2e1ef2d97f1c2ac844c' THEN
     RAISE EXCEPTION 'machine PrintOrderMachine timer interpreter differs from the program: migrate 010_machines.sql and existing state-entry deadlines before starting';
   END IF;
 END $$;

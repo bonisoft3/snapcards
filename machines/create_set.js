@@ -63,6 +63,8 @@
       quick: { animals: ["חיות מברזיל", "חיות"], planets: ["כוכבי לכת וכוכבים", "חלל"], fruits: ["פירות טרופיים", "פירות"], home: ["מילים יומיומיות", "יומיום"], letters: ["אלפבית מהנה", "אלפבית"] } },
     zh: { locale: "中文", code: "zh-CN", city: "北京, 中国", land: "中国", topic: "巴西动物", category: "动物", anyTopic: "乐器", anyCategory: "探索",
       quick: { animals: ["巴西动物", "动物"], planets: ["行星与恒星", "太空"], fruits: ["热带水果", "水果"], home: ["日常词汇", "日常"], letters: ["趣味字母", "字母"] } },
+    hi: { locale: "हिन्दी", code: "hi-IN", city: "नई दिल्ली, भारत", land: "भारत", topic: "ब्राज़ील के जानवर", category: "जानवर", anyTopic: "वाद्य यंत्र", anyCategory: "खोज",
+      quick: { animals: ["ब्राज़ील के जानवर", "जानवर"], planets: ["ग्रह और तारे", "अंतरिक्ष"], fruits: ["उष्णकटिबंधीय फल", "फल"], home: ["रोज़मर्रा के शब्द", "रोज़मर्रा"], letters: ["मज़ेदार वर्णमाला", "वर्णमाला"] } },
   };
   const said = DEFAULTS[String(context.locale ?? "pt").slice(0, 2)] ?? DEFAULTS.pt;
   const isMutation = event.type === "mutation";
@@ -326,6 +328,8 @@
     "עברית": ["עברית", "Tel Aviv, Israel", "חיות בר ואמזונס", "Fauna"],
     "zh-CN": ["中文", "Pequim, China", "南美与自然野生动物", "Fauna"],
     "中文": ["中文", "Pequim, China", "南美与自然野生动物", "Fauna"],
+    "hi-IN": ["हिन्दी", "Nova Délhi, Índia", "अमेज़न के जंगली जानवर", "Fauna"],
+    "हिन्दी": ["हिन्दी", "Nova Délhi, Índia", "अमेज़न के जंगली जानवर", "Fauna"],
     "fr-FR": ["Français", "Paris, França", "Faune d'Amérique du Sud", "Fauna"],
     "Français": ["Français", "Paris, França", "Faune d'Amérique du Sud", "Fauna"],
     "de-DE": ["Deutsch", "Berlim, Alemanha", "Wildtiere Südamerikas", "Fauna"],
@@ -342,6 +346,7 @@
     "draft-loc-en": locByCode["en-US"],
     "draft-loc-he": locByCode["he-IL"],
     "draft-loc-zh": locByCode["zh-CN"],
+    "draft-loc-hi": locByCode["hi-IN"],
     "draft-loc-fr": locByCode["fr-FR"],
     "draft-loc-de": locByCode["de-DE"],
     "draft-loc-it": locByCode["it-IT"],
@@ -686,7 +691,8 @@
       es: ["Origen", "Tradición", "Símbolo", "Costumbre", "Patrimonio"],
       en: ["Origin", "Tradition", "Symbol", "Heritage", "Craft"],
       he: ["מקור", "מסורת", "סמל", "מנהג", "מורשת"],
-      zh: ["起源", "传统", "象征", "习俗", "文化"]
+      zh: ["起源", "传统", "象征", "习俗", "文化"],
+      hi: ["उत्पत्ति", "परंपरा", "प्रतीक", "रीति-रिवाज", "विरासत"]
     };
     const lang =
       lc.startsWith("es") || lc.includes("españ")
@@ -697,6 +703,8 @@
         ? "he"
         : lc.startsWith("zh") || lc.includes("中文")
         ? "zh"
+        : lc.startsWith("hi") || lc.includes("हिन्दी")
+        ? "hi"
         : "pt";
     const facets = facetsMap[lang] || facetsMap.pt;
     const headWord = cleanTopic.split(/\s+/)[0] || cleanTopic;

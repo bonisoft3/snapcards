@@ -6,7 +6,7 @@
 // quote, so the quote prices the order and does not hold Checkout to its rate.
 const STRIPE_VERSION = "2025-04-30.preview";
 // Minor units per unit, as commerce/money.ts's currencyScale says of each.
-const SCALE = { brl: 100n, ars: 100n, ils: 100n, usd: 100n, gbp: 100n, cny: 100n };
+const SCALE = { brl: 100n, ars: 100n, ils: 100n, usd: 100n, gbp: 100n, cny: 100n, inr: 100n };
 const form = (fields) => fields.map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`).join("&");
 
 // A rate exactly as its JSON number reads, as a fraction, so no float carries a price.

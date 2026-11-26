@@ -356,15 +356,16 @@ Deno.test("translated direct card aliases retain card identity across locales", 
     cache(deck.id, "en", "Animals", "Nature", { a: "Cat", b: "Capybara" }),
     cache(deck.id, "es", "Animales", "Naturaleza", { a: "Gato", b: "Capibara" }),
     cache(deck.id, "he", "חיות", "טבע", { a: "חתול", b: "קפיברה" }),
+    cache(deck.id, "hi", "जानवर", "प्रकृति", { a: "बिल्ली", b: "कैपीबारा" }),
   );
   const session = { id: "session", set_id: deck.id, card_index: 0, card_id: "a", original_front: "Gato", front: "Cat", total: 2, status: "playing" };
   const machine = { execute: ({ event }: any) => ({ state: { card_index: event?.payload?.card_index ?? 0, total: 2, flipped: "no", mastered: 0, status: "playing" } }) };
-  for (const locale of ["es", "en", "he"]) {
-    const result = select({ items: [session], locale, params: { deck: deck.id, card: "Capybara" }, rows: { deck_level: [], route_deck: [deck], route_cards: cards, card_set: [deck], flashcard: cards, play_session: [session], ...translations } }, { type: "mutation" }, machine);
+  for (const [locale, card] of [["es", "Capybara"], ["en", "Capybara"], ["he", "Capybara"], ["hi", "Capybara"], ["hi", "कैपीबारा"]]) {
+    const result = select({ items: [session], locale, params: { deck: deck.id, card }, rows: { deck_level: [], route_deck: [deck], route_cards: cards, card_set: [deck], flashcard: cards, play_session: [session], ...translations } }, { type: "mutation" }, machine);
     const patch = result.updates.find((u: Update) => u.entity === "play_session");
     assertEquals(patch.row.card_id, "b");
     assertEquals(patch.row.original_front, "Capivara");
-    assertEquals(patch.row.front, { es: "Capibara", en: "Capybara", he: "קפיברה" }[locale]);
+    assertEquals(patch.row.front, { es: "Capibara", en: "Capybara", he: "קפיברה", hi: "कैपीबारा" }[locale]);
   }
 });
 
@@ -687,15 +688,15 @@ Deno.test("shell configuration declares all 4 primary routes with valid assets",
   }
 });
 
-Deno.test("all message expressions in screen templates resolve in pt, es, en, he, and zh catalogues", async () => {
-  const locales = ["pt", "es", "en", "he", "zh"] as const;
+Deno.test("all message expressions in screen templates resolve in pt, es, en, he, zh, and hi catalogues", async () => {
+  const locales = ["pt", "es", "en", "he", "zh", "hi"] as const;
   const catalogues: Record<string, Record<string, string>> = {};
   for (const loc of locales) {
     catalogues[loc] = JSON.parse(await Deno.readTextFile(new URL(`../messages/${loc}.json`, import.meta.url)));
   }
 
   const screens = ["cards", "explore", "deck", "card", "generate", "print"];
-  const requiredKeys = ["keep_decks_offer", "keep_decks_action", "chrome_signin", "lang_pt", "lang_es", "lang_en", "lang_he", "lang_zh"];
+  const requiredKeys = ["keep_decks_offer", "keep_decks_action", "chrome_signin", "lang_pt", "lang_es", "lang_en", "lang_he", "lang_zh", "lang_hi"];
   for (const k of requiredKeys) {
     for (const loc of locales) {
       if (!(k in catalogues[loc])) throw new Error(`Missing required key "${k}" in messages/${loc}.json`);
@@ -1804,7 +1805,7 @@ Deno.test("the form's chart: an edit waits for a running deck and sends an ended
   const arrows = (key: string) => [chart.on[key]].flat();
   const edits = Object.keys(chart.on).filter((k) => arrows(k).some((a) => a.raise === "edited"));
   // The count's three arrows (minus, plus, the typed field) among them.
-  assertEquals(edits.length, 29);
+  assertEquals(edits.length, 30);
   for (const key of edits) assertEquals(arrows(key).every((a) => a.target === undefined), true);
   const newDeck = Object.keys(chart.on).filter((k) => /^(input|keydown|click)@/.test(k) && !edits.includes(k));
   assertEquals(newDeck.every((k) => chart.on[k].target === "idle" && chart.on[k].assign.run === ""), true);
@@ -1865,7 +1866,7 @@ Deno.test("no screen draws its own sign-in, every screen offers ⋯ for the rout
   const shell = JSON.parse(await Deno.readTextFile(new URL("../shell/shell.json", import.meta.url)));
   assertEquals(shell.auth?.providers, ["google", "email"]);
   assertEquals(shell.hostDom?.["window-print"]?.src, "shell/hatches/window-print.js");
-  for (const screen of ["cards", "generate", "explore", "card", "print", "about"]) {
+  for (const screen of ["cards", "generate", "explore", "card", "print", "about", "kids", "teachers", "printed"]) {
     const html = await screenMarkup(screen);
     for (const own of ["login-modal", "btn-top-login", 'data-auth-action="passkey-signin"', "data-auth-provider"]) {
       if (html.includes(own)) throw new Error(`${screen} draws its own sign-in (${own})`);
@@ -1883,7 +1884,7 @@ Deno.test("no screen draws its own sign-in, every screen offers ⋯ for the rout
 
   assertEquals(JSON.stringify(shell.cortex).includes('"login":'), false);
 
-  for (const loc of ["en", "pt", "es", "he", "zh"]) {
+  for (const loc of ["en", "pt", "es", "he", "zh", "hi"]) {
     const msg = JSON.parse(await Deno.readTextFile(new URL(`../messages/${loc}.json`, import.meta.url)));
     if (!msg.chrome_signout || msg.chrome_signout === msg.chrome_passkey || msg.chrome_signout === msg.chrome_signin) {
       throw new Error(`messages/${loc}.json mistranslates chrome_signout as sign-in (${JSON.stringify(msg.chrome_signout)})`);

@@ -231,6 +231,7 @@
           "services/database/pgroll/20261028_bounded_effect_jobs.json",
           "services/database/pgroll/20261108_deck_cover.json",
           "services/database/pgroll/20261114_card_count_bound.json",
+          "services/database/pgroll/20261125_translation_lang_hi.json",
           "services/database/pgroll/20261106_print_order.json",
           "services/database/pgroll/20261106_print_order_guards.json",
           "services/database/pgroll/20261106_print_order_payments.json",
@@ -243,6 +244,7 @@
           "services/database/pgroll/20261119_order_tracking_and_ship_mail.json",
           "services/database/pgroll/20261121_machine_clock.json",
           "services/database/pgroll/20261123_br_textbook_min_pages.json",
+          "services/database/pgroll/20261125_print_country_in.json",
           "services/database/pgroll/20261102_pictures_are_objects.json",
           "services/database/pgroll/20261115_pictures_same_origin.json"
         ],
@@ -324,6 +326,7 @@
               "services/database/pgroll/20261028_bounded_effect_jobs.json",
               "services/database/pgroll/20261108_deck_cover.json",
               "services/database/pgroll/20261114_card_count_bound.json",
+              "services/database/pgroll/20261125_translation_lang_hi.json",
               "services/database/pgroll/20261106_print_order.json",
               "services/database/pgroll/20261106_print_order_guards.json",
               "services/database/pgroll/20261106_print_order_payments.json",
@@ -336,6 +339,7 @@
               "services/database/pgroll/20261119_order_tracking_and_ship_mail.json",
               "services/database/pgroll/20261121_machine_clock.json",
               "services/database/pgroll/20261123_br_textbook_min_pages.json",
+              "services/database/pgroll/20261125_print_country_in.json",
               "services/database/pgroll/20261102_pictures_are_objects.json",
               "services/database/pgroll/20261115_pictures_same_origin.json"
             ],

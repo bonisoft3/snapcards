@@ -56,6 +56,8 @@ Deno.test("an edge database that ran v0.21.0 takes the order's later migrations 
   const shape = async (db: Awaited<ReturnType<typeof build>>) => ({
     columns: (await db.query("SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'print_order' ORDER BY ordinal_position")).rows,
     states: (await db.query("SELECT pg_get_constraintdef(oid) AS def FROM pg_constraint WHERE conname = 'print_order_status_check'")).rows,
+    countries: (await db.query("SELECT pg_get_constraintdef(oid) AS def FROM pg_constraint WHERE conname = 'print_order_country_check'")).rows,
+    rupees: (await db.query("SELECT position($$WHEN 'IN' THEN 'inr'$$ IN prosrc) > 0 AS priced FROM pg_proc WHERE proname = 'trg_print_order_status_machine'")).rows,
     timer: (await db.query(`SELECT obj_description(to_regprocedure('"trg_print_order_status_timer_arm"()'), 'pg_proc') AS signature`)).rows,
     // 20261113_bounded_job_keys: every job keyed by the ledger key's digest,
     // spelled by the emitter (the order, restated) or by the bounded enqueue
@@ -108,6 +110,14 @@ Deno.test("an edge database that ran v0.21.0 takes the order's later migrations 
     assert.deepEqual(surviving, [brInFlight10, brQuoted12, usQuoted5]);
     const moved = await shape(live);
     assert.deepEqual(moved, await shape(fresh));
+    // 20261106_print_order made the country check inline, without India; a
+    // carried database that missed its widening refuses an Indian order, and
+    // one whose machine missed the restatement prices it in no currency.
+    assert.match((moved.countries[0] as { def: string }).def, /'IN'/);
+    assert.deepEqual(moved.rupees, [{ priced: true }]);
+    await live.exec(`SET session_replication_role = replica;
+      INSERT INTO print_order (id, owner_id, status, title, stock, cards, country) VALUES ('50505050-5050-4050-8050-505050505050', '${waiting}', 'draft', 'Deck', 'gloss', 3, 'IN');
+      SET session_replication_role = origin;`);
     assert.deepEqual(moved.columns.slice(-13).map((c) => (c as { column_name: string }).column_name), ["cost_shipping", "fx_quote", "fx_rates", "fx_brl", "opened_at", "print_file", "postal_code", "cover_file", "mail_message_id", "tracking_carrier", "tracking_number", "tracking_url", "shipped_at"]);
     for (const state of ["converting", "unpaid", "confirming", "quoting_br", "placing_br", "placed_br", "vendor_checking_br", "notifying_shipped"]) {
       assert.match((moved.states[0] as { def: string }).def, new RegExp(`'${state}'`));

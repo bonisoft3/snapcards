@@ -622,6 +622,16 @@ code: surface: screens: {
 		]
 		files: {handlers: ["shell/handlers/count-step.js", "shell/handlers/create_set.js", "shell/handlers/generation-input.js", "shell/handlers/legacy-generation-run.js", "shell/handlers/localize_content.js", "shell/handlers/play_select.js", "shell/handlers/row-is.js", "shell/handlers/tab-fill.js"], adapters: []}
 	}
+	kids: {
+		reads: [
+			{table: "device", kind: "live", nested: false, lists: [], route: "view", clauses: [{"col":"id","op":"eq"}], embeds: [], orders: []},
+		]
+		writes: []
+		charts: [
+			{table: "device", field: "theme", writes: []},
+		]
+		files: {handlers: [], adapters: []}
+	}
 	print: {
 		reads: [
 			{table: "device", kind: "live", nested: false, lists: [], route: "view", clauses: [{"col":"id","op":"eq"}], embeds: [], orders: []},
@@ -751,6 +761,26 @@ code: surface: screens: {
 		]
 		files: {handlers: ["shell/handlers/create_set.js", "shell/handlers/delivery_accept.js", "shell/handlers/delivery_address_q.js", "shell/handlers/delivery_found.js", "shell/handlers/delivery_offers.js", "shell/handlers/delivery_pin.js", "shell/handlers/delivery_submitted.js", "shell/handlers/is_key.js", "shell/handlers/localize_content.js", "shell/handlers/print_select.js", "shell/handlers/row-is.js"], adapters: []}
 	}
+	printed: {
+		reads: [
+			{table: "device", kind: "live", nested: false, lists: [], route: "view", clauses: [{"col":"id","op":"eq"}], embeds: [], orders: []},
+		]
+		writes: []
+		charts: [
+			{table: "device", field: "theme", writes: []},
+		]
+		files: {handlers: [], adapters: []}
+	}
+	teachers: {
+		reads: [
+			{table: "device", kind: "live", nested: false, lists: [], route: "view", clauses: [{"col":"id","op":"eq"}], embeds: [], orders: []},
+		]
+		writes: []
+		charts: [
+			{table: "device", field: "theme", writes: []},
+		]
+		files: {handlers: [], adapters: []}
+	}
 }
 
 _irNotes: {
@@ -779,4 +809,4 @@ if !_deriving {
 	code: meta: tests: [string]~(Id,_): accepts: _irAccepts[Id]
 }
 
-code: meta: ladder: ["ir/neighbourhood-about.svg","ir/neighbourhood-app.svg","ir/neighbourhood-card.svg","ir/neighbourhood-cards.svg","ir/neighbourhood-deck.svg","ir/neighbourhood-explore.svg","ir/neighbourhood-generate.svg","ir/neighbourhood-print.svg","journal/2026-10-28-audience-en.png","journal/2026-10-28-card-navigation-en.png","journal/2026-10-28-cold-navigation-after.png","journal/2026-10-28-cold-navigation-during.png","journal/2026-10-28-deck-entry-en.png","journal/2026-10-28-language-switch-en.png","journal/2026-10-28-library-search-after.png","journal/2026-10-28-library-search-before.png","journal/2026-10-28-north-pole-he.png","journal/2026-10-28-rib-route-pt.png","journal/2026-10-28-study-layout-laptop.png","journal/2026-10-28-translation-glow-first.png","journal/2026-10-28-translation-glow-peak.png","journal/2026-10-28-translation-glow-reduced.png","journal/2026-10-29-mobile-hero-after.png","journal/2026-10-29-mobile-hero-before.png","journal/2026-10-30-delete-armed-pt.png","journal/2026-10-30-edit-sheet-drawn-pt.png","journal/2026-10-30-edit-sheet-pt.png","journal/2026-10-30-edit-sheet-refused-pt.png","journal/2026-10-30-title-details-pt.png","journal/2026-10-31-edit-after-reload-pt.png","journal/2026-10-31-favorite-count-pt.png","journal/2026-10-31-progress-settled-pt.png","journal/2026-10-31-progress-start-pt.png","journal/2026-11-05-cortex-generation.png","journal/2026-11-05-cortex-phone-recovery.png","journal/2026-11-05-cortex-print.png","journal/2026-11-07-presentation-watch.html","journal/2026-11-07-presentation-watch.json","journal/2026-11-07-presentation-watch.png","journal/2026-11-18-cancelled-checkout-new-order.png","journal/2026-11-18-mobile-nav-home.png","journal/2026-11-18-mobile-nav-sheet.png","journal/2026-11-18-tablet-rail.png","journal/2026-11-22-consent-bar-en-dark.png","journal/2026-11-22-consent-bar-en-light.png","journal/2026-11-22-consent-bar-gpc-shield.png","journal/2026-11-22-consent-bar-pt-dark.png","journal/2026-11-22-consent-bar-pt-light.png","journal/2026-11-22-consent-bar-pt-phone.png","journal/2026-11-22-consent-bar-reopened-en.png"]
+code: meta: ladder: ["ir/neighbourhood-about.svg","ir/neighbourhood-app.svg","ir/neighbourhood-card.svg","ir/neighbourhood-cards.svg","ir/neighbourhood-deck.svg","ir/neighbourhood-explore.svg","ir/neighbourhood-generate.svg","ir/neighbourhood-kids.svg","ir/neighbourhood-print.svg","ir/neighbourhood-printed.svg","ir/neighbourhood-teachers.svg","journal/2026-10-28-audience-en.png","journal/2026-10-28-card-navigation-en.png","journal/2026-10-28-cold-navigation-after.png","journal/2026-10-28-cold-navigation-during.png","journal/2026-10-28-deck-entry-en.png","journal/2026-10-28-language-switch-en.png","journal/2026-10-28-library-search-after.png","journal/2026-10-28-library-search-before.png","journal/2026-10-28-north-pole-he.png","journal/2026-10-28-rib-route-pt.png","journal/2026-10-28-study-layout-laptop.png","journal/2026-10-28-translation-glow-first.png","journal/2026-10-28-translation-glow-peak.png","journal/2026-10-28-translation-glow-reduced.png","journal/2026-10-29-mobile-hero-after.png","journal/2026-10-29-mobile-hero-before.png","journal/2026-10-30-delete-armed-pt.png","journal/2026-10-30-edit-sheet-drawn-pt.png","journal/2026-10-30-edit-sheet-pt.png","journal/2026-10-30-edit-sheet-refused-pt.png","journal/2026-10-30-title-details-pt.png","journal/2026-10-31-edit-after-reload-pt.png","journal/2026-10-31-favorite-count-pt.png","journal/2026-10-31-progress-settled-pt.png","journal/2026-10-31-progress-start-pt.png","journal/2026-11-05-cortex-generation.png","journal/2026-11-05-cortex-phone-recovery.png","journal/2026-11-05-cortex-print.png","journal/2026-11-07-presentation-watch.html","journal/2026-11-07-presentation-watch.json","journal/2026-11-07-presentation-watch.png","journal/2026-11-18-cancelled-checkout-new-order.png","journal/2026-11-18-mobile-nav-home.png","journal/2026-11-18-mobile-nav-sheet.png","journal/2026-11-18-tablet-rail.png","journal/2026-11-22-consent-bar-en-dark.png","journal/2026-11-22-consent-bar-en-light.png","journal/2026-11-22-consent-bar-gpc-shield.png","journal/2026-11-22-consent-bar-pt-dark.png","journal/2026-11-22-consent-bar-pt-light.png","journal/2026-11-22-consent-bar-pt-phone.png","journal/2026-11-22-consent-bar-reopened-en.png","journal/2026-11-25-hindi-about-dark.png","journal/2026-11-25-hindi-about-light.png","journal/2026-11-25-hindi-about-system-face.png","journal/2026-11-25-hindi-kids-light.png","journal/2026-11-25-hindi-printed-dark.png","journal/2026-11-25-landing-kids-en-dark.png","journal/2026-11-25-landing-kids-en-light.png","journal/2026-11-25-landing-kids-pt-dark.png","journal/2026-11-25-landing-kids-pt-light.png","journal/2026-11-25-landing-printed-en-dark.png","journal/2026-11-25-landing-printed-en-light.png","journal/2026-11-25-landing-printed-pt-dark.png","journal/2026-11-25-landing-printed-pt-light.png","journal/2026-11-25-landing-teachers-en-dark.png","journal/2026-11-25-landing-teachers-en-light.png","journal/2026-11-25-landing-teachers-pt-dark.png","journal/2026-11-25-landing-teachers-pt-light.png"]

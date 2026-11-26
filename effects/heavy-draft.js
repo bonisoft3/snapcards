@@ -117,6 +117,8 @@ export async function issue(input, sink) {
     "he-il": "עברית (Hebrew)",
     "zh": "简体中文 (Simplified Chinese)",
     "zh-cn": "简体中文 (Simplified Chinese)",
+    "hi": "हिन्दी (Hindi)",
+    "hi-in": "हिन्दी (Hindi)",
   };
   const langLabel = langNames[locale.toLowerCase()] || locale;
   const topicIcons = pickTopicIconSet(baseTopic);

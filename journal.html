@@ -34,8 +34,69 @@
   <header>
     <span class="label">Snapcards · Project journal</span>
     <h1>Snapcards — Cultural Flashcard Press &amp; Study Desk</h1>
-    <p>A multilingual cultural flashcard press and study desk in five languages (English, Portuguese, Spanish, Hebrew, Chinese): browse illustrated decks, flip and master specimen cards, generate new decks with local WebGPU or cloud AI, and print A4/Letter sheets with cutting guides. <a href="#initial-brief">Latest product brief ↓</a></p>
+    <p>A multilingual cultural flashcard press and study desk in six languages (English, Portuguese, Spanish, Hebrew, Chinese, Hindi): browse illustrated decks, flip and master specimen cards, generate new decks with local WebGPU or cloud AI, and print A4/Letter sheets with cutting guides. <a href="#initial-brief">Latest product brief ↓</a></p>
   </header>
+
+  <article id="turn-2026-11-25-hindi">
+    <time datetime="2026-11-25">2026-11-25 · Delivery Journal</time>
+    <h2>Hindi, a sixth language, for readers in India</h2>
+    <div class="comparison">
+      <div><p class="label">Before</p><p>Snapcards spoke Portuguese, Spanish, English, Hebrew and Chinese. A Hindi reader got another language, and Hindi text had no face of its own, because Nunito and DM Sans draw Latin only. Each phone fell back to its own Devanagari font. A deck could not be translated into Hindi: the database's <code>lang</code> check refused it. A Hindi word also slugged to nothing, so every Hindi card of a deck shared the same empty session key.</p></div>
+      <div><p class="label">After</p><p><code>hi</code> is a full locale. <code>/hi/about</code> and the ad landings <code>/hi/kids</code>, <code>/hi/teachers</code> and <code>/hi/printed</code> are pre-rendered as <code>&lt;html lang="hi" dir="ltr"&gt;</code>, and <code>/hi</code>, the sitemap and <code>Accept-Language</code> negotiation include it. <code>messages/hi.json</code> carries all 541 keys, the landing pages' included, with <code>lang_hi</code>, <code>ugc_lang_hi</code> and <code>lang_opt_hi</code>, which all six catalogues now have. Noto Sans Devanagari is served by the app under the Nunito and DM Sans names, reached by a Devanagari <code>unicode-range</code> alone, so Latin text never loads it. It comes from <code>@fontsource-variable/noto-sans-devanagari@5.3.0</code> (OFL), the same release as the other faces, 121 KB, sha256 <code>3b3cae4d…5e730</code>. Decks can be generated and translated in Hindi. The form's language menu, the browser's offline word list, both draft effects and the translation tables (migration <code>20261125_translation_lang_hi</code>) all accept <code>hi</code>.</p></div>
+    </div>
+    <div class="gallery">
+      <figure><img src="journal/2026-11-25-hindi-about-light.png" alt="Phone-width About page in Hindi, light theme: the heading चित्रों वाले कार्ड नन्हे सीखने वालों के लिए। in a heavy rounded Devanagari face, the language switch PT ES EN HE ZH HI with HI selected"><figcaption><strong>/hi/about, light, 390 × 844</strong>The heading and body in the app's own Devanagari face. The language switch takes a sixth pill and still fits a phone.</figcaption></figure>
+      <figure><img src="journal/2026-11-25-hindi-about-dark.png" alt="The same Hindi About page in the dark theme"><figcaption><strong>/hi/about, dark</strong>The same page in the dark theme.</figcaption></figure>
+      <figure><img src="journal/2026-11-25-hindi-about-system-face.png" alt="The Hindi About page with the Devanagari file withheld: the heading falls back to the system's Devanagari font, narrower and lighter"><figcaption><strong>Without the face</strong>The same page with the file withheld. The heading falls back to macOS's Devanagari font. On Windows and on older Android phones the fallback is a different font again.</figcaption></figure>
+      <figure><img src="journal/2026-11-25-hindi-kids-light.png" alt="Phone-width kids landing page in Hindi, light theme: चित्रों वाले शब्द-कार्ड नन्हे-मुन्नों के लिए। above cards for कैपीबारा, जगुआर and स्लॉथ"><figcaption><strong>/hi/kids, light</strong>The kids ad landing, saying six languages, with the card words in Hindi.</figcaption></figure>
+      <figure><img src="journal/2026-11-25-hindi-printed-dark.png" alt="Phone-width printed landing page in Hindi, dark theme: चित्रों वाले कार्ड, छपकर सीधे आपके घर तक। above a spiral flip-deck"><figcaption><strong>/hi/printed, dark</strong>Lower down, it lists the countries cards ship to. This capture predates India joining them.</figcaption></figure>
+    </div>
+    <p class="notice">India now prints. <code>IN</code> joins <code>_printCountries</code> and pays in rupees. Prodigi posts the cards. In Prodigi's sandbox, 3 postcards to India cost $1.59 for the cards and $18.38 for shipping, $19.97 in all. Stripe's test mode quoted INR to BRL and opened a Checkout Session in <code>inr</code>. <code>20261125_print_country_in</code> adds India to the order's country check and restates the machine with the rupee price. The Hindi About page and <code>/hi/printed</code> now offer posted postcards, as in the other Prodigi countries, and every catalogue's printed page lists India. Indian bank cards often refuse foreign merchants, because international use is off by default and 3-D Secure is required. The kids page and About say six languages in every catalogue.</p>
+    <p>The screenshots are Playwright 1.61.1's Chromium on the pre-rendered <code>documents/hi/about/index.html</code>, without a cluster. The acceptance case <code>hindi-about-devanagari</code> checks the served <code>lang</code> and direction, and that the Devanagari face loads on <code>/hi/about</code>. Gates: <code>generate</code>, <code>lint</code> and <code>test</code> are green.</p>
+    <p>Snapcards now reads, makes and translates decks in Hindi, and has Hindi landing pages at <code>/hi/about</code>, <code>/hi/kids</code>, <code>/hi/teachers</code> and <code>/hi/printed</code>.</p>
+  </article>
+
+  <article id="turn-2026-11-25-signup-conversion">
+    <time datetime="2026-11-25">2026-11-25 · Delivery Journal</time>
+    <h2>A sign-up is a Google Ads conversion</h2>
+    <div class="comparison">
+      <div><p class="label">Before</p><p>The tag frame measured page views and remarketed, but Search campaigns had nothing to bid on: no conversion reached Google when a reader made an account.</p></div>
+      <div><p class="label">After</p><p><code>meta.googleTag.conversions: signup: "BAXrCP28w78dEJbG4L8q"</code> declares Google Ads' “Sign-up (web)”. When a reader's guest becomes a person, by a passkey made for it or a provider linked to it, the terminal sends <code>gtag("event", "conversion", {send_to: "AW-11407991574/BAXrCP28w78dEJbG4L8q", transaction_id: &lt;account id&gt;})</code> through the bridge, so Google counts each account once and applies the reader's consent.</p></div>
+    </div>
+    <table>
+      <tr><th>What the reader does</th><th>Reported</th></tr>
+      <tr><td>Keeps their guest with a passkey, or with Google from a guest that wrote</td><td>one <code>conversion</code>, the account's id its transaction</td></tr>
+      <tr><td>Signs in to an account already made, reloads, signs out, or is minted a guest</td><td>nothing</td></tr>
+      <tr><td>Any of these on localhost or a test host</td><td>nothing: the bridge runs only on <code>snapcards.fun</code> and <code>www.snapcards.fun</code></td></tr>
+      <tr><td>Signs in with Google before writing anything, making a new account</td><td>nothing yet: the terminal cannot tell it from a returning sign-in</td></tr>
+    </table>
+    <p>Gates: <code>generate</code>, <code>lint</code> and <code>test</code> green; omnishell's <code>conversions.test.ts</code> and login smokes, pronto's <code>browser-security.test.ts</code> cover each row above.</p>
+    <p>Snapcards now reports each reader who makes an account to its Google Ads campaigns.</p>
+  </article>
+
+  <article id="turn-2026-11-25-landing-pages">
+    <time datetime="2026-11-25">2026-11-25 · Delivery Journal</time>
+    <h2>Three landing pages for search ads: kids, teachers, printed cards</h2>
+    <div class="comparison">
+      <div><p class="label">Before</p><p>A search ad could only lead to the library or to About, neither of which answers what the reader searched for: picture flashcards for a child, flashcards for a lesson, or printed cards in the post.</p></div>
+      <div><p class="label">After</p><p><code>/kids</code>, <code>/teachers</code> and <code>/printed</code> (and <code>/en/…</code>, <code>/es/…</code>, <code>/he/…</code>, <code>/zh/…</code>) are written per locale at build like About: one headline matching the ad's theme, three benefits, cards from the seed decks, Create as the one way in and the library beside it. The printed page names only the countries an order may ship to (Brazil's spiral flip-deck, postcards to Argentina, Israel, the United States, the United Kingdom and China). The strip does not list them; the sitemap does, and each document carries the Google tag frame and the consent bar as About does. Each document is about 19 KB and paints with no cluster and no script.</p></div>
+    </div>
+    <div class="gallery">
+      <figure><img src="journal/2026-11-25-landing-kids-en-light.png" alt="Phone page headed Picture vocabulary flashcards for little ones, with Make a picture deck and Explore the library, light theme"><figcaption><strong>/en/kids · light</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-kids-en-dark.png" alt="Phone page headed Picture vocabulary flashcards for little ones, with Make a picture deck and Explore the library, dark theme"><figcaption><strong>/en/kids · dark</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-kids-pt-light.png" alt="Phone page headed Cartões de vocabulário com figuras para os pequenos, with Criar um baralho ilustrado and Explorar a biblioteca, light theme"><figcaption><strong>/kids · light</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-kids-pt-dark.png" alt="Phone page headed Cartões de vocabulário com figuras para os pequenos, with Criar um baralho ilustrado and Explorar a biblioteca, dark theme"><figcaption><strong>/kids · dark</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-teachers-en-light.png" alt="Phone page headed Classroom flashcards, a deck for every lesson, with Make a lesson deck and Explore the library, light theme"><figcaption><strong>/en/teachers · light</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-teachers-en-dark.png" alt="Phone page headed Classroom flashcards, a deck for every lesson, with Make a lesson deck and Explore the library, dark theme"><figcaption><strong>/en/teachers · dark</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-teachers-pt-light.png" alt="Phone page headed Cartões para a sala de aula, um baralho por aula, with Criar um baralho para a aula and Explorar a biblioteca, light theme"><figcaption><strong>/teachers · light</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-teachers-pt-dark.png" alt="Phone page headed Cartões para a sala de aula, um baralho por aula, with Criar um baralho para a aula and Explorar a biblioteca, dark theme"><figcaption><strong>/teachers · dark</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-printed-en-light.png" alt="Phone page headed Picture cards, printed and posted to your door, with Create a deck to print above a spiral flip-deck, light theme"><figcaption><strong>/en/printed · light</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-printed-en-dark.png" alt="Phone page headed Picture cards, printed and posted to your door, with Create a deck to print above a spiral flip-deck, dark theme"><figcaption><strong>/en/printed · dark</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-printed-pt-light.png" alt="Phone page headed Cartões ilustrados, impressos e entregues na sua casa, with Criar um baralho para imprimir above a spiral flip-deck, light theme"><figcaption><strong>/printed · light</strong></figcaption></figure>
+      <figure><img src="journal/2026-11-25-landing-printed-pt-dark.png" alt="Phone page headed Cartões ilustrados, impressos e entregues na sua casa, with Criar um baralho para imprimir above a spiral flip-deck, dark theme"><figcaption><strong>/printed · dark</strong></figcaption></figure>
+    </div>
+    <p>Snapcards now has a landing page per ad theme in all five languages, each leading straight into Create.</p>
+  </article>
 
   <article id="turn-2026-11-22-tag-frame-and-consent">
     <time datetime="2026-11-22">2026-11-22 · Delivery Journal</time>

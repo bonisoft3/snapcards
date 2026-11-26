@@ -165,6 +165,9 @@
       "www.snapcards.fun"
     ]
   },
+  "conversions": {
+    "signup": "AW-11407991574/BAXrCP28w78dEJbG4L8q"
+  },
   "cortex": {
     "config": {
       "id": "snapcards",
@@ -200,6 +203,18 @@
         "route:about": {
           "reenter": true,
           "target": ".about"
+        },
+        "route:kids": {
+          "reenter": true,
+          "target": ".kids"
+        },
+        "route:teachers": {
+          "reenter": true,
+          "target": ".teachers"
+        },
+        "route:printed": {
+          "reenter": true,
+          "target": ".printed"
         }
       },
       "states": {
@@ -328,6 +343,66 @@
           },
           "meta": {
             "screen": "about"
+          },
+          "states": {
+            "loading": {
+              "invoke": {
+                "src": "navigate",
+                "onDone": "ready",
+                "onError": "failed"
+              }
+            },
+            "ready": {},
+            "failed": {}
+          }
+        },
+        "kids": {
+          "initial": "loading",
+          "invoke": {
+            "src": "kidsRows"
+          },
+          "meta": {
+            "screen": "kids"
+          },
+          "states": {
+            "loading": {
+              "invoke": {
+                "src": "navigate",
+                "onDone": "ready",
+                "onError": "failed"
+              }
+            },
+            "ready": {},
+            "failed": {}
+          }
+        },
+        "teachers": {
+          "initial": "loading",
+          "invoke": {
+            "src": "teachersRows"
+          },
+          "meta": {
+            "screen": "teachers"
+          },
+          "states": {
+            "loading": {
+              "invoke": {
+                "src": "navigate",
+                "onDone": "ready",
+                "onError": "failed"
+              }
+            },
+            "ready": {},
+            "failed": {}
+          }
+        },
+        "printed": {
+          "initial": "loading",
+          "invoke": {
+            "src": "printedRows"
+          },
+          "meta": {
+            "screen": "printed"
           },
           "states": {
             "loading": {
@@ -1012,6 +1087,12 @@
                 },
                 "raise": "edited"
               },
+              "click@locale-opt-hi": {
+                "assign": {
+                  "locale": "हिन्दी"
+                },
+                "raise": "edited"
+              },
               "click@locale-opt-fr": {
                 "assign": {
                   "locale": "Français"
@@ -1160,6 +1241,12 @@
                 }
               },
               "click@draft-loc-zh": {
+                "target": "idle",
+                "assign": {
+                  "run": ""
+                }
+              },
+              "click@draft-loc-hi": {
                 "target": "idle",
                 "assign": {
                   "run": ""
@@ -2080,6 +2167,99 @@
             }
           ]
         }
+      },
+      "kidsRows": {
+        "via": "rows",
+        "lifetime": "attachment",
+        "screen": "kids",
+        "charts": {
+          "theme": {
+            "field": "theme",
+            "initial": "auto",
+            "states": {
+              "auto": {
+                "on": {
+                  "click@theme-light": "light",
+                  "click@theme-dark": "dark"
+                }
+              },
+              "light": {
+                "on": {
+                  "click@theme-auto": "auto",
+                  "click@theme-dark": "dark"
+                }
+              },
+              "dark": {
+                "on": {
+                  "click@theme-auto": "auto",
+                  "click@theme-light": "light"
+                }
+              }
+            }
+          }
+        }
+      },
+      "teachersRows": {
+        "via": "rows",
+        "lifetime": "attachment",
+        "screen": "teachers",
+        "charts": {
+          "theme": {
+            "field": "theme",
+            "initial": "auto",
+            "states": {
+              "auto": {
+                "on": {
+                  "click@theme-light": "light",
+                  "click@theme-dark": "dark"
+                }
+              },
+              "light": {
+                "on": {
+                  "click@theme-auto": "auto",
+                  "click@theme-dark": "dark"
+                }
+              },
+              "dark": {
+                "on": {
+                  "click@theme-auto": "auto",
+                  "click@theme-light": "light"
+                }
+              }
+            }
+          }
+        }
+      },
+      "printedRows": {
+        "via": "rows",
+        "lifetime": "attachment",
+        "screen": "printed",
+        "charts": {
+          "theme": {
+            "field": "theme",
+            "initial": "auto",
+            "states": {
+              "auto": {
+                "on": {
+                  "click@theme-light": "light",
+                  "click@theme-dark": "dark"
+                }
+              },
+              "light": {
+                "on": {
+                  "click@theme-auto": "auto",
+                  "click@theme-dark": "dark"
+                }
+              },
+              "dark": {
+                "on": {
+                  "click@theme-auto": "auto",
+                  "click@theme-light": "light"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -2136,6 +2316,9 @@
       },
       "zh": {
         "path": "zh"
+      },
+      "hi": {
+        "path": "hi"
       }
     }
   },
@@ -2512,6 +2695,81 @@
         ],
         "html": "shell/screens/about.html",
         "css": "shell/screens/about.css"
+      },
+      "ssr": "ssg",
+      "states": [
+        "reading"
+      ]
+    },
+    {
+      "path": "/kids",
+      "prerender": true,
+      "screen": "kids",
+      "nav": {
+        "label": "Picture Flashcards for Kids",
+        "strip": false
+      },
+      "files": {
+        "adapters": [],
+        "handlers": [],
+        "shared": [
+          "shell/shared/chrome-ready.css",
+          "shell/shared/chrome.css",
+          "shell/shared/nav.css",
+          "shell/shared/landing.css"
+        ],
+        "html": "shell/screens/kids.html",
+        "css": "shell/screens/kids.css"
+      },
+      "ssr": "ssg",
+      "states": [
+        "reading"
+      ]
+    },
+    {
+      "path": "/printed",
+      "prerender": true,
+      "screen": "printed",
+      "nav": {
+        "label": "Printed Picture Cards",
+        "strip": false
+      },
+      "files": {
+        "adapters": [],
+        "handlers": [],
+        "shared": [
+          "shell/shared/chrome-ready.css",
+          "shell/shared/chrome.css",
+          "shell/shared/nav.css",
+          "shell/shared/landing.css"
+        ],
+        "html": "shell/screens/printed.html",
+        "css": "shell/screens/printed.css"
+      },
+      "ssr": "ssg",
+      "states": [
+        "reading"
+      ]
+    },
+    {
+      "path": "/teachers",
+      "prerender": true,
+      "screen": "teachers",
+      "nav": {
+        "label": "Classroom Flashcards",
+        "strip": false
+      },
+      "files": {
+        "adapters": [],
+        "handlers": [],
+        "shared": [
+          "shell/shared/chrome-ready.css",
+          "shell/shared/chrome.css",
+          "shell/shared/nav.css",
+          "shell/shared/landing.css"
+        ],
+        "html": "shell/screens/teachers.html",
+        "css": "shell/screens/teachers.css"
       },
       "ssr": "ssg",
       "states": [
@@ -3164,7 +3422,8 @@
             "es",
             "en",
             "he",
-            "zh"
+            "zh",
+            "hi"
           ],
           "name": "lang",
           "type": "string",
@@ -3222,7 +3481,8 @@
             "es",
             "en",
             "he",
-            "zh"
+            "zh",
+            "hi"
           ],
           "name": "lang",
           "type": "string",

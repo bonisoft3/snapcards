@@ -11,7 +11,8 @@
     es: "es", "es-es": "es", "es-la": "es", "es-mx": "es", "es-ar": "es", spanish: "es", "español": "es", espanol: "es",
     en: "en", "en-us": "en", "en_us": "en", "en-gb": "en", english: "en", "inglês": "en", ingles: "en", us: "en", usa: "en",
     he: "he", "he-il": "he", "he_il": "he", iw: "he", hebrew: "he", "עברית": "he", israel: "he",
-    zh: "zh", "zh-cn": "zh", "zh_cn": "zh", "zh-tw": "zh", chinese: "zh", "中文": "zh", china: "zh"
+    zh: "zh", "zh-cn": "zh", "zh_cn": "zh", "zh-tw": "zh", chinese: "zh", "中文": "zh", china: "zh",
+    hi: "hi", "hi-in": "hi", "hi_in": "hi", hindi: "hi", "हिन्दी": "hi", "हिंदी": "hi", india: "hi"
   };
   const normalizeUiLang = (loc) => {
     if (!loc) return null;
@@ -23,10 +24,10 @@
   const extractSessionLang = (s, loc) => {
     const fromLoc = normalizeUiLang(loc);
     if (fromLoc) return fromLoc;
-    const m = String(s?.hint || "").match(/#lang=(pt|es|en|he|zh)\b/);
+    const m = String(s?.hint || "").match(/#lang=(pt|es|en|he|zh|hi)\b/);
     return m ? m[1] : "pt";
   };
-  const stripLangTag = (h) => String(h || "").replace(/#lang=(pt|es|en|he|zh)\b/g, "");
+  const stripLangTag = (h) => String(h || "").replace(/#lang=(pt|es|en|he|zh|hi)\b/g, "");
   const withLangTag = (h, lang) => {
     const baseHint = stripLangTag(h);
     return lang && lang !== "pt" ? `${baseHint}#lang=${lang}` : baseHint;
@@ -92,7 +93,7 @@
     allSessions.find((s) => s && s.id === "session") ||
     (context.items?.[0]?.id === "session" ? context.items[0] : null);
 
-  const toSlug = (s) => (s || "").toLowerCase().trim().replace(/[\s_]+/g, "-").replace(/[^a-z0-9\u00c0-\u024f\u0590-\u05ff\u4e00-\u9fff-]/g, "");
+  const toSlug = (s) => (s || "").toLowerCase().trim().replace(/[\s_]+/g, "-").replace(/[^a-z0-9\u00c0-\u024f\u0590-\u05ff\u0900-\u097f\u4e00-\u9fff-]/g, "");
   const sameSlug = (a, b) => {
     const sa = toSlug(a);
     const sb = toSlug(b);
@@ -108,7 +109,8 @@
     "lang-es": "es",
     "lang-en": "en",
     "lang-he": "he",
-    "lang-zh": "zh"
+    "lang-zh": "zh",
+    "lang-hi": "hi"
   };
   const clickedLang = event.lang ? normalizeUiLang(event.lang) : (event.from ? langClickMap[event.from] : null);
   if (clickedLang) return { updates: [] };

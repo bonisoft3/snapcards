@@ -14,9 +14,9 @@ import (
 _production: args: {DOMAIN: "snapcards.fun", SSR_ORIGIN: "https://snapcards.fun", NAME: "snapcards"}
 _staging: {
 	args: {DOMAIN: "snapcards.bonisoft3.com", SSR_ORIGIN: "https://snapcards.bonisoft3.com", NAME: "snapcards-staging"}
-	// Google through the operator's broker: no client of snapcards' names
-	// this origin.
-	env:     {OIDC_BROKER: "https://id.bonisoft3.com"}
+	// Showcase Passkey + the broker's More options on staging; production keeps
+	// Snapcards' own Google client alongside them.
+	env:     {OIDC_BROKER: "https://id.bonisoft3.com", OIDC_PROVIDERS: "email"}
 	secrets: "staging.secrets.enc.yaml"
 }
 

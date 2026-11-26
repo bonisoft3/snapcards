@@ -5,7 +5,7 @@
     "manual": false,
     "build": {
       "additional_contexts": {
-        "libraries_mecha-database-image": "${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/mecha-database:0.35.0@sha256:848b00d3e43564b2c17a535a2afbf8699ee0221a5f4cc8f92a1a265cd57a2a55}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-database-image}"
+        "libraries_mecha-database-image": "${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/mecha-database:0.36.0@sha256:587d8894546245ae5233ceb980794f3966c147c195b07819b6495df89bcb8d8b}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-database-image}"
       },
       "secrets": [],
       "args": {}
@@ -199,6 +199,16 @@
       {
         "from": null,
         "srcs": [
+          "services/database/pgroll/20261125_translation_lang_hi.json"
+        ],
+        "dst": "/pgroll/20261125_translation_lang_hi.json",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
           "services/database/pgroll/20261106_print_order.json"
         ],
         "dst": "/pgroll/20261106_print_order.json",
@@ -319,6 +329,16 @@
       {
         "from": null,
         "srcs": [
+          "services/database/pgroll/20261125_print_country_in.json"
+        ],
+        "dst": "/pgroll/20261125_print_country_in.json",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
           "services/database/pgroll/20261102_pictures_are_objects.json"
         ],
         "dst": "/pgroll/20261102_pictures_are_objects.json",
@@ -394,6 +414,7 @@
       "services/database/pgroll/20261028_bounded_effect_jobs.json",
       "services/database/pgroll/20261108_deck_cover.json",
       "services/database/pgroll/20261114_card_count_bound.json",
+      "services/database/pgroll/20261125_translation_lang_hi.json",
       "services/database/pgroll/20261106_print_order.json",
       "services/database/pgroll/20261106_print_order_guards.json",
       "services/database/pgroll/20261106_print_order_payments.json",
@@ -406,6 +427,7 @@
       "services/database/pgroll/20261119_order_tracking_and_ship_mail.json",
       "services/database/pgroll/20261121_machine_clock.json",
       "services/database/pgroll/20261123_br_textbook_min_pages.json",
+      "services/database/pgroll/20261125_print_country_in.json",
       "services/database/pgroll/20261102_pictures_are_objects.json",
       "services/database/pgroll/20261115_pictures_same_origin.json"
     ],
@@ -513,6 +535,7 @@
           "services/database/pgroll/20261028_bounded_effect_jobs.json",
           "services/database/pgroll/20261108_deck_cover.json",
           "services/database/pgroll/20261114_card_count_bound.json",
+          "services/database/pgroll/20261125_translation_lang_hi.json",
           "services/database/pgroll/20261106_print_order.json",
           "services/database/pgroll/20261106_print_order_guards.json",
           "services/database/pgroll/20261106_print_order_payments.json",
@@ -525,6 +548,7 @@
           "services/database/pgroll/20261119_order_tracking_and_ship_mail.json",
           "services/database/pgroll/20261121_machine_clock.json",
           "services/database/pgroll/20261123_br_textbook_min_pages.json",
+          "services/database/pgroll/20261125_print_country_in.json",
           "services/database/pgroll/20261102_pictures_are_objects.json",
           "services/database/pgroll/20261115_pictures_same_origin.json"
         ],

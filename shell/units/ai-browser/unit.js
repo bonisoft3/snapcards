@@ -112,6 +112,28 @@ const LEXICON = {
     flor: ["向日葵", "兰花", "玫瑰", "雏菊", "牡丹"],
     marcial: ["柔道", "空手道", "卡波耶拉", "柔术", "跆拳道"],
   },
+  hi: {
+    danca: ["कथक", "भरतनाट्यम", "भांगड़ा", "गरबा", "ओडिसी"],
+    fazenda: ["बछड़ा", "बछेड़ा", "सूअर का बच्चा", "चूज़ा", "मेमना"],
+    instrument: ["सितार", "तबला", "बाँसुरी", "शहनाई", "ढोलक"],
+    anima: ["कैपीबारा", "चींटीखोर", "आर्माडिलो", "स्लॉथ", "टूकन"],
+    fruta: ["अमरूद", "पपीता", "पैशन फ्रूट", "लीची", "अंजीर"],
+    planeta: ["बुध", "शुक्र", "बृहस्पति", "वरुण", "धूमकेतु"],
+    espacia: ["क्षुद्रग्रह", "निहारिका", "आकाशगंगा", "तारामंडल", "कक्षा"],
+    quadrinho: ["स्टोरीबोर्ड", "स्याही", "पैनल", "कैरिकेचर", "कॉमिक बुक"],
+    cotidiano: ["मेज़", "कुर्सी", "घड़ी", "खिड़की", "चाबी"],
+    alfabeto: ["अनार", "आम", "इमली", "ईख", "उल्लू"],
+    carro: ["कन्वर्टिबल", "कूपे", "सेडान", "पिकअप ट्रक", "हैचबैक"],
+    comida: ["समोसा", "जलेबी", "डोसा", "पराठा", "लड्डू"],
+    esporte: ["क्रिकेट", "कबड्डी", "तैराकी", "बैडमिंटन", "हॉकी"],
+    profiss: ["दमकलकर्मी", "शिक्षक", "डॉक्टर", "बेकर", "अंतरिक्ष यात्री"],
+    mar: ["व्हेल", "डॉल्फ़िन", "ऑक्टोपस", "समुद्री घोड़ा", "समुद्री कछुआ"],
+    dino: ["ट्राइसेराटॉप्स", "स्टेगोसॉरस", "टेरोडैक्टाइल", "डिप्लोडोकस", "वेलोसिरैप्टर"],
+    corpo: ["हृदय", "फेफड़ा", "मस्तिष्क", "कंकाल", "मांसपेशी"],
+    escola: ["कॉपी", "पेंसिल", "बस्ता", "ब्लैकबोर्ड", "रबड़"],
+    flor: ["सूरजमुखी", "ऑर्किड", "गुलाब", "गेंदा", "कमल"],
+    marcial: ["कलारीपयट्टु", "कराटे", "जूडो", "कुश्ती", "ताइक्वांडो"],
+  },
 };
 
 const FACETS = {
@@ -120,6 +142,7 @@ const FACETS = {
   en: ["Origin", "Tradition", "Symbol", "Heritage", "Craft"],
   he: ["מקור", "מסורת", "סמל", "מנהג", "מורשת"],
   zh: ["起源", "传统", "象征", "习俗", "文化"],
+  hi: ["उत्पत्ति", "परंपरा", "प्रतीक", "रीति-रिवाज", "विरासत"],
 };
 
 const CATEGORY_LABELS = {
@@ -238,6 +261,29 @@ const CATEGORY_LABELS = {
     marcial: "武术运动",
     default: "文化探索",
   },
+  hi: {
+    danca: "नृत्य और लय",
+    fazenda: "खेत का जीवन",
+    instrument: "संगीत",
+    anima: "वन्यजीव",
+    fruta: "फल",
+    planeta: "खगोल विज्ञान",
+    espacia: "अंतरिक्ष",
+    quadrinho: "कॉमिक्स और कला",
+    cotidiano: "रोज़मर्रा का जीवन",
+    alfabeto: "वर्णमाला",
+    carro: "वाहन",
+    comida: "खान-पान",
+    esporte: "खेल",
+    profiss: "पेशे",
+    mar: "समुद्री जीवन",
+    dino: "जीवाश्म विज्ञान",
+    corpo: "शरीर रचना",
+    escola: "शिक्षा",
+    flor: "वनस्पति",
+    marcial: "युद्ध कलाएँ",
+    default: "संस्कृति और खोज",
+  },
 };
 
 function resolveLangKey(locale) {
@@ -246,31 +292,32 @@ function resolveLangKey(locale) {
   if (lc.startsWith("en") || lc.includes("engl") || lc.includes("ingl")) return "en";
   if (lc.startsWith("he") || lc.includes("עבר") || lc.includes("hebr")) return "he";
   if (lc.startsWith("zh") || lc.includes("中文") || lc.includes("汉语") || lc.includes("chin") || lc.includes("mandar")) return "zh";
+  if (lc.startsWith("hi") || lc.includes("हिन्दी") || lc.includes("हिंदी")) return "hi";
   return "pt";
 }
 
 function classifyTopic(topic) {
   const t = String(topic || "").toLowerCase();
-  if (t.includes("marcia") || t.includes("martial") || /\blutas?\b/.test(t) || t.includes("karat") || t.includes("judo") || t.includes("judô") || t.includes("אמנויות לחימה") || t.includes("武术")) return "marcial";
-  if (t.includes("danç") || t.includes("danc") || t.includes("bail") || t.includes("ritmo") || t.includes("ריקוד") || t.includes("舞")) return "danca";
-  if (t.includes("fazenda") || t.includes("farm") || t.includes("granja") || t.includes("חווה") || t.includes("农场")) return "fazenda";
-  if (t.includes("instrument") || t.includes("orquestra") || t.includes("músic") || t.includes("music") || t.includes("כלי") || t.includes("乐器")) return "instrument";
-  if (t.includes("anima") || t.includes("fauna") || t.includes("wildlife") || t.includes("bicho") || t.includes("חיות") || t.includes("动物")) return "anima";
-  if (t.includes("fruta") || t.includes("fruit") || t.includes("פירות") || t.includes("水果")) return "fruta";
-  if (t.includes("planeta") || t.includes("estrela") || t.includes("solar") || t.includes("planet") || t.includes("כוכב") || t.includes("行星")) return "planeta";
-  if (t.includes("espacia") || t.includes("space") || t.includes("foguete") || t.includes("astron") || t.includes("חלל") || t.includes("太空")) return "espacia";
-  if (t.includes("quadrinho") || t.includes("revista") || t.includes("comic") || t.includes("mangá") || t.includes("קומיקס") || t.includes("漫画")) return "quadrinho";
-  if (t.includes("cotidiano") || t.includes("daily") || /\bcasa\b/.test(t) || /\bhome\b/.test(t) || t.includes("יומיום") || t.includes("日常")) return "cotidiano";
-  if (t.includes("alfabeto") || t.includes("letra") || t.includes("alphabet") || t.includes("אלפבית") || t.includes("字母")) return "alfabeto";
-  if (/\bcarros?\b/.test(t) || t.includes("veículo") || t.includes("veiculo") || /\bautos?\b/.test(t) || /\bcars?\b/.test(t) || t.includes("autom") || t.includes("מכונית") || t.includes("汽车")) return "carro";
-  if (t.includes("comida") || t.includes("culin") || t.includes("prato") || t.includes("food") || t.includes("אוכל") || t.includes("美食")) return "comida";
-  if (t.includes("esporte") || t.includes("jogo") || t.includes("sport") || t.includes("ספורט") || t.includes("运动")) return "esporte";
-  if (t.includes("profiss") || t.includes("trabalh") || /\bjobs?\b/.test(t) || t.includes("מקצוע") || t.includes("职业")) return "profiss";
-  if (/\bmar\b/.test(t) || t.includes("marinh") || t.includes("oceano") || t.includes("peixe") || t.includes("ocean") || t.includes("ים") || t.includes("海洋")) return "mar";
-  if (t.includes("dino") || t.includes("fóssil") || t.includes("juráss") || t.includes("דינוזאור") || t.includes("恐龙")) return "dino";
-  if (t.includes("corpo") || t.includes("anatomia") || /\bbody\b/.test(t) || t.includes("גוף") || t.includes("身体")) return "corpo";
-  if (t.includes("escola") || /\baulas?\b/.test(t) || t.includes("school") || t.includes("בית ספר") || t.includes("学校")) return "escola";
-  if (/\bflor(es)?\b/.test(t) || t.includes("planta") || t.includes("árvore") || t.includes("flower") || t.includes("פרח") || t.includes("花")) return "flor";
+  if (t.includes("marcia") || t.includes("martial") || /\blutas?\b/.test(t) || t.includes("karat") || t.includes("judo") || t.includes("judô") || t.includes("אמנויות לחימה") || t.includes("武术") || t.includes("युद्ध कला") || t.includes("मार्शल")) return "marcial";
+  if (t.includes("danç") || t.includes("danc") || t.includes("bail") || t.includes("ritmo") || t.includes("ריקוד") || t.includes("舞") || t.includes("नृत्य") || t.includes("नाच")) return "danca";
+  if (t.includes("fazenda") || t.includes("farm") || t.includes("granja") || t.includes("חווה") || t.includes("农场") || t.includes("खेत") || t.includes("फ़ार्म")) return "fazenda";
+  if (t.includes("instrument") || t.includes("orquestra") || t.includes("músic") || t.includes("music") || t.includes("כלי") || t.includes("乐器") || t.includes("वाद्य") || t.includes("संगीत")) return "instrument";
+  if (t.includes("anima") || t.includes("fauna") || t.includes("wildlife") || t.includes("bicho") || t.includes("חיות") || t.includes("动物") || t.includes("जानवर") || t.includes("वन्य")) return "anima";
+  if (t.includes("fruta") || t.includes("fruit") || t.includes("פירות") || t.includes("水果") || t.includes("फल")) return "fruta";
+  if (t.includes("planeta") || t.includes("estrela") || t.includes("solar") || t.includes("planet") || t.includes("כוכב") || t.includes("行星") || t.includes("ग्रह") || t.includes("तारे")) return "planeta";
+  if (t.includes("espacia") || t.includes("space") || t.includes("foguete") || t.includes("astron") || t.includes("חלל") || t.includes("太空") || t.includes("अंतरिक्ष")) return "espacia";
+  if (t.includes("quadrinho") || t.includes("revista") || t.includes("comic") || t.includes("mangá") || t.includes("קומיקס") || t.includes("漫画") || t.includes("कॉमिक")) return "quadrinho";
+  if (t.includes("cotidiano") || t.includes("daily") || /\bcasa\b/.test(t) || /\bhome\b/.test(t) || t.includes("יומיום") || t.includes("日常") || t.includes("रोज़मर्रा")) return "cotidiano";
+  if (t.includes("alfabeto") || t.includes("letra") || t.includes("alphabet") || t.includes("אלפבית") || t.includes("字母") || t.includes("वर्णमाला") || t.includes("अक्षर")) return "alfabeto";
+  if (/\bcarros?\b/.test(t) || t.includes("veículo") || t.includes("veiculo") || /\bautos?\b/.test(t) || /\bcars?\b/.test(t) || t.includes("autom") || t.includes("מכונית") || t.includes("汽车") || t.includes("गाड़ी") || t.includes("वाहन")) return "carro";
+  if (t.includes("comida") || t.includes("culin") || t.includes("prato") || t.includes("food") || t.includes("אוכל") || t.includes("美食") || t.includes("खाना") || t.includes("व्यंजन")) return "comida";
+  if (t.includes("esporte") || t.includes("jogo") || t.includes("sport") || t.includes("ספורט") || t.includes("运动") || t.includes("खेल")) return "esporte";
+  if (t.includes("profiss") || t.includes("trabalh") || /\bjobs?\b/.test(t) || t.includes("מקצוע") || t.includes("职业") || t.includes("पेशे") || t.includes("व्यवसाय")) return "profiss";
+  if (/\bmar\b/.test(t) || t.includes("marinh") || t.includes("oceano") || t.includes("peixe") || t.includes("ocean") || t.includes("ים") || t.includes("海洋") || t.includes("समुद्र")) return "mar";
+  if (t.includes("dino") || t.includes("fóssil") || t.includes("juráss") || t.includes("דינוזאור") || t.includes("恐龙") || t.includes("डायनासोर")) return "dino";
+  if (t.includes("corpo") || t.includes("anatomia") || /\bbody\b/.test(t) || t.includes("גוף") || t.includes("身体") || t.includes("शरीर")) return "corpo";
+  if (t.includes("escola") || /\baulas?\b/.test(t) || t.includes("school") || t.includes("בית ספר") || t.includes("学校") || t.includes("स्कूल") || t.includes("विद्यालय")) return "escola";
+  if (/\bflor(es)?\b/.test(t) || t.includes("planta") || t.includes("árvore") || t.includes("flower") || t.includes("פרח") || t.includes("花") || t.includes("फूल") || t.includes("पौध")) return "flor";
   return "";
 }
 
@@ -306,6 +353,7 @@ function approximateCityGeo(locale) {
   if (lang === "en") return { cityRegion: "New York, USA", languageName: "English", defaultTopic: "Amazon Rainforest Wildlife" };
   if (lang === "he") return { cityRegion: "תל אביב, ישראל", languageName: "עברית", defaultTopic: "חיות בר ואמזונס" };
   if (lang === "zh") return { cityRegion: "北京, 中国", languageName: "中文", defaultTopic: "南美与自然野生动物" };
+  if (lang === "hi") return { cityRegion: "नई दिल्ली, भारत", languageName: "हिन्दी", defaultTopic: "अमेज़न के जंगली जानवर" };
   if (tz.includes("Recife") || tz.includes("Fortaleza") || tz.includes("Bahia")) {
     return { cityRegion: "Recife, Brasil", languageName: "Português", defaultTopic: "Animais Brasileiros" };
   }
@@ -335,6 +383,7 @@ function synthesizeBrowserDefaults(topic, locale) {
     en: "Kids (6–10)",
     he: "ילדים (6–10)",
     zh: "儿童 (6–10岁)",
+    hi: "बच्चे (6–10 वर्ष)",
   };
   const audienceDefault = sanitizeDetailValue(audienceByLang[lang] || audienceByLang.pt);
   const geo = approximateCityGeo(locale);

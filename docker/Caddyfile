@@ -463,9 +463,9 @@
       redir {uri} permanent
     }
     route {
-      @negotiable path / /about /explore /explore/* /explore/*/* /gallery /generate /mine /print
+      @negotiable path / /about /explore /explore/* /explore/*/* /gallery /generate /kids /mine /print /printed /teachers
       header @negotiable Vary Accept-Language
-      @lang header_regexp lang Accept-Language (?i)(?:^|,)\s*(pt|es|en|he|zh)\b
+      @lang header_regexp lang Accept-Language (?i)(?:^|,)\s*(pt|es|en|he|zh|hi)\b
       handle @lang {
         @cards_en {
           path /
@@ -521,6 +521,24 @@
           vars_regexp {re.lang.1} (?i)^(he)$
         }
         rewrite @cards_he_2 /he/mine
+        @cards_hi {
+          path /
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @cards_hi /hi
+        @cards_hi_1 {
+          path /gallery
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @cards_hi_1 /hi/gallery
+        @cards_hi_2 {
+          path /mine
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @cards_hi_2 /hi/mine
         @cards_zh {
           path /
           not query lang=*
@@ -557,6 +575,12 @@
           vars_regexp {re.lang.1} (?i)^(he)$
         }
         rewrite @generate_he /he/generate
+        @generate_hi {
+          path /generate
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @generate_hi /hi/generate
         @generate_zh {
           path /generate
           not query lang=*
@@ -581,6 +605,12 @@
           vars_regexp {re.lang.1} (?i)^(he)$
         }
         rewrite @explore_he /he/explore
+        @explore_hi {
+          path /explore
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @explore_hi /hi/explore
         @explore_zh {
           path /explore
           not query lang=*
@@ -605,6 +635,12 @@
           vars_regexp {re.lang.1} (?i)^(he)$
         }
         rewrite @deck_he /he/explore/{re.deck.1}
+        @deck_hi {
+          path_regexp deck ^/explore/([^/]+)$
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @deck_hi /hi/explore/{re.deck.1}
         @deck_zh {
           path_regexp deck ^/explore/([^/]+)$
           not query lang=*
@@ -629,6 +665,12 @@
           vars_regexp {re.lang.1} (?i)^(he)$
         }
         rewrite @card_he /he/explore/{re.card.1}/{re.card.2}
+        @card_hi {
+          path_regexp card ^/explore/([^/]+)/([^/]+)$
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @card_hi /hi/explore/{re.card.1}/{re.card.2}
         @card_zh {
           path_regexp card ^/explore/([^/]+)/([^/]+)$
           not query lang=*
@@ -653,6 +695,12 @@
           vars_regexp {re.lang.1} (?i)^(he)$
         }
         rewrite @print_he /he/print
+        @print_hi {
+          path /print
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @print_hi /hi/print
         @print_zh {
           path /print
           not query lang=*
@@ -677,16 +725,112 @@
           vars_regexp {re.lang.1} (?i)^(he)$
         }
         rewrite @about_he /he/about
+        @about_hi {
+          path /about
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @about_hi /hi/about
         @about_zh {
           path /about
           not query lang=*
           vars_regexp {re.lang.1} (?i)^(zh)$
         }
         rewrite @about_zh /zh/about
+        @kids_en {
+          path /kids
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(en)$
+        }
+        rewrite @kids_en /en/kids
+        @kids_es {
+          path /kids
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(es)$
+        }
+        rewrite @kids_es /es/kids
+        @kids_he {
+          path /kids
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(he)$
+        }
+        rewrite @kids_he /he/kids
+        @kids_hi {
+          path /kids
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @kids_hi /hi/kids
+        @kids_zh {
+          path /kids
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(zh)$
+        }
+        rewrite @kids_zh /zh/kids
+        @printed_en {
+          path /printed
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(en)$
+        }
+        rewrite @printed_en /en/printed
+        @printed_es {
+          path /printed
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(es)$
+        }
+        rewrite @printed_es /es/printed
+        @printed_he {
+          path /printed
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(he)$
+        }
+        rewrite @printed_he /he/printed
+        @printed_hi {
+          path /printed
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @printed_hi /hi/printed
+        @printed_zh {
+          path /printed
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(zh)$
+        }
+        rewrite @printed_zh /zh/printed
+        @teachers_en {
+          path /teachers
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(en)$
+        }
+        rewrite @teachers_en /en/teachers
+        @teachers_es {
+          path /teachers
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(es)$
+        }
+        rewrite @teachers_es /es/teachers
+        @teachers_he {
+          path /teachers
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(he)$
+        }
+        rewrite @teachers_he /he/teachers
+        @teachers_hi {
+          path /teachers
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(hi)$
+        }
+        rewrite @teachers_hi /hi/teachers
+        @teachers_zh {
+          path /teachers
+          not query lang=*
+          vars_regexp {re.lang.1} (?i)^(zh)$
+        }
+        rewrite @teachers_zh /zh/teachers
       }
     }
     @rendered {
-      expression `{http.request.uri}.matches("^(?:/en/?|/en/gallery/?|/en/mine/?|/es/?|/es/gallery/?|/es/mine/?|/he/?|/he/gallery/?|/he/mine/?|/|/gallery/?|/mine/?|/zh/?|/zh/gallery/?|/zh/mine/?|/en/generate/?|/es/generate/?|/he/generate/?|/generate/?|/zh/generate/?|/en/explore/?|/es/explore/?|/he/explore/?|/explore/?|/zh/explore/?|/en/explore/[^/?]+/?|/es/explore/[^/?]+/?|/he/explore/[^/?]+/?|/explore/[^/?]+/?|/zh/explore/[^/?]+/?|/en/explore/[^/?]+/[^/?]+/?|/es/explore/[^/?]+/[^/?]+/?|/he/explore/[^/?]+/[^/?]+/?|/explore/[^/?]+/[^/?]+/?|/zh/explore/[^/?]+/[^/?]+/?|/en/print/?|/es/print/?|/he/print/?|/print/?|/zh/print/?)(?:\\?.*)?$")`
+      expression `{http.request.uri}.matches("^(?:/en/?|/en/gallery/?|/en/mine/?|/es/?|/es/gallery/?|/es/mine/?|/he/?|/he/gallery/?|/he/mine/?|/hi/?|/hi/gallery/?|/hi/mine/?|/|/gallery/?|/mine/?|/zh/?|/zh/gallery/?|/zh/mine/?|/en/generate/?|/es/generate/?|/he/generate/?|/hi/generate/?|/generate/?|/zh/generate/?|/en/explore/?|/es/explore/?|/he/explore/?|/hi/explore/?|/explore/?|/zh/explore/?|/en/explore/[^/?]+/?|/es/explore/[^/?]+/?|/he/explore/[^/?]+/?|/hi/explore/[^/?]+/?|/explore/[^/?]+/?|/zh/explore/[^/?]+/?|/en/explore/[^/?]+/[^/?]+/?|/es/explore/[^/?]+/[^/?]+/?|/he/explore/[^/?]+/[^/?]+/?|/hi/explore/[^/?]+/[^/?]+/?|/explore/[^/?]+/[^/?]+/?|/zh/explore/[^/?]+/[^/?]+/?|/en/print/?|/es/print/?|/he/print/?|/hi/print/?|/print/?|/zh/print/?)(?:\\?.*)?$")`
       not file {
         root {$PRONTO_SRV_ROOT:/srv}
         try_files {path} {path}/index.html
@@ -699,11 +843,11 @@
       }
     }
     @developmentDocument {
-      path /about /about/ /en/about /en/about/ /es/about /es/about/ /he/about /he/about/ /zh/about /zh/about/
+      path /about /about/ /en/about /en/about/ /en/kids /en/kids/ /en/printed /en/printed/ /en/teachers /en/teachers/ /es/about /es/about/ /es/kids /es/kids/ /es/printed /es/printed/ /es/teachers /es/teachers/ /he/about /he/about/ /he/kids /he/kids/ /he/printed /he/printed/ /he/teachers /he/teachers/ /hi/about /hi/about/ /hi/kids /hi/kids/ /hi/printed /hi/printed/ /hi/teachers /hi/teachers/ /kids /kids/ /printed /printed/ /teachers /teachers/ /zh/about /zh/about/ /zh/kids /zh/kids/ /zh/printed /zh/printed/ /zh/teachers /zh/teachers/
       expression `"{$PRONTO_FILE_MODE:release}" == "development"`
     }
     rewrite @developmentDocument /shell/index.html
-    @document path /about /about/ /en/about /en/about/ /es/about /es/about/ /he/about /he/about/ /zh/about /zh/about/
+    @document path /about /about/ /en/about /en/about/ /en/kids /en/kids/ /en/printed /en/printed/ /en/teachers /en/teachers/ /es/about /es/about/ /es/kids /es/kids/ /es/printed /es/printed/ /es/teachers /es/teachers/ /he/about /he/about/ /he/kids /he/kids/ /he/printed /he/printed/ /he/teachers /he/teachers/ /hi/about /hi/about/ /hi/kids /hi/kids/ /hi/printed /hi/printed/ /hi/teachers /hi/teachers/ /kids /kids/ /printed /printed/ /teachers /teachers/ /zh/about /zh/about/ /zh/kids /zh/kids/ /zh/printed /zh/printed/ /zh/teachers /zh/teachers/
     handle @document {
       root * {$PRONTO_SRV_ROOT:/srv}
       header Cache-Control "no-cache"
@@ -715,7 +859,7 @@
       header Cache-Control "no-cache"
       @file file {path} {path}/index.html
       rewrite @file {http.matchers.file.relative}
-      @route expression `{http.request.uri}.matches("^(?:/|/about/?|/en/?|/en/about/?|/en/explore/?|/en/explore/[^/?]+/?|/en/explore/[^/?]+/[^/?]+/?|/en/gallery/?|/en/generate/?|/en/mine/?|/en/print/?|/es/?|/es/about/?|/es/explore/?|/es/explore/[^/?]+/?|/es/explore/[^/?]+/[^/?]+/?|/es/gallery/?|/es/generate/?|/es/mine/?|/es/print/?|/explore/?|/explore/[^/?]+/?|/explore/[^/?]+/[^/?]+/?|/gallery/?|/generate/?|/he/?|/he/about/?|/he/explore/?|/he/explore/[^/?]+/?|/he/explore/[^/?]+/[^/?]+/?|/he/gallery/?|/he/generate/?|/he/mine/?|/he/print/?|/mine/?|/print/?|/zh/?|/zh/about/?|/zh/explore/?|/zh/explore/[^/?]+/?|/zh/explore/[^/?]+/[^/?]+/?|/zh/gallery/?|/zh/generate/?|/zh/mine/?|/zh/print/?)(?:\\?.*)?$")`
+      @route expression `{http.request.uri}.matches("^(?:/|/about/?|/en/?|/en/about/?|/en/explore/?|/en/explore/[^/?]+/?|/en/explore/[^/?]+/[^/?]+/?|/en/gallery/?|/en/generate/?|/en/kids/?|/en/mine/?|/en/print/?|/en/printed/?|/en/teachers/?|/es/?|/es/about/?|/es/explore/?|/es/explore/[^/?]+/?|/es/explore/[^/?]+/[^/?]+/?|/es/gallery/?|/es/generate/?|/es/kids/?|/es/mine/?|/es/print/?|/es/printed/?|/es/teachers/?|/explore/?|/explore/[^/?]+/?|/explore/[^/?]+/[^/?]+/?|/gallery/?|/generate/?|/he/?|/he/about/?|/he/explore/?|/he/explore/[^/?]+/?|/he/explore/[^/?]+/[^/?]+/?|/he/gallery/?|/he/generate/?|/he/kids/?|/he/mine/?|/he/print/?|/he/printed/?|/he/teachers/?|/hi/?|/hi/about/?|/hi/explore/?|/hi/explore/[^/?]+/?|/hi/explore/[^/?]+/[^/?]+/?|/hi/gallery/?|/hi/generate/?|/hi/kids/?|/hi/mine/?|/hi/print/?|/hi/printed/?|/hi/teachers/?|/kids/?|/mine/?|/print/?|/printed/?|/teachers/?|/zh/?|/zh/about/?|/zh/explore/?|/zh/explore/[^/?]+/?|/zh/explore/[^/?]+/[^/?]+/?|/zh/gallery/?|/zh/generate/?|/zh/kids/?|/zh/mine/?|/zh/print/?|/zh/printed/?|/zh/teachers/?)(?:\\?.*)?$")`
       rewrite @route /shell/index.html
       import files
     }

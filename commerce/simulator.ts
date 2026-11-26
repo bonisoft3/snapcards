@@ -156,6 +156,7 @@ export const fxRates: Record<string, { reference: number; exchange: number }> =
 		gbp: { reference: 7.1035, exchange: 6.954327 },
 		ils: { reference: 1.4521, exchange: 1.421606 },
 		cny: { reference: 0.7586, exchange: 0.742669 },
+		inr: { reference: 0.063126, exchange: 0.0618638 },
 		ars: { reference: 0.005632, exchange: 0.005514 },
 	};
 const locks: Record<string, number> = {

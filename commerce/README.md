@@ -8,7 +8,7 @@ bleed and no marks, which the reader saves as a PDF and takes to a shop with sho
 saying what to ask for. Art and word stay 5 mm inside the trim on white. One image that
 fails fails the deck, with no dialog. In Brazil (`BR`), **Cloudprinter** prints and posts a
 domestic A6 landscape Wire-O spiral flip-deck (`textbook_co_a6_l_fc`, shipped via
-`Correios - SEDEX`); everywhere else (`AR`, `IL`, `US`, `GB`, `CN`), **Prodigi** prints and
+`Correios - SEDEX`); everywhere else (`AR`, `IL`, `US`, `GB`, `CN`, `IN`), **Prodigi** prints and
 posts one 6×4 in postcard per card.
 
 There is no server hatch ([[../../../plugins/pronto/docs/decisions/2026-11-05-commerce-through-the-airlock|the decision]]).
@@ -46,7 +46,7 @@ the order ask. A forgery costs one read and one ledger row.
 ## Price
 
 Each country pays in its own currency (`_printCurrencies`): BR in BRL, AR in ARS, IL in ILS, US in
-USD, GB in GBP, CN in CNY. `print-quote-br` (`BR`, Cloudprinter `Correios - SEDEX` by CEP) and
+USD, GB in GBP, CN in CNY, IN in INR. `print-quote-br` (`BR`, Cloudprinter `Correios - SEDEX` by CEP) and
 `print-quote` (elsewhere, Prodigi's cheapest method, one line per card) both quote in USD alone; an
 answer in another is refused.
 
@@ -75,6 +75,13 @@ the order and cannot hold Checkout to its rate: Stripe converts a non-BRL charge
 day, which can drift from the quote's within the session's two hours. Prodigi prices by stock,
 cards and country, so an edit elsewhere in the address keeps the price and asks nothing. Its price
 can move before the reader pays; the markup takes that.
+
+India's Prodigi shipping dwarfs the cards: its sandbox quoted 3 postcards (`GLOBAL-POST-GLOS-6X4`,
+Standard) at $1.59 of items and $18.38 of shipping, $19.97, which `print-fx` charges as about ₹1,855
+at the simulator's rates. India-issued cards often decline a foreign merchant: international use is
+off by default and every charge needs 3-D Secure
+([Stripe](https://docs.stripe.com/india-recurring-payments)), so a declined Indian card is the
+reader's bank, not the order.
 
 ## Pix
 
@@ -113,7 +120,7 @@ states. `checkout-ui/build.ts` turns it into `shell/shared/address-formats.css`,
 names and marks the fields by the draft's country, and the checkout's gate requires what the country's
 post requires plus Prodigi's street, town and postcode. A bairro or district, which Prodigi has no field
 for, rides on its second address line. Refresh the data when the countries change:
-`deno run --allow-net --allow-write=commerce commerce/address-formats.ts BR AR IL US GB CN`.
+`deno run --allow-net --allow-write=commerce commerce/address-formats.ts BR AR IL US GB CN IN`.
 
 ## What a test order must confirm
 

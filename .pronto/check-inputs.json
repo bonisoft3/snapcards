@@ -34,6 +34,18 @@
         "route:about": {
           "reenter": true,
           "target": ".about"
+        },
+        "route:kids": {
+          "reenter": true,
+          "target": ".kids"
+        },
+        "route:teachers": {
+          "reenter": true,
+          "target": ".teachers"
+        },
+        "route:printed": {
+          "reenter": true,
+          "target": ".printed"
         }
       },
       "states": {
@@ -162,6 +174,66 @@
           },
           "meta": {
             "screen": "about"
+          },
+          "states": {
+            "loading": {
+              "invoke": {
+                "src": "navigate",
+                "onDone": "ready",
+                "onError": "failed"
+              }
+            },
+            "ready": {},
+            "failed": {}
+          }
+        },
+        "kids": {
+          "initial": "loading",
+          "invoke": {
+            "src": "kidsRows"
+          },
+          "meta": {
+            "screen": "kids"
+          },
+          "states": {
+            "loading": {
+              "invoke": {
+                "src": "navigate",
+                "onDone": "ready",
+                "onError": "failed"
+              }
+            },
+            "ready": {},
+            "failed": {}
+          }
+        },
+        "teachers": {
+          "initial": "loading",
+          "invoke": {
+            "src": "teachersRows"
+          },
+          "meta": {
+            "screen": "teachers"
+          },
+          "states": {
+            "loading": {
+              "invoke": {
+                "src": "navigate",
+                "onDone": "ready",
+                "onError": "failed"
+              }
+            },
+            "ready": {},
+            "failed": {}
+          }
+        },
+        "printed": {
+          "initial": "loading",
+          "invoke": {
+            "src": "printedRows"
+          },
+          "meta": {
+            "screen": "printed"
           },
           "states": {
             "loading": {
@@ -2867,6 +2939,12 @@
                   },
                   "raise": "edited"
                 },
+                "click@locale-opt-hi": {
+                  "assign": {
+                    "locale": "हिन्दी"
+                  },
+                  "raise": "edited"
+                },
                 "click@locale-opt-fr": {
                   "assign": {
                     "locale": "Français"
@@ -3015,6 +3093,12 @@
                   }
                 },
                 "click@draft-loc-zh": {
+                  "target": "idle",
+                  "assign": {
+                    "run": ""
+                  }
+                },
+                "click@draft-loc-hi": {
                   "target": "idle",
                   "assign": {
                     "run": ""
@@ -3934,6 +4018,99 @@
                 }
               }
             ]
+          }
+        },
+        "kidsRows": {
+          "via": "rows",
+          "lifetime": "attachment",
+          "screen": "kids",
+          "charts": {
+            "theme": {
+              "field": "theme",
+              "initial": "auto",
+              "states": {
+                "auto": {
+                  "on": {
+                    "click@theme-light": "light",
+                    "click@theme-dark": "dark"
+                  }
+                },
+                "light": {
+                  "on": {
+                    "click@theme-auto": "auto",
+                    "click@theme-dark": "dark"
+                  }
+                },
+                "dark": {
+                  "on": {
+                    "click@theme-auto": "auto",
+                    "click@theme-light": "light"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "teachersRows": {
+          "via": "rows",
+          "lifetime": "attachment",
+          "screen": "teachers",
+          "charts": {
+            "theme": {
+              "field": "theme",
+              "initial": "auto",
+              "states": {
+                "auto": {
+                  "on": {
+                    "click@theme-light": "light",
+                    "click@theme-dark": "dark"
+                  }
+                },
+                "light": {
+                  "on": {
+                    "click@theme-auto": "auto",
+                    "click@theme-dark": "dark"
+                  }
+                },
+                "dark": {
+                  "on": {
+                    "click@theme-auto": "auto",
+                    "click@theme-light": "light"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "printedRows": {
+          "via": "rows",
+          "lifetime": "attachment",
+          "screen": "printed",
+          "charts": {
+            "theme": {
+              "field": "theme",
+              "initial": "auto",
+              "states": {
+                "auto": {
+                  "on": {
+                    "click@theme-light": "light",
+                    "click@theme-dark": "dark"
+                  }
+                },
+                "light": {
+                  "on": {
+                    "click@theme-auto": "auto",
+                    "click@theme-dark": "dark"
+                  }
+                },
+                "dark": {
+                  "on": {
+                    "click@theme-auto": "auto",
+                    "click@theme-light": "light"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -6818,7 +6995,7 @@
           "type": "string",
           "pk": false,
           "required": true,
-          "cel": "this in ['pt', 'es', 'en', 'he', 'zh']"
+          "cel": "this in ['pt', 'es', 'en', 'he', 'zh', 'hi']"
         },
         {
           "name": "name",
@@ -6848,7 +7025,7 @@
         "checks": {
           "id": "char_length(id) > 0",
           "set_id": "char_length(set_id) > 0",
-          "lang": "lang IN ('pt', 'es', 'en', 'he', 'zh')",
+          "lang": "lang IN ('pt', 'es', 'en', 'he', 'zh', 'hi')",
           "name": "char_length(name) > 0",
           "category": "char_length(category) >= 0"
         },
@@ -6858,7 +7035,8 @@
             "es",
             "en",
             "he",
-            "zh"
+            "zh",
+            "hi"
           ]
         },
         "bounds": {
@@ -6924,7 +7102,7 @@
           "type": "string",
           "pk": false,
           "required": true,
-          "cel": "this in ['pt', 'es', 'en', 'he', 'zh']"
+          "cel": "this in ['pt', 'es', 'en', 'he', 'zh', 'hi']"
         },
         {
           "name": "word",
@@ -6952,7 +7130,7 @@
           "id": "char_length(id) > 0",
           "card_id": "char_length(card_id) > 0",
           "set_id": "char_length(set_id) > 0",
-          "lang": "lang IN ('pt', 'es', 'en', 'he', 'zh')",
+          "lang": "lang IN ('pt', 'es', 'en', 'he', 'zh', 'hi')",
           "word": "char_length(word) > 0"
         },
         "enums": {
@@ -6961,7 +7139,8 @@
             "es",
             "en",
             "he",
-            "zh"
+            "zh",
+            "hi"
           ]
         },
         "bounds": {
@@ -9602,7 +9781,7 @@
           "type": "string",
           "pk": false,
           "required": true,
-          "cel": "this in ['BR', 'AR', 'IL', 'US', 'GB', 'CN']"
+          "cel": "this in ['BR', 'AR', 'IL', 'US', 'GB', 'CN', 'IN']"
         },
         {
           "name": "delivery",
@@ -9897,7 +10076,7 @@
           "title": "char_length(title) > 0 AND char_length(title) <= 120",
           "stock": "stock IN ('gloss', 'mohawk')",
           "cards": "cards >= 1 AND cards <= 100",
-          "country": "country IN ('BR', 'AR', 'IL', 'US', 'GB', 'CN')",
+          "country": "country IN ('BR', 'AR', 'IL', 'US', 'GB', 'CN', 'IN')",
           "postal_code": "char_length(postal_code) <= 40"
         },
         "enums": {
@@ -9911,7 +10090,8 @@
             "IL",
             "US",
             "GB",
-            "CN"
+            "CN",
+            "IN"
           ]
         },
         "bounds": {
@@ -10470,7 +10650,7 @@
                       "raw": "(outcome->'data'->>'shipping')::int"
                     },
                     "currency": {
-                      "raw": "CASE NEW.country WHEN 'BR' THEN 'brl' WHEN 'AR' THEN 'ars' WHEN 'IL' THEN 'ils' WHEN 'US' THEN 'usd' WHEN 'GB' THEN 'gbp' WHEN 'CN' THEN 'cny' END"
+                      "raw": "CASE NEW.country WHEN 'BR' THEN 'brl' WHEN 'AR' THEN 'ars' WHEN 'IL' THEN 'ils' WHEN 'US' THEN 'usd' WHEN 'GB' THEN 'gbp' WHEN 'CN' THEN 'cny' WHEN 'IN' THEN 'inr' END"
                     },
                     "sku": {
                       "raw": "outcome->'data'->>'sku'"

@@ -16,6 +16,8 @@ Deno.test("each country's lines are its post's, in its order", () => {
   assertEquals(rows("AR"), [["A"], ["Z", "C"], ["S"]], "AR");
   // Local script order: the postcode first, the street after the district.
   assertEquals(rows("CN"), [["Z"], ["S", "C", "D"], ["A"]], "CN");
+  // India's post writes the PIN beside the city and the state on a line below.
+  assertEquals(rows("IN"), [["A"], ["C", "Z"], ["S"]], "IN");
   assertEquals(rows(""), [["A"], ["C", "S"], ["Z"]], "no country yet");
 });
 
@@ -24,6 +26,7 @@ Deno.test("a field is required where the country's post or Prodigi needs it", ()
   assertEquals([...required("GB")].sort(), ["A", "C", "Z"], "GB");
   // Israel's post asks only street and city; Prodigi posts to a postcode too.
   assertEquals([...required("IL")].sort(), ["A", "C", "Z"], "IL");
+  assertEquals([...required("IN")].sort(), ["A", "C", "S", "Z"], "IN");
 });
 
 Deno.test("a postcode that does not look like the country's answers its example", () => {
@@ -32,6 +35,8 @@ Deno.test("a postcode that does not look like the country's answers its example"
   assertEquals(postalProblem("BR", "0130"), "40301-110");
   assertEquals(postalProblem("GB", "ec1y 8sy"), null, "case does not matter");
   assertEquals(postalProblem("US", "9501"), "95014");
+  assertEquals(postalProblem("IN", "110001"), null);
+  assertEquals(postalProblem("IN", "11001"), "110034");
   // An empty postcode is the gate's to ask for, not a malformed one.
   assertEquals(postalProblem("US", ""), null);
 });
@@ -61,4 +66,6 @@ Deno.test("the stylesheet shapes every country the form offers, and the unchosen
   // Each kind the data names has a label span to show.
   if (!sheet.includes('[data-country="US"] .f-Z .k:not(.k-zip)')) throw new Error("US postcode is not a ZIP code");
   if (!sheet.includes('[data-country="GB"] .f-S { display: none; }')) throw new Error("GB shows a state");
+  // India calls its postcode a PIN code, a kind the screen needs its own label for.
+  if (!sheet.includes('[data-country="IN"] .f-Z .k-pin { display: inline; }')) throw new Error("IN postcode is not a PIN code");
 });

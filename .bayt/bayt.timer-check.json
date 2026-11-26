@@ -5,7 +5,7 @@
     "manual": false,
     "build": {
       "additional_contexts": {
-        "libraries_mecha-database-image": "${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/mecha-database:0.35.0@sha256:848b00d3e43564b2c17a535a2afbf8699ee0221a5f4cc8f92a1a265cd57a2a55}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-database-image}"
+        "libraries_mecha-database-image": "${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/mecha-database:0.36.0@sha256:587d8894546245ae5233ceb980794f3966c147c195b07819b6495df89bcb8d8b}${MONOREPO_COMPOSE_MODE:+:libraries_mecha-database-image}"
       },
       "secrets": [],
       "args": {}
@@ -58,7 +58,7 @@
       "psql"
     ],
     "epilogue": [
-      "COPY <<'TIMERS' /timer-check.sql\nDO $$ BEGIN\n  IF obj_description(to_regprocedure('\"trg_print_order_status_timer_arm\"()'), 'pg_proc') IS DISTINCT FROM 'eb6c84caf4269ac717b7082f7132d4b89de23e95a00aca0cd4d325893ed5f207' THEN\n    RAISE EXCEPTION 'machine PrintOrderMachine timer interpreter differs from the program: migrate 010_machines.sql and existing state-entry deadlines before starting';\n  END IF;\nEND $$;\nTIMERS"
+      "COPY <<'TIMERS' /timer-check.sql\nDO $$ BEGIN\n  IF obj_description(to_regprocedure('\"trg_print_order_status_timer_arm\"()'), 'pg_proc') IS DISTINCT FROM 'a65e453f8b7565832dd2990e773013e28dde644afbfee2e1ef2d97f1c2ac844c' THEN\n    RAISE EXCEPTION 'machine PrintOrderMachine timer interpreter differs from the program: migrate 010_machines.sql and existing state-entry deadlines before starting';\n  END IF;\nEND $$;\nTIMERS"
     ],
     "expose": [],
     "healthcheck": null,

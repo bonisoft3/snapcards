@@ -261,7 +261,7 @@ code: state: entities: {
 		seed: [...{
 			id?: strings.MinRunes(1)
 			set_id?: strings.MinRunes(1)
-			lang?: ("pt" | "es" | "en" | "he" | "zh")
+			lang?: ("pt" | "es" | "en" | "he" | "zh" | "hi")
 			name?: strings.MinRunes(1)
 			category?: strings.MinRunes(0)
 		}]
@@ -269,12 +269,12 @@ code: state: entities: {
 			checks: {
 				id: "char_length(id) > 0"
 				set_id: "char_length(set_id) > 0"
-				lang: "lang IN ('pt', 'es', 'en', 'he', 'zh')"
+				lang: "lang IN ('pt', 'es', 'en', 'he', 'zh', 'hi')"
 				name: "char_length(name) > 0"
 				category: "char_length(category) >= 0"
 			}
 			enums: {
-				lang: ["pt","es","en","he","zh"]
+				lang: ["pt","es","en","he","zh","hi"]
 			}
 			bounds: {
 				id: {sizeMin: 1}
@@ -289,7 +289,7 @@ code: state: entities: {
 			id?: strings.MinRunes(1)
 			card_id?: strings.MinRunes(1)
 			set_id?: strings.MinRunes(1)
-			lang?: ("pt" | "es" | "en" | "he" | "zh")
+			lang?: ("pt" | "es" | "en" | "he" | "zh" | "hi")
 			word?: strings.MinRunes(1)
 		}]
 		cel: {
@@ -297,11 +297,11 @@ code: state: entities: {
 				id: "char_length(id) > 0"
 				card_id: "char_length(card_id) > 0"
 				set_id: "char_length(set_id) > 0"
-				lang: "lang IN ('pt', 'es', 'en', 'he', 'zh')"
+				lang: "lang IN ('pt', 'es', 'en', 'he', 'zh', 'hi')"
 				word: "char_length(word) > 0"
 			}
 			enums: {
-				lang: ["pt","es","en","he","zh"]
+				lang: ["pt","es","en","he","zh","hi"]
 			}
 			bounds: {
 				id: {sizeMin: 1}
@@ -711,7 +711,7 @@ code: state: entities: {
 			title?: strings.MinRunes(1) & strings.MaxRunes(120)
 			stock?: ("gloss" | "mohawk")
 			cards?: >=1 & <=100
-			country?: ("BR" | "AR" | "IL" | "US" | "GB" | "CN")
+			country?: ("BR" | "AR" | "IL" | "US" | "GB" | "CN" | "IN")
 			postal_code?: strings.MaxRunes(40)
 		}]
 		cel: {
@@ -719,12 +719,12 @@ code: state: entities: {
 				title: "char_length(title) > 0 AND char_length(title) <= 120"
 				stock: "stock IN ('gloss', 'mohawk')"
 				cards: "cards >= 1 AND cards <= 100"
-				country: "country IN ('BR', 'AR', 'IL', 'US', 'GB', 'CN')"
+				country: "country IN ('BR', 'AR', 'IL', 'US', 'GB', 'CN', 'IN')"
 				postal_code: "char_length(postal_code) <= 40"
 			}
 			enums: {
 				stock: ["gloss","mohawk"]
-				country: ["BR","AR","IL","US","GB","CN"]
+				country: ["BR","AR","IL","US","GB","CN","IN"]
 			}
 			bounds: {
 				title: {sizeMin: 1, sizeMax: 120}

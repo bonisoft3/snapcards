@@ -5,7 +5,7 @@
     "manual": true,
     "build": {
       "additional_contexts": {
-        "plugins_omnishell-runtime-image": "${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/omnishell:0.35.0@sha256:a91ae9b6b96eb354197725f50a727a0f36faa5772c284adc0852d32e189d6440}${MONOREPO_COMPOSE_MODE:+:plugins_omnishell-runtime-image}"
+        "plugins_omnishell-runtime-image": "${MONOREPO_COMPOSE_MODE:-docker-image://bonitao/omnishell:0.36.0@sha256:74b22f2a55f264bb59ca0487a4f67064a16a06c5a13cc0bedfc5ea4bbe8194a1}${MONOREPO_COMPOSE_MODE:+:plugins_omnishell-runtime-image}"
       },
       "secrets": [],
       "args": {}
@@ -80,7 +80,13 @@
       "screens/print.html",
       "shell/screens/print.css",
       "shell/screens/about.html",
-      "shell/screens/about.css"
+      "shell/screens/about.css",
+      "shell/screens/kids.html",
+      "shell/screens/kids.css",
+      "shell/screens/printed.html",
+      "shell/screens/printed.css",
+      "shell/screens/teachers.html",
+      "shell/screens/teachers.css"
     ],
     "exclude": []
   },
@@ -255,7 +261,13 @@
           "screens/print.html",
           "shell/screens/print.css",
           "shell/screens/about.html",
-          "shell/screens/about.css"
+          "shell/screens/about.css",
+          "shell/screens/kids.html",
+          "shell/screens/kids.css",
+          "shell/screens/printed.html",
+          "shell/screens/printed.css",
+          "shell/screens/teachers.html",
+          "shell/screens/teachers.css"
         ],
         "exclude": []
       },
@@ -391,6 +403,12 @@
           "shell/screens/print.css",
           "shell/screens/about.html",
           "shell/screens/about.css",
+          "shell/screens/kids.html",
+          "shell/screens/kids.css",
+          "shell/screens/printed.html",
+          "shell/screens/printed.css",
+          "shell/screens/teachers.html",
+          "shell/screens/teachers.css",
           "[t]ests/**",
           "tests/**",
           "messages/*.json",
@@ -437,7 +455,13 @@
           "screens/print.html",
           "shell/screens/print.css",
           "shell/screens/about.html",
-          "shell/screens/about.css"
+          "shell/screens/about.css",
+          "shell/screens/kids.html",
+          "shell/screens/kids.css",
+          "shell/screens/printed.html",
+          "shell/screens/printed.css",
+          "shell/screens/teachers.html",
+          "shell/screens/teachers.css"
         ],
         "exclude": [],
         "defaultGlobs": null,

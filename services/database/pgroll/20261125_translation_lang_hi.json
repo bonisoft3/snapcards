@@ -1,0 +1,10 @@
+{
+  "operations": [
+    {
+      "sql": {
+        "up": "SET LOCAL lock_timeout = '5s';\nSET LOCAL statement_timeout = '30s';\n\n-- Hindi among the languages a deck or card translation is written in: the set\n-- the program states (DeckTranslation.lang, CardTranslation.lang) on tables\n-- whose bootstrap bytes (005_create_tables) name the column check without it.\nALTER TABLE \"deck_translation\" DROP CONSTRAINT IF EXISTS \"deck_translation_lang_check\";\nALTER TABLE \"deck_translation\" ADD CONSTRAINT \"deck_translation_lang_check\" CHECK (\"lang\" IN ('pt', 'es', 'en', 'he', 'zh', 'hi')) NOT VALID;\nALTER TABLE \"card_translation\" DROP CONSTRAINT IF EXISTS \"card_translation_lang_check\";\nALTER TABLE \"card_translation\" ADD CONSTRAINT \"card_translation_lang_check\" CHECK (\"lang\" IN ('pt', 'es', 'en', 'he', 'zh', 'hi')) NOT VALID;\n",
+        "onComplete": true
+      }
+    }
+  ]
+}

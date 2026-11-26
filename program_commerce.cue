@@ -22,16 +22,17 @@ _confirmThreadSql:  _ @embed(file="migrations/20261119_order_confirmation_thread
 _orderTrackingSql:  _ @embed(file="migrations/20261119_order_tracking_and_ship_mail.sql", type=text)
 _machineClockSql:   _ @embed(file="migrations/20261121_machine_clock.sql", type=text)
 _brMinPagesSql:     _ @embed(file="migrations/20261123_br_textbook_min_pages.sql", type=text)
+_printCountryInSql: _ @embed(file="migrations/20261125_print_country_in.sql", type=text)
 
 // Sandbox or live is each deployment's own: its secret store holds Stripe's,
 // Prodigi's and Cloudprinter's keys, STRIPE_PUBLISHABLE_KEY and PRODIGI_ORIGIN
 // (commerce/README.md#going-live), and an order reads its mode from its session.
 // A percentage added to the printer's non-shipping cost; shipping passes through at 1x.
 _printMarkupPercent: 80
-_printCountries: ["BR", "AR", "IL", "US", "GB", "CN"]
+_printCountries: ["BR", "AR", "IL", "US", "GB", "CN", "IN"]
 // Each country pays in its own currency (commerce/README.md#price).
 _printCurrencies: close({for c in _printCountries {(c): =~"^[a-z]{3}$"}}) & {
-	BR: "brl", AR: "ars", IL: "ils", US: "usd", GB: "gbp", CN: "cny"
+	BR: "brl", AR: "ars", IL: "ils", US: "usd", GB: "gbp", CN: "cny", IN: "inr"
 }
 // While a payment is unsettled, Stripe is asked again this often, in case its
 // webhook was lost: a session lives 2 hours (print-session's LIFETIME_SECONDS),
@@ -497,6 +498,9 @@ code: {
 	// restated as the emitter writes it.
 	state: migrations: "20261121_machine_clock": {operations: [{sql: {up: _machineClockSql, onComplete: true}}]}
 	state: migrations: "20261123_br_textbook_min_pages": {operations: [{sql: {up: _brMinPagesSql, onComplete: true}}]}
+	// India among the countries an order ships to, and the machine restated
+	// to price it in rupees.
+	state: migrations: "20261125_print_country_in": {operations: [{sql: {up: _printCountryInSql, onComplete: true}}]}
 }
 
 loop: surface: checks: "print-order-migration": {

@@ -26,6 +26,16 @@ _rowActors: {
 			"theme": _themeChart
 		}
 	}
+	for screen in ["kids", "teachers", "printed"] {
+		"\(screen)Rows": {
+			"via":      "rows"
+			"screen":   screen
+			"lifetime": "attachment"
+			"charts": {
+				"theme": _themeChart
+			}
+		}
+	}
 	"cardRows": {
 		"via":      "rows"
 		"screen":   "card"
@@ -537,6 +547,12 @@ _rowActors: {
 						}
 						"raise": "edited"
 					}
+					"click@locale-opt-hi": {
+						"assign": {
+							"locale": "हिन्दी"
+						}
+						"raise": "edited"
+					}
 					"click@locale-opt-fr": {
 						"assign": {
 							"locale": "Français"
@@ -689,6 +705,12 @@ _rowActors: {
 						}
 					}
 					"click@draft-loc-zh": {
+						"target": "idle"
+						"assign": {
+							"run": ""
+						}
+					}
+					"click@draft-loc-hi": {
 						"target": "idle"
 						"assign": {
 							"run": ""
