@@ -252,9 +252,9 @@ const printCheckout = {
   },
 };
 
-// Google signs a person in by its own button on production, framed from the
-// auth service's page for snapcards' own client; a deployment with OIDC_BROKER
-// (staging, .say.cue) signs in through the broker's redirect instead.
+// Production signs in with Google's own button framed from the auth service;
+// a deployment with OIDC_BROKER (staging, .say.cue) redirects its configured
+// OIDC_PROVIDERS through the broker instead.
 const googleSignIn = {
   spec: { screen: "cards", accepts: "accept-signin-google" },
   async run(page: Page, ctx?: Ctx) {
@@ -262,12 +262,16 @@ const googleSignIn = {
     await page.goto(`${origin}/auth/oidc`, { waitUntil: "domcontentloaded" });
     const offered = JSON.parse(await page.evaluate(() => document.body?.textContent ?? "")) as { providers?: string[]; credential?: Record<string, string> };
     if (Deno.env.get("OIDC_BROKER")) {
-      if (!offered.providers?.includes("google") || offered.credential?.google !== undefined) {
-        throw new Error(`the broker release misconfigured Google sign-in: ${JSON.stringify(offered)}`);
+      const expected = (Deno.env.get("OIDC_PROVIDERS") ?? "google").split(",").map((s) => s.trim()).filter((s) => s !== "");
+      if (expected.length === 0) throw new Error("OIDC_BROKER is set with empty OIDC_PROVIDERS");
+      for (const provider of expected) {
+        if (!offered.providers?.includes(provider) || offered.credential?.[provider] !== undefined) {
+          throw new Error(`the broker release misconfigured ${provider} sign-in: ${JSON.stringify(offered)}`);
+        }
+        await page.goto(`${origin}/auth/oidc/${provider}/start`, { waitUntil: "domcontentloaded" });
+        const landed = await page.evaluate(() => ({ host: location.hostname, body: document.body?.textContent?.slice(0, 200) ?? "" }));
+        if (landed.host === new URL(origin).hostname) throw new Error(`Sign in with ${provider} stayed on ${landed.host}: ${landed.body}`);
       }
-      await page.goto(`${origin}/auth/oidc/google/start`, { waitUntil: "domcontentloaded" });
-      const landed = await page.evaluate(() => ({ host: location.hostname, body: document.body?.textContent?.slice(0, 200) ?? "" }));
-      if (landed.host === new URL(origin).hostname) throw new Error(`Sign in with Google stayed on ${landed.host}: ${landed.body}`);
       return;
     }
     const client = offered.credential?.google;
